@@ -10,31 +10,40 @@ const Navbar: React.FC<{
   theme: 'light' | 'dark'; 
   toggleTheme: () => void 
 }> = ({ onHome, theme, toggleTheme }) => (
-  <nav className="fixed top-0 w-full z-[100] backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 bg-white/80 dark:bg-[#020617]/80 transition-colors duration-500">
-    <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <button onClick={onHome} className="group flex items-center gap-2 outline-none">
-        <div className="text-xl font-black tracking-tighter dark:text-white uppercase group-hover:opacity-80 transition-opacity">
-          KuKul <span className="text-blue-600">Hoca</span>
-        </div>
-      </button>
-
-      <div className="flex items-center gap-4">
-        <button
-          onClick={toggleTheme}
-          className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-400"
-        >
-          {theme === 'dark' ? (
-            <svg className="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 0A9 9 0 115.552 13.292c.337-.363.486-.83.462-1.312z" />
-            </svg>
-          ) : (
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          )}
-        </button>
+  <nav className="fixed top-0 w-full p-6 flex justify-between items-center z-[110] transition-colors duration-500">
+    <button onClick={onHome} className="group flex items-center gap-3 outline-none">
+      <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-105">
+        {/* Owl / Bird Icon */}
+        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 2L4 9v12h16V9l-8-7z" />
+          <circle cx="9" cy="11" r="1.5" fill="currentColor" />
+          <circle cx="15" cy="11" r="1.5" fill="currentColor" />
+          <path d="M12 14v2" strokeLinecap="round" />
+        </svg>
+        {/* Lightning / Zap Icon */}
+        <svg className="h-4 w-4 absolute -bottom-1 -right-1 text-yellow-400 fill-yellow-400 animate-pulse drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]" viewBox="0 0 24 24">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
       </div>
-    </div>
+      <span className="text-xl font-black tracking-tighter dark:text-white uppercase transition-opacity group-hover:opacity-80">
+        KuKul <span className="text-blue-600">Hoca</span>
+      </span>
+    </button>
+    
+    <button 
+      onClick={toggleTheme} 
+      className="p-3 rounded-full border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-slate-600 dark:text-slate-400 shadow-sm backdrop-blur-md"
+    >
+      {theme === 'dark' ? (
+        <svg className="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 0A9 9 0 115.552 13.292c.337-.363.486-.83.462-1.312z" />
+        </svg>
+      ) : (
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      )}
+    </button>
   </nav>
 );
 
@@ -72,10 +81,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500">
+    <div className="h-screen w-full bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-hidden">
       <Navbar onHome={handleGoHome} theme={theme} toggleTheme={toggleTheme} />
       
-      <div className="pt-16 h-full">
+      <div className="h-full">
         {view === 'landing' ? (
           <LandingPage 
             onStart={handleStart} 
