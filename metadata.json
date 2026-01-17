@@ -1,0 +1,8 @@
+{
+  "name": "Yazay Zeka Öğretmen Asistanı",
+  "description": "Profesyonel eğitimciler için tasarlanmış, 50+ pedagojik araç içeren, 4MAT, RAFT ve Bloom taksonomisi destekli yapay zeka tabanlı öğretmen asistanı platformu.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
