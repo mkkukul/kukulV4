@@ -106,7 +106,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-950 relative transition-colors duration-500">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-950 relative transition-colors duration-500 edu-bg">
       <header className="bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-8 py-5 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-indigo-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-3xl shadow-sm border border-indigo-100 dark:border-indigo-900 transform hover:scale-105 transition-transform cursor-pointer">
@@ -217,7 +217,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="group p-5 text-slate-400 hover:text-indigo-600 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl transition-all shadow-sm relative overflow-hidden"
+              className="group p-5 text-slate-400 hover:text-indigo-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl transition-all shadow-sm relative overflow-hidden"
               title="Dosya Yükle (PDF, PNG, JPG)"
             >
               <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors"></div>
