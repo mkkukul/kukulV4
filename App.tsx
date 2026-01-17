@@ -11,22 +11,20 @@ const Navbar: React.FC<{
   toggleTheme: () => void 
 }> = ({ onHome, theme, toggleTheme }) => (
   <nav className="fixed top-0 w-full p-6 flex justify-between items-center z-[110] transition-colors duration-500">
-    <button onClick={onHome} className="group flex items-center gap-3 outline-none">
-      <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-105">
-        {/* Owl / Bird Icon */}
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button onClick={onHome} className="group flex items-center gap-2 outline-none">
+      <div className="relative flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-105">
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 2L4 9v12h16V9l-8-7z" />
-          <circle cx="9" cy="11" r="1.5" fill="currentColor" />
-          <circle cx="15" cy="11" r="1.5" fill="currentColor" />
-          <path d="M12 14v2" strokeLinecap="round" />
+          <circle cx="9" cy="11" r="1" fill="currentColor" />
+          <circle cx="15" cy="11" r="1" fill="currentColor" />
+          <path d="M12 14v1" strokeLinecap="round" />
         </svg>
-        {/* Lightning / Zap Icon */}
-        <svg className="h-4 w-4 absolute -bottom-1 -right-1 text-yellow-400 fill-yellow-400 animate-pulse drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]" viewBox="0 0 24 24">
+        <svg className="h-2.5 w-2.5 absolute -bottom-0.5 -right-0.5 text-yellow-400 fill-yellow-400 animate-pulse drop-shadow-[0_0_3px_rgba(250,204,21,0.8)]" viewBox="0 0 24 24">
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </svg>
       </div>
-      <span className="text-xl font-black tracking-tighter dark:text-white uppercase transition-opacity group-hover:opacity-80">
-        KuKul <span className="text-blue-600">Hoca</span>
+      <span className="text-xl font-black tracking-tighter dark:text-white lowercase transition-opacity group-hover:opacity-80">
+        kukul.<span className="text-blue-600">io</span>
       </span>
     </button>
     
@@ -82,7 +80,8 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-full bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-hidden">
-      <Navbar onHome={handleGoHome} theme={theme} toggleTheme={toggleTheme} />
+      {/* Dashboard view'da global navbar'ı koruyoruz, Landing'de LandingPage içindeki header kullanılacak */}
+      {view === 'dashboard' && <Navbar onHome={handleGoHome} theme={theme} toggleTheme={toggleTheme} />}
       
       <div className="h-full">
         {view === 'landing' ? (
@@ -92,11 +91,13 @@ const App: React.FC = () => {
             toggleTheme={toggleTheme} 
           />
         ) : (
-          <Dashboard 
-            theme={theme} 
-            toggleTheme={toggleTheme} 
-            initialToolId={selectedToolId} 
-          />
+          <div className="pt-16 h-full">
+            <Dashboard 
+              theme={theme} 
+              toggleTheme={toggleTheme} 
+              initialToolId={selectedToolId} 
+            />
+          </div>
         )}
       </div>
     </div>

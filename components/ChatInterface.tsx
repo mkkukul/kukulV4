@@ -116,7 +116,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-1 uppercase">{tool.name}</h2>
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-black uppercase tracking-widest">KuKul Hoca Modül</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-black uppercase tracking-widest">kukul.io Modül</p>
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
             <div className="space-y-4">
               <h3 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">Merhaba Öğretmenim!</h3>
               <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto text-lg leading-relaxed font-medium">
-                KuKul Hoca asistanınız <b>{tool.name}</b> modülüyle hazır. Hemen bir ders konusu girerek veya dosya yükleyerek başlayalım.
+                kukul.io asistanınız <b>{tool.name}</b> modülüyle hazır. Hemen bir ders konusu girerek veya dosya yükleyerek başlayalım.
               </p>
             </div>
           </div>
@@ -167,7 +167,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
                       <div className={`mt-6 p-5 rounded-3xl flex items-center gap-4 border ${msg.role === 'user' ? 'bg-white/10 border-white/20' : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700'}`}>
                         <span className="text-3xl">📄</span>
                         <div className="flex flex-col overflow-hidden">
-                          <span className={`text-[10px] font-black uppercase tracking-[0.2em] opacity-80 ${msg.role === 'user' ? 'text-blue-300' : 'text-blue-600'}`}>KuKul Hoca Analiz</span>
+                          <span className={`text-[10px] font-black uppercase tracking-[0.2em] opacity-80 ${msg.role === 'user' ? 'text-blue-300' : 'text-blue-600'}`}>kukul.io Analiz</span>
                           <span className="text-sm truncate font-bold">Materyal İşlendi</span>
                         </div>
                       </div>
@@ -235,7 +235,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
             <div className="flex-1 relative group">
               <input
                 type="text"
-                placeholder={`${tool.name} için talimatınızı KuKul Hoca'ya bırakın...`}
+                placeholder={`${tool.name} için talimatınızı kukul.io'ya bırakın...`}
                 className="w-full pl-8 pr-20 py-7 bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border-2 border-slate-100 dark:border-slate-800 rounded-[2.5rem] focus:ring-8 focus:ring-blue-500/10 focus:border-blue-600 dark:focus:border-blue-500 outline-none transition-all shadow-2xl dark:shadow-none placeholder:text-slate-400 dark:text-white font-semibold text-lg"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -266,7 +266,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, toggleTheme 
           <div className="flex justify-center gap-10 py-2">
             <div className="flex items-center gap-2 group cursor-help">
               <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-[0.2em]">KuKul Hoca AI Aktif</p>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-[0.2em]">kukul.io AI Aktif</p>
             </div>
           </div>
         </form>

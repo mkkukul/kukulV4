@@ -26,9 +26,13 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
   return (
     <aside className={`${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 w-80 bg-white dark:bg-[#030712] border-r border-slate-200/50 dark:border-slate-800/50 z-40 transition-all duration-500 flex flex-col shadow-2xl lg:shadow-none`}>
       <div className="p-8 border-b border-slate-100 dark:border-slate-900 flex items-center gap-4">
-        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">KH</div>
+        <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 2L4 9v12h16V9l-8-7z" />
+          </svg>
+        </div>
         <div>
-          <h1 className="text-xl font-black text-slate-900 dark:text-white leading-none tracking-tighter uppercase">KuKul <span className="text-blue-600">Hoca</span></h1>
+          <h1 className="text-xl font-black text-slate-900 dark:text-white leading-none tracking-tighter lowercase">kukul.<span className="text-blue-600">io</span></h1>
           <p className="text-[10px] text-blue-500 dark:text-blue-400 mt-1 uppercase font-black tracking-widest opacity-80">Asistan Panel</p>
         </div>
       </div>
@@ -94,7 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
       <div className="p-6 border-t border-slate-100 dark:border-slate-900">
         <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-all cursor-pointer group hover:border-blue-500/50">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-inner group-hover:scale-110 transition-transform">
-            KH
+            K.
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-black text-slate-800 dark:text-white truncate tracking-tight">Eğitimci Hesabı</p>

@@ -1,6 +1,6 @@
 {
-  "name": "Kukul.io V4",
-  "description": "KuKul Hoca: LGS ve YKS deneme analizleri, 50+ pedagojik araç ve akıllı koçluk sistemiyle öğretmenler için geliştirilmiş en kapsamlı yapay zeka platformu.",
+  "name": "kukul.io V4",
+  "description": "kukul.io: LGS ve YKS deneme analizleri, pedagojik araçlar ve akıllı koçluk sistemiyle geliştirilmiş elit yapay zeka platformu.",
   "requestFramePermissions": [
     "camera",
     "microphone"
