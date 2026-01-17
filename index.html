@@ -16,7 +16,7 @@
               sans: ['Inter', 'sans-serif'],
             },
             animation: {
-              'marquee': 'marquee 25s linear infinite',
+              'marquee': 'marquee 40s linear infinite',
               'fade-in': 'fadeIn 1s ease-out forwards',
               'float': 'float 6s ease-in-out infinite',
               'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -27,7 +27,7 @@
                 '100%': { transform: 'translateX(-50%)' },
               },
               fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
               },
               float: {
@@ -40,7 +40,7 @@
       }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -66,11 +66,17 @@
           position: absolute;
           width: 600px;
           height: 600px;
-          background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
           border-radius: 50%;
           filter: blur(80px);
           z-index: -1;
         }
+
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
     </style>
 <script type="importmap">
 {
@@ -85,7 +91,7 @@
 }
 </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden edu-bg">
+<body class="bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden edu-bg">
     <div id="root"></div>
 </body>
 </html>
