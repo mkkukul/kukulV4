@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatInterface from './ChatInterface';
 import { Tool } from '../types';
@@ -8,14 +8,26 @@ import { EDUCATIONAL_TASKS } from '../constants/tasks';
 interface DashboardProps {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  initialToolId?: string | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme }) => {
-  const [currentTask, setCurrentTask] = useState<Tool>(EDUCATIONAL_TASKS[0]);
+const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId }) => {
+  const [currentTask, setCurrentTask] = useState<Tool>(
+    initialToolId 
+    ? (EDUCATIONAL_TASKS.find(t => t.id === initialToolId) || EDUCATIONAL_TASKS[0])
+    : EDUCATIONAL_TASKS[0]
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    if (initialToolId) {
+      const tool = EDUCATIONAL_TASKS.find(t => t.id === initialToolId);
+      if (tool) setCurrentTask(tool);
+    }
+  }, [initialToolId]);
+
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500">
+    <div className="flex h-full bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500">
       <Sidebar 
         currentTool={currentTask} 
         onSelectTool={(task) => {
