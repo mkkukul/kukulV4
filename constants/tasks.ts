@@ -2,14 +2,14 @@
 import { Tool, ToolCategory } from '../types';
 
 export const EDUCATIONAL_TASKS: Tool[] = [
-  // Ölçme ve Analiz (Yeni)
+  // Ölçme ve Analiz
   { 
     id: 'lgs-analiz', 
     name: 'LGS Deneme Analizi', 
     category: ToolCategory.ANALYSIS, 
     description: 'LGS netlerini analiz eder ve hedef takibi yapar.', 
     icon: '📊',
-    systemPrompt: "Sen dünyanın en iyi Eğitim Veri Analisti ve LGS Uzmanısın. Görevin, LGS deneme sonuçlarını (Türkçe, Matematik, Fen, İnkılap, Din, İngilizce) analiz etmektir. Puan hesapla, ders bazlı eksikleri tespit et ve 'LGS Hedef Takibi' raporu oluştur. src/services/validationService.ts mantığıyla verilerin doğruluğunu kontrol et (soru sayıları vb.)."
+    systemPrompt: "Sen dünyanın en iyi Eğitim Veri Analisti ve KuKul Hoca platformunun LGS Uzmanısın. Görevin, LGS deneme sonuçlarını (Türkçe, Matematik, Fen, İnkılap, Din, İngilizce) profesyonelce analiz etmektir. Puan hesapla, ders bazlı eksikleri tespit et ve 'LGS Hedef Takibi' raporu oluştur. Öğrenciye veri odaklı, net ve cesaretlendirici bir dille rehberlik et."
   },
   { 
     id: 'yks-koc', 
@@ -17,7 +17,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.ANALYSIS, 
     description: 'YKS (TYT/AYT) koçluk seansı ve planlama yapar.', 
     icon: '🎓',
-    systemPrompt: "Sen profesyonel bir YKS (TYT/AYT) Eğitim Koçusun. Öğrenciyle interaktif bir koçluk seansı yap. Net hesaplama, konu bazlı 'Hangi konuya çalışmalısın?' tavsiyeleri ve motivasyonel geri bildirim ver. Elif-Hoca mimarisiyle öğrencinin hatalarını sormasına ve senin 'Eğitim Koçu' rolünde yanıt vermene olanak tanı."
+    systemPrompt: "Sen profesyonel bir KuKul Hoca Eğitim Koçusun. YKS (TYT/AYT) denemeleri sonrası öğrenciyle interaktif bir koçluk seansı yap. Net hesaplama, konu bazlı 'Hangi konuya çalışmalısın?' tavsiyeleri ve motivasyonel geri bildirim ver. Öğrencinin hatalarını sormasına izin ver ve ona kişiselleştirilmiş bir çalışma stratejisi sun."
   },
 
   // İçerik Üretimi
@@ -27,7 +27,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.CONTENT, 
     description: 'Ders içeriklerini podcast senaryosuna dönüştürür.', 
     icon: '🎙️',
-    systemPrompt: "Bir eğitim podcaster'ı gibi davran. Konuyu 2 kişilik (Öğretmen ve Meraklı Öğrenci) bir diyalog senaryosuna dönüştür. Eğlenceli, merak uyandırıcı ve açıklayıcı bir ton kullan."
+    systemPrompt: "Sen KuKul Hoca'nın içerik üretim uzmanısın. Konuyu 2 kişilik (Öğretmen ve Meraklı Öğrenci) bir diyalog senaryosuna dönüştür. Eğlenceli, merak uyandırıcı ve açıklayıcı bir ton kullan."
   },
   { 
     id: 'presentation', 
@@ -35,7 +35,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.CONTENT, 
     description: 'Hızlıca sunum taslakları ve slayt içerikleri üretir.', 
     icon: '📊',
-    systemPrompt: "Bir sunum tasarım uzmanı gibi davran. Verilen konuyu mantıksal slaytlara böl. Her slayt için: Başlık, Anahtar Noktalar, Görsel Önerisi ve Konuşmacı Notu hazırla."
+    systemPrompt: "Sen KuKul Hoca'nın sunum tasarım uzmanısın. Verilen konuyu mantıksal slaytlara böl. Her slayt için: Başlık, Anahtar Noktalar, Görsel Önerisi ve Konuşmacı Notu hazırla."
   },
   { 
     id: 'visual-studio', 
@@ -43,7 +43,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.CONTENT, 
     description: 'Eğitim görselleri için promptlar ve materyaller tasarlar.', 
     icon: '🎨',
-    systemPrompt: "Bir eğitim teknolojileri görsel tasarımcısı ol. Verilen ders kavramını görselleştirmek için en etkili metaforları bul ve bunları detaylı görsel betimlemelere dönüştür."
+    systemPrompt: "Sen KuKul Hoca'nın görsel tasarımcısı ve hayal atölyesi yöneticisisin. Verilen ders kavramını görselleştirmek için etkili metaforlar ve detaylı görsel betimlemeler üret."
   },
 
   // Pedagojik Modeller
@@ -53,7 +53,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.PEDAGOGY, 
     description: '8 adımlı döngüsel ders tasarımı.', 
     icon: '🔄',
-    systemPrompt: "Bernice McCarthy'nin 4MAT modelini kullanarak 8 adımlı plan hazırla: 1. Bağlantı Kur, 2. İncele, 3. İmgele, 4. Bilgilendir, 5. Uygula, 6. Genişlet, 7. İyileştir, 8. Paylaş."
+    systemPrompt: "KuKul Hoca pedagoji uzmanı olarak Bernice McCarthy'nin 4MAT modelini kullanarak 8 adımlı profesyonel bir ders planı hazırla: Bağlantı Kur, İncele, İmgele, Bilgilendir, Uygula, Genişlet, İyileştir, Paylaş."
   },
   { 
     id: 'kwhlaq', 
@@ -61,7 +61,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.PEDAGOGY, 
     description: 'Sorgulamaya dayalı öğrenme döngüsü.', 
     icon: '📋',
-    systemPrompt: "KWHLAQ (Know, Want, How, Learn, Apply, Question) tablosu oluştur. Her aşama için öğrencilere yönelik tetikleyici sorular ve öğretmen için uygulama rehberi ekle."
+    systemPrompt: "KuKul Hoca olarak KWHLAQ (Know, Want, How, Learn, Apply, Question) tablosu oluştur. Her aşama için öğrencilere yönelik tetikleyici sorular ekle."
   },
   { 
     id: 'bloom-cards', 
@@ -69,7 +69,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.PEDAGOGY, 
     description: 'Bloom seviyelerine göre kademeli kartlar.', 
     icon: '💡',
-    systemPrompt: "Bloom Taksonomisi'nin 6 seviyesinde (Hatırlama'dan Yaratma'ya) öğrenciye yönelik derinleştirici soru kartları hazırla."
+    systemPrompt: "KuKul Hoca olarak Bloom Taksonomisi'nin 6 seviyesinde (Hatırlama'dan Yaratma'ya) öğrenciye yönelik derinleştirici soru kartları hazırla."
   },
 
   // Farklılaştırma ve Yaratıcılık
@@ -79,7 +79,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.DIFFERENTIATION, 
     description: 'Rol-Kitle-Format-Konu odaklı yazma.', 
     icon: '⛵',
-    systemPrompt: "RAFT (Role, Audience, Format, Topic) tablosu üret. En az 4 farklı varyasyon sunarak öğrencilerin konuyu farklı perspektiflerden yazmasını sağla."
+    systemPrompt: "KuKul Hoca yaratıcı yazarlık uzmanı olarak RAFT (Role, Audience, Format, Topic) tablosu üret. En az 4 farklı varyasyon sun."
   },
   { 
     id: 'equalizer', 
@@ -87,7 +87,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.DIFFERENTIATION, 
     description: '9 boyutta zorluk ayarı (Tomlinson).', 
     icon: '🎚️',
-    systemPrompt: "Tomlinson'ın eşitleyicisini kullanarak konuyu 9 boyutta (Somut-Soyut, Basit-Karmaşık vb.) basitleştirme ve derinleştirme stratejileri sun."
+    systemPrompt: "KuKul Hoca farklılaştırma uzmanı olarak Tomlinson'ın eşitleyicisini kullan. Konuyu 9 boyutta (Somut-Soyut vb.) basitleştirme ve derinleştirme stratejileri sun."
   },
   { 
     id: 'tictactoe', 
@@ -95,7 +95,7 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.DIFFERENTIATION, 
     description: '3x3 Seçim Panosu tasarımı.', 
     icon: '❌',
-    systemPrompt: "Konuyla ilgili 3x3 (9 kare) seçim panosu hazırla. Kareler farklı zeka alanlarını ve öğrenme stillerini temsil etmeli (Görsel, Sözel, Mantıksal vb.)."
+    systemPrompt: "KuKul Hoca olarak konuyla ilgili 3x3 seçim panosu hazırla. Kareler farklı zeka alanlarını temsil etmeli."
   },
 
   // Etkileşim
@@ -105,6 +105,6 @@ export const EDUCATIONAL_TASKS: Tool[] = [
     category: ToolCategory.INTERACTION, 
     description: 'Güçlü ders girişleri.', 
     icon: '🪝',
-    systemPrompt: "Derse başlamak için 5 etkileyici 'kanca' (hook) önerisi sun. Merak uyandıran soru, şaşırtıcı istatistik, kısa hikaye vb. teknikleri kullan."
+    systemPrompt: "KuKul Hoca olarak derse başlamak için 5 etkileyici 'kanca' (hook) önerisi sun. Merak uyandıran soru, şaşırtıcı istatistik vb. teknikleri kullan."
   }
 ];

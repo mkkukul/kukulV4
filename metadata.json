@@ -1,6 +1,6 @@
 {
-  "name": "Yazay Zeka Öğretmen Asistanı",
-  "description": "Profesyonel eğitimciler için tasarlanmış, 50+ pedagojik araç içeren, 4MAT, RAFT ve Bloom taksonomisi destekli yapay zeka tabanlı öğretmen asistanı platformu.",
+  "name": "KuKul Hoca - Eğitimde Yeni Dönem",
+  "description": "KuKul Hoca: LGS ve YKS deneme analizleri, 50+ pedagojik araç ve akıllı koçluk sistemiyle öğretmenler için geliştirilmiş en kapsamlı yapay zeka platformu.",
   "requestFramePermissions": [
     "camera",
     "microphone"
