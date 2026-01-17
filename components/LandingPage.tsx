@@ -78,6 +78,58 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
         </div>
       </section>
 
+      {/* Exam Analysis Section - NEW */}
+      <section className="py-24 px-6 bg-white/20 dark:bg-slate-950/20 backdrop-blur-sm border-y border-slate-200/50 dark:border-slate-800/50 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight dark:text-white mb-4 leading-none">
+              Deneme Analizi & <span className="text-indigo-600">Sınav Koçu</span>
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">
+              Sınav türüne özel geliştirilmiş algoritmalarla eksiklerini keşfet.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-10">
+            {/* LGS Analiz Kartı */}
+            <div className="p-10 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl hover:border-blue-500 transition-all group shadow-xl">
+              <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                <span className="text-4xl">📊</span>
+              </div>
+              <h3 className="text-3xl font-black mb-4 dark:text-white tracking-tight">LGS Deneme Analizi</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 text-lg leading-relaxed font-medium">
+                kukul-io veri motoruyla netlerini hesapla, ders bazlı başarı grafiklerini incele ve LGS hedefine ne kadar yaklaştığını gör.
+              </p>
+              <button 
+                onClick={onStart}
+                className="w-full h-16 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 active:scale-95"
+              >
+                Analize Başla 
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </button>
+            </div>
+
+            {/* YKS Analiz Kartı */}
+            <div className="p-10 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl hover:border-purple-500 transition-all group shadow-xl">
+              <div className="w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                <span className="text-4xl">🎓</span>
+              </div>
+              <h3 className="text-3xl font-black mb-4 dark:text-white tracking-tight">YKS Koçluk Sistemi</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 text-lg leading-relaxed font-medium">
+                Elif-Hoca interaktif koçluk sistemiyle TYT/AYT hatalarını yapay zekaya sor, sana özel haftalık çalışma planını saniyeler içinde al.
+              </p>
+              <button 
+                onClick={onStart}
+                className="w-full h-16 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg transition-all flex items-center justify-center gap-3 shadow-lg shadow-purple-500/20 active:scale-95"
+              >
+                Koçumla Konuş 
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Animated Marquee of Tasks */}
       <div className="py-20 border-y border-slate-200/50 dark:border-slate-800/50 bg-white/30 dark:bg-slate-950/30 backdrop-blur-sm overflow-hidden select-none relative z-10">
         <div className="flex gap-24 whitespace-nowrap animate-marquee">

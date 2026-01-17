@@ -4,7 +4,8 @@ export enum ToolCategory {
   LANGUAGE = 'Dil ve Metin Analizi',
   PEDAGOGY = 'Pedagojik Modeller',
   DIFFERENTIATION = 'Farklılaştırma ve Yaratıcılık',
-  INTERACTION = 'Etkileşim ve Strateji'
+  INTERACTION = 'Etkileşim ve Strateji',
+  ANALYSIS = 'Ölçme ve Analiz'
 }
 
 export interface Tool {

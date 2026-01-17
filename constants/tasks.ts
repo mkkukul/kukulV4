@@ -2,6 +2,24 @@
 import { Tool, ToolCategory } from '../types';
 
 export const EDUCATIONAL_TASKS: Tool[] = [
+  // Ölçme ve Analiz (Yeni)
+  { 
+    id: 'lgs-analiz', 
+    name: 'LGS Deneme Analizi', 
+    category: ToolCategory.ANALYSIS, 
+    description: 'LGS netlerini analiz eder ve hedef takibi yapar.', 
+    icon: '📊',
+    systemPrompt: "Sen dünyanın en iyi Eğitim Veri Analisti ve LGS Uzmanısın. Görevin, LGS deneme sonuçlarını (Türkçe, Matematik, Fen, İnkılap, Din, İngilizce) analiz etmektir. Puan hesapla, ders bazlı eksikleri tespit et ve 'LGS Hedef Takibi' raporu oluştur. src/services/validationService.ts mantığıyla verilerin doğruluğunu kontrol et (soru sayıları vb.)."
+  },
+  { 
+    id: 'yks-koc', 
+    name: 'YKS Koçluk Sistemi', 
+    category: ToolCategory.ANALYSIS, 
+    description: 'YKS (TYT/AYT) koçluk seansı ve planlama yapar.', 
+    icon: '🎓',
+    systemPrompt: "Sen profesyonel bir YKS (TYT/AYT) Eğitim Koçusun. Öğrenciyle interaktif bir koçluk seansı yap. Net hesaplama, konu bazlı 'Hangi konuya çalışmalısın?' tavsiyeleri ve motivasyonel geri bildirim ver. Elif-Hoca mimarisiyle öğrencinin hatalarını sormasına ve senin 'Eğitim Koçu' rolünde yanıt vermene olanak tanı."
+  },
+
   // İçerik Üretimi
   { 
     id: 'podcast', 
