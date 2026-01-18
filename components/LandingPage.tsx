@@ -65,10 +65,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
         <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl px-4 animate-in fade-in zoom-in duration-700 delay-300">
           <div 
             onClick={() => onStart('lgs-analiz')}
-            className="group cursor-pointer p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-lg hover:border-blue-500 transition-all duration-500 flex flex-col justify-between active:scale-[0.98] h-full"
+            className="group cursor-pointer p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-lg hover:shadow-2xl hover:shadow-blue-600/30 hover:scale-[1.03] hover:border-blue-500 transition-all duration-500 flex flex-col justify-between active:scale-[0.98] h-full"
           >
             <div>
-              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110">
                 <svg className="h-9 w-9 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
@@ -83,10 +83,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
 
           <div 
             onClick={() => onStart('yks-koc')}
-            className="group cursor-pointer p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-lg hover:border-purple-500 transition-all duration-500 flex flex-col justify-between active:scale-[0.98] h-full"
+            className="group cursor-pointer p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-lg hover:shadow-2xl hover:shadow-purple-600/30 hover:scale-[1.03] hover:border-purple-500 transition-all duration-500 flex flex-col justify-between active:scale-[0.98] h-full"
           >
             <div>
-              <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110">
                 <svg className="h-9 w-9 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
