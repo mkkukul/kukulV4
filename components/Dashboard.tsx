@@ -36,19 +36,20 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
         }}
         isOpen={isSidebarOpen}
         theme={theme}
+        toggleTheme={toggleTheme}
       />
       
       <main className="flex-1 flex flex-col min-w-0 h-full relative">
-        <div className="lg:hidden absolute top-4 left-4 z-50 flex gap-2">
+        <div className="lg:hidden absolute top-24 left-4 z-50 flex gap-2">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+            className="p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 pointer-events-auto"
           >
             {isSidebarOpen ? '✕' : '☰'}
           </button>
         </div>
 
-        <ChatInterface tool={currentTask} theme={theme} toggleTheme={toggleTheme} />
+        <ChatInterface tool={currentTask} theme={theme} />
       </main>
       
       {isSidebarOpen && (
