@@ -24,3 +24,10 @@ export interface ChatMessage {
 }
 
 export type ViewState = 'landing' | 'dashboard';
+
+export interface ExamSubject {
+  name: string;
+  correct: number;
+  incorrect: number;
+  net: number;
+}
