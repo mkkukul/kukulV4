@@ -28,10 +28,11 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     }
   }, [initialToolId]);
 
-  // Component Dispatcher: Görevin ID'sine göre uygun Aksiyon Panelini render eder.
   const renderActionPanel = () => {
     switch (currentTask.id) {
       case 'deneme-analizi':
+      case 'lgs-analiz':
+      case 'yks-koc':
         return <AnalysisStudio 
           onAnalyze={(data) => setAssistantPrompt(data)} 
           isLoading={false} 
@@ -54,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500 font-sans">
+    <div className="flex min-h-[100dvh] bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500 font-sans">
       <Sidebar 
         currentTool={currentTask} 
         onSelectTool={(task) => {
@@ -79,12 +80,14 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
         </div>
 
         <div className="flex-1 flex flex-col overflow-y-auto hide-scrollbar pb-24 lg:pb-12">
-          <div className="p-6 lg:p-10 max-w-7xl mx-auto w-full space-y-12">
+          <div className="p-4 lg:p-10 max-w-7xl mx-auto w-full space-y-8 md:space-y-12">
             {/* 1. Aksiyon Paneli Alanı */}
-            {renderActionPanel()}
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {renderActionPanel()}
+            </div>
             
             {/* 2. Akıllı Danışman (Alt Bölümde Entegre) */}
-            <div className="bg-slate-100/30 dark:bg-slate-900/10 rounded-[4rem] border border-slate-200/40 dark:border-slate-800/40 overflow-hidden transition-all duration-700 shadow-inner">
+            <div className="bg-slate-100/30 dark:bg-slate-900/10 rounded-[2rem] md:rounded-[4rem] border border-slate-200/40 dark:border-slate-800/40 overflow-hidden transition-all duration-700 shadow-inner">
               <ChatInterface 
                 tool={currentTask} 
                 theme={theme} 

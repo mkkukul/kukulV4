@@ -2,30 +2,27 @@
 import React, { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
-import { ViewState, Tool } from './types';
+import { ViewState } from './types';
 import { EDUCATIONAL_TASKS } from './constants/tasks';
 
 const Navbar: React.FC<{ 
   onHome: () => void; 
 }> = ({ onHome }) => (
-  <nav className="fixed top-0 w-full p-6 flex justify-between items-center z-[110] transition-colors duration-500 pointer-events-none">
+  <nav className="fixed top-0 w-full p-4 md:p-6 flex justify-between items-center z-[110] transition-colors duration-500 pointer-events-none">
     <button 
       onClick={onHome} 
       className="group flex items-center gap-2 outline-none pointer-events-auto"
       aria-label="kukul.io Anasayfa"
     >
-      <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-110">
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-110">
+        <svg className="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 2L4 9v12h16V9l-8-7z" />
           <circle cx="9" cy="11" r="1" fill="currentColor" />
           <circle cx="15" cy="11" r="1" fill="currentColor" />
           <path d="M12 14v1" strokeLinecap="round" />
         </svg>
-        <svg className="h-3 w-3 absolute -bottom-1 -right-1 text-yellow-400 fill-yellow-400 animate-pulse drop-shadow-[0_0_5px_rgba(250,204,21,1)]" viewBox="0 0 24 24">
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-        </svg>
       </div>
-      <span className="text-2xl font-black tracking-tighter dark:text-white lowercase transition-opacity group-hover:opacity-80">
+      <span className="text-lg md:text-2xl font-black tracking-tighter dark:text-white lowercase transition-opacity group-hover:opacity-80">
         kukul.<span className="text-blue-600">io</span>
       </span>
     </button>
@@ -66,7 +63,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-hidden font-sans">
+    <div className="min-h-[100dvh] w-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden font-sans">
       {view === 'dashboard' && <Navbar onHome={handleGoHome} />}
       
       <div className="h-full w-full">
