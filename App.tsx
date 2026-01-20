@@ -49,7 +49,6 @@ const App: React.FC = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     
-    // Tema geçişini kesinleştirmek için classList manipülasyonu
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
     localStorage.setItem('theme', newTheme);
   };
@@ -65,7 +64,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden font-sans selection:bg-yellow-400/30">
+    <div className="min-h-[100dvh] w-full bg-slate-50 dark:bg-[#020617] edu-bg text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden font-sans selection:bg-yellow-400/30">
       {view === 'dashboard' && <Navbar onHome={handleGoHome} />}
       
       <div className="h-full w-full">

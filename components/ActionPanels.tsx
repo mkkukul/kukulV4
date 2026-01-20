@@ -41,11 +41,10 @@ export const AnalysisStudio: React.FC<{ onAnalyze: (data: string) => void, isLoa
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 p-6 lg:p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 animate-in fade-in zoom-in duration-500">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-6 lg:p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 animate-in fade-in zoom-in duration-500 backdrop-blur-xl">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h3 className="text-3xl font-black dark:text-white uppercase tracking-tighter">Analysis Studio</h3>
-          <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mt-1 opacity-70">Veriyle Başarıyı Hedefle</p>
         </div>
         <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl shadow-inner">
           {['LGS', 'TYT'].map(t => (
@@ -157,7 +156,7 @@ export const VisualStudio: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl grid lg:grid-cols-2 gap-10 animate-in fade-in duration-500">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl grid lg:grid-cols-2 gap-10 animate-in fade-in duration-500 backdrop-blur-xl">
       <div className="space-y-8">
         <div>
           <h3 className="text-3xl font-black dark:text-white uppercase tracking-tighter leading-none">Visual Studio</h3>
@@ -232,7 +231,7 @@ export const RaftPanel: React.FC<{ onGenerate: (data: string) => void }> = ({ on
   const [data, setData] = useState({ role: '', audience: '', format: '', topic: '' });
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-500">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-500 backdrop-blur-xl">
       <div className="flex items-center gap-6">
         <div className="w-16 h-16 bg-purple-600 rounded-[1.5rem] flex items-center justify-center text-white text-4xl shadow-2xl rotate-3">⛵</div>
         <div>
@@ -285,7 +284,7 @@ export const StepperPanel: React.FC<{ onStepClick: (step: string) => void }> = (
   ];
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-700">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-700 backdrop-blur-xl">
       <div className="flex items-center gap-6">
         <div className="w-16 h-16 bg-blue-600 rounded-[1.5rem] flex items-center justify-center text-white text-4xl shadow-2xl">🔄</div>
         <div>
@@ -336,7 +335,7 @@ export const KWHLAQPanel: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 animate-in fade-in slide-in-from-top-4 duration-500 backdrop-blur-xl">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center gap-5">
           <div className="w-16 h-16 bg-indigo-600 rounded-[1.5rem] flex items-center justify-center text-white text-4xl shadow-2xl -rotate-2">📋</div>
