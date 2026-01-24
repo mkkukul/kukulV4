@@ -5,7 +5,8 @@ export enum ToolCategory {
   PEDAGOGY = 'Pedagojik Modeller',
   DIFFERENTIATION = 'Farklılaştırma ve Yaratıcılık',
   INTERACTION = 'Etkileşim ve Strateji',
-  ANALYSIS = 'Ölçme ve Analiz'
+  ANALYSIS = 'Ölçme ve Analiz',
+  PROFILE = 'Kişisel Veri'
 }
 
 export interface Tool {
@@ -30,4 +31,12 @@ export interface ExamSubject {
   correct: number;
   incorrect: number;
   net: number;
+}
+
+export interface StudentProfile {
+  name: string;
+  grade: string;
+  target: string;
+  averageNet: number;
+  notes: string;
 }

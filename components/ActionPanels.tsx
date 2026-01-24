@@ -1,7 +1,112 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { ExamSubject } from '../types';
+import { ExamSubject, StudentProfile } from '../types';
+
+// 0. StudentProfilePanel (Öğrenci Profilim)
+export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) => void }> = ({ onSave }) => {
+  const [profile, setProfile] = useState<StudentProfile>(() => {
+    const saved = localStorage.getItem('student_profile');
+    return saved ? JSON.parse(saved) : {
+      name: '',
+      grade: '8. Sınıf (LGS)',
+      target: '',
+      averageNet: 0,
+      notes: ''
+    };
+  });
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSave = () => {
+    localStorage.setItem('student_profile', JSON.stringify(profile));
+    onSave(profile);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
+  };
+
+  return (
+    <div className="bg-white/80 dark:bg-slate-900/50 p-8 lg:p-12 rounded-[3.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 animate-in fade-in zoom-in duration-500 backdrop-blur-xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+      
+      <div className="flex items-center gap-6 relative z-10">
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2rem] flex items-center justify-center text-white text-4xl shadow-2xl">
+          👤
+        </div>
+        <div>
+          <h3 className="text-4xl font-black dark:text-white uppercase tracking-tighter leading-none">Öğrenci Profilim</h3>
+          <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-2 italic">Akademik Kimliğini ve Hedeflerini Belirle</p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 relative z-10">
+        <div className="space-y-4">
+          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Ad Soyad</label>
+          <input 
+            type="text"
+            className="w-full p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-4 ring-blue-500/10 border border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200"
+            placeholder="Örn: Ahmet Yılmaz"
+            value={profile.name}
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Sınıf / Seviye</label>
+          <select 
+            className="w-full p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-4 ring-blue-500/10 border border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200"
+            value={profile.grade}
+            onChange={(e) => setProfile({ ...profile, grade: e.target.value })}
+          >
+            <option>8. Sınıf (LGS)</option>
+            <option>12. Sınıf (YKS)</option>
+            <option>Mezun (YKS)</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+
+        <div className="space-y-4">
+          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Hedef Okul / Üniversite</label>
+          <input 
+            type="text"
+            className="w-full p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-4 ring-blue-500/10 border border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200"
+            placeholder="Örn: İstanbul Erkek Lisesi / ODTÜ Bilgisayar"
+            value={profile.target}
+            onChange={(e) => setProfile({ ...profile, target: e.target.value })}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Mevcut Net Ortalaması</label>
+          <input 
+            type="number"
+            className="w-full p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl outline-none focus:ring-4 ring-blue-500/10 border border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200"
+            placeholder="0"
+            value={profile.averageNet || ''}
+            onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })}
+          />
+        </div>
+
+        <div className="md:col-span-2 space-y-4">
+          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Ek Notlar / Motivasyon Cümlesi</label>
+          <textarea 
+            className="w-full h-32 p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl outline-none focus:ring-4 ring-blue-500/10 border border-slate-100 dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200 resize-none"
+            placeholder="Hayallerini buraya fısılda..."
+            value={profile.notes}
+            onChange={(e) => setProfile({ ...profile, notes: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <button 
+        onClick={handleSave}
+        className={`w-full py-7 rounded-[2rem] font-black text-xl shadow-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${isSaved ? 'bg-green-500 text-white' : 'bg-blue-600 hover:bg-indigo-700 text-white shadow-blue-500/20'}`}
+      >
+        {isSaved ? '✅ Veriler Güvende' : '🚀 Profilimi Kaydet ve Analiz Et'}
+      </button>
+    </div>
+  );
+};
 
 // 1. AnalysisStudio (Deneme Analizi - Gelişmiş Net Hesaplama)
 export const AnalysisStudio: React.FC<{ onAnalyze: (data: string) => void, isLoading: boolean }> = ({ onAnalyze, isLoading }) => {

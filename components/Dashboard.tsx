@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatInterface from './ChatInterface';
-import { Tool } from '../types';
+import { Tool, StudentProfile } from '../types';
 import { EDUCATIONAL_TASKS } from '../constants/tasks';
-import { AnalysisStudio, VisualStudio, RaftPanel, StepperPanel, KWHLAQPanel } from './ActionPanels';
+import { AnalysisStudio, VisualStudio, RaftPanel, StepperPanel, KWHLAQPanel, StudentProfilePanel } from './ActionPanels';
 
 interface DashboardProps {
   theme: 'light' | 'dark';
@@ -20,6 +20,10 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [assistantPrompt, setAssistantPrompt] = useState<string | null>(null);
+  const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(() => {
+    const saved = localStorage.getItem('student_profile');
+    return saved ? JSON.parse(saved) : null;
+  });
 
   useEffect(() => {
     if (initialToolId) {
@@ -30,6 +34,11 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
 
   const renderActionPanel = () => {
     switch (currentTask.id) {
+      case 'student-profile':
+        return <StudentProfilePanel onSave={(p) => {
+          setStudentProfile(p);
+          setAssistantPrompt(`Profilimi güncelledim: ${p.name}, ${p.grade}, Hedef: ${p.target}. Lütfen bana bu bilgiler ışığında kısa bir motivasyon mesajı ver.`);
+        }} />;
       case 'deneme-analizi':
       case 'lgs-analiz':
       case 'yks-koc':
@@ -55,7 +64,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
   };
 
   return (
-    <div className="flex min-h-[100dvh] bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500 font-sans">
+    <div className="flex min-h-[100dvh] bg-[#f1f5f9] dark:bg-[#020617] overflow-hidden transition-colors duration-500 font-sans">
       <Sidebar 
         currentTool={currentTask} 
         onSelectTool={(task) => {
@@ -81,13 +90,33 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
 
         <div className="flex-1 flex flex-col overflow-y-auto hide-scrollbar pb-24 lg:pb-12">
           <div className="p-4 lg:p-10 max-w-7xl mx-auto w-full space-y-8 md:space-y-12">
+            
+            {/* Hoş Geldin Mesajı (Profil varsa) */}
+            {studentProfile && currentTask.id !== 'student-profile' && (
+              <div className="bg-white/50 dark:bg-slate-900/40 p-6 rounded-3xl border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between animate-in fade-in duration-700">
+                <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black">
+                     {studentProfile.name.charAt(0).toUpperCase()}
+                   </div>
+                   <div>
+                     <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Akademik Takip Aktif</p>
+                     <p className="font-bold dark:text-white">{studentProfile.name} • {studentProfile.grade}</p>
+                   </div>
+                </div>
+                <div className="text-right hidden sm:block">
+                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Hedef</p>
+                  <p className="font-black text-blue-600 dark:text-blue-400 truncate max-w-[200px]">{studentProfile.target}</p>
+                </div>
+              </div>
+            )}
+
             {/* 1. Aksiyon Paneli Alanı */}
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               {renderActionPanel()}
             </div>
             
             {/* 2. Akıllı Danışman (Alt Bölümde Entegre) */}
-            <div className="bg-slate-100/30 dark:bg-slate-900/10 rounded-[2rem] md:rounded-[4rem] border border-slate-200/40 dark:border-slate-800/40 overflow-hidden transition-all duration-700 shadow-inner">
+            <div className="bg-white dark:bg-slate-900 rounded-[2rem] md:rounded-[4rem] border border-slate-200/40 dark:border-slate-800/40 overflow-hidden transition-all duration-700 shadow-xl">
               <ChatInterface 
                 tool={currentTask} 
                 theme={theme} 

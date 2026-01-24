@@ -3,6 +3,14 @@ import { Tool, ToolCategory } from '../types';
 
 export const EDUCATIONAL_TASKS: Tool[] = [
   { 
+    id: 'student-profile', 
+    name: 'Öğrenci Profilim', 
+    category: ToolCategory.PROFILE, 
+    description: 'Kişisel hedeflerini ve akademik geçmişini yönet.', 
+    icon: '👤',
+    systemPrompt: "Sen kukul.io Eğitim Koçusun. Öğrencinin profil verilerini (hedef, sınıf, mevcut durum) analiz et ve ona özel bir motivasyon ve strateji metni hazırla."
+  },
+  { 
     id: 'deneme-analizi', 
     name: 'Deneme Analizi', 
     category: ToolCategory.ANALYSIS, 
