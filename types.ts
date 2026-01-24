@@ -40,3 +40,13 @@ export interface StudentProfile {
   averageNet: number;
   notes: string;
 }
+
+export interface AnalysisResult {
+  emergencyList: string[];
+  lessonStats: {
+    name: string;
+    score: number;
+    advice: string;
+    status: 'success' | 'warning' | 'error';
+  }[];
+}

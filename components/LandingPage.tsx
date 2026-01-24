@@ -63,14 +63,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
   return (
     <div className="min-h-screen w-full flex flex-col bg-[#f1f5f9] dark:bg-[#020617] transition-all duration-700 overflow-y-auto hide-scrollbar relative">
       
-      {/* 1. SABİT AKADEMİK KAMPÜS SİLÜETİ - Pearl Slate Üzerinde Net Görünüm */}
+      {/* 1. SABİT AKADEMİK KAMPÜS SİLÜETİ */}
       <div className="fixed bottom-0 left-0 w-full h-[45vh] pointer-events-none z-0 overflow-hidden">
-        {/* Arka Katman */}
+        {/* Arka Katman (Yumuşak binalar) */}
         <div 
           className="absolute bottom-0 w-full h-full bg-gradient-to-t from-slate-300/40 dark:from-blue-900/10 to-transparent transition-all duration-1000"
           style={{ clipPath: 'polygon(0% 100%, 0% 85%, 15% 85%, 15% 40%, 25% 40%, 25% 20%, 35% 20%, 35% 85%, 55% 85%, 55% 30%, 65% 30%, 65% 85%, 85% 85%, 85% 50%, 95% 50%, 95% 90%, 100% 90%, 100% 100%)' }}
         />
-        {/* Ön Katman */}
+        {/* Ön Katman (Keskin kampüs hatları) */}
         <div 
           className="absolute bottom-0 w-full h-[30vh] bg-gradient-to-t from-slate-400/50 dark:from-slate-900/80 to-transparent border-t border-slate-400/10 dark:border-blue-500/10 transition-all duration-700"
           style={{ clipPath: 'polygon(0% 100%, 10% 60%, 25% 60%, 25% 100%, 45% 100%, 45% 40%, 55% 40%, 55% 100%, 75% 100%, 75% 55%, 90% 55%, 90% 100%, 100% 100%)' }}
@@ -78,7 +78,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
         <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-full h-1/2 bg-blue-500/5 dark:bg-rose-500/10 blur-[120px] rounded-full"></div>
       </div>
 
-      {/* ELITE FIXED HEADER - Pearl Background glassmorphism enhanced */}
+      {/* ELITE FIXED HEADER */}
       <header className="fixed top-0 left-0 w-full z-[100] p-4 md:p-6 flex justify-between items-center backdrop-blur-2xl bg-[#f1f5f9]/60 dark:bg-[#020617]/60 border-b border-slate-200/50 dark:border-slate-800/30">
         <Logo />
 
@@ -97,16 +97,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 flex flex-col items-center justify-start lg:justify-center px-6 pt-40 md:pt-48 pb-20 relative z-10 w-full max-w-7xl mx-auto">
         
-        {/* Slogan Section - Refined Rose-900 & Blue-600 Gradients */}
+        {/* Slogan Section - Refined Gradients */}
         <div className="text-center space-y-4 mb-20 md:mb-32 animate-in fade-in slide-in-from-top-4 duration-1000">
           <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none whitespace-nowrap inline-block skew-x-[12deg]">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-900 via-purple-700 to-blue-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-900 via-rose-700 to-blue-600">
               Sınırlarını Aş,
             </span>
           </h1>
 
           <h2 className="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none italic uppercase whitespace-nowrap block text-center">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-700 to-rose-900">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-rose-700 to-rose-900">
               GELECEĞİNİ TASARLA.
             </span>
           </h2>

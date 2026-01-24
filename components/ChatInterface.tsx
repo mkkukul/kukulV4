@@ -8,7 +8,7 @@ import { aiService } from '../services/aiService';
 interface ChatInterfaceProps {
   tool: Tool;
   theme: 'light' | 'dark';
-  externalPrompt?: string | null;
+  externalPrompt?: ChatMessage | null;
   onPromptProcessed?: () => void;
 }
 
@@ -33,7 +33,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
     setStreamingText('');
   }, [tool]);
 
-  // Handle prompts coming from specialized panels
+  // Handle prompts coming from specialized panels (now supporting complex ChatMessage objects)
   useEffect(() => {
     if (externalPrompt) {
       handleAISend(externalPrompt);
@@ -41,10 +41,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
     }
   }, [externalPrompt]);
 
-  const handleAISend = async (promptText: string) => {
-    if (!promptText.trim() || isLoading) return;
+  const handleAISend = async (prompt: string | ChatMessage) => {
+    const isObject = typeof prompt !== 'string';
+    const promptText = isObject ? prompt.parts.find(p => p.text)?.text || '' : prompt;
+    
+    if (!promptText.trim() && !isObject) return;
+    if (isLoading) return;
 
-    const userMsg: ChatMessage = {
+    const userMsg: ChatMessage = isObject ? prompt : {
       role: 'user',
       parts: [{ text: promptText }],
       timestamp: Date.now(),
@@ -108,6 +112,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
                 {msg.parts.map((part, pi) => (
                   <div key={pi}>
                     {part.text && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part.text}</ReactMarkdown>}
+                    {part.inlineData && (
+                      <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-[10px] font-black uppercase">
+                        📎 Ek Dosya Eklendi
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

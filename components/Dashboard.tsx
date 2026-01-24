@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatInterface from './ChatInterface';
-import { Tool, StudentProfile } from '../types';
+import { Tool, StudentProfile, ChatMessage } from '../types';
 import { EDUCATIONAL_TASKS } from '../constants/tasks';
 import { AnalysisStudio, VisualStudio, RaftPanel, StepperPanel, KWHLAQPanel, StudentProfilePanel } from './ActionPanels';
 
@@ -19,7 +19,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     : EDUCATIONAL_TASKS[0]
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [assistantPrompt, setAssistantPrompt] = useState<string | null>(null);
+  const [assistantPrompt, setAssistantPrompt] = useState<ChatMessage | null>(null);
   const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(() => {
     const saved = localStorage.getItem('student_profile');
     return saved ? JSON.parse(saved) : null;
@@ -32,29 +32,41 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     }
   }, [initialToolId]);
 
+  const handleExternalPrompt = (text: string, fileData?: { mimeType: string, data: string }) => {
+    const parts: any[] = [{ text }];
+    if (fileData) {
+      parts.push({ inlineData: { mimeType: fileData.mimeType, data: fileData.data } });
+    }
+    setAssistantPrompt({
+      role: 'user',
+      parts,
+      timestamp: Date.now()
+    });
+  };
+
   const renderActionPanel = () => {
     switch (currentTask.id) {
       case 'student-profile':
         return <StudentProfilePanel onSave={(p) => {
           setStudentProfile(p);
-          setAssistantPrompt(`Profilimi güncelledim: ${p.name}, ${p.grade}, Hedef: ${p.target}. Lütfen bana bu bilgiler ışığında kısa bir motivasyon mesajı ver.`);
+          handleExternalPrompt(`Profilimi güncelledim: ${p.name}, ${p.grade}, Hedef: ${p.target}. Lütfen bana bu bilgiler ışığında kısa bir motivasyon mesajı ver.`);
         }} />;
       case 'deneme-analizi':
       case 'lgs-analiz':
       case 'yks-koc':
         return <AnalysisStudio 
-          onAnalyze={(data) => setAssistantPrompt(data)} 
+          onAnalyze={handleExternalPrompt} 
           isLoading={false} 
         />;
       case 'visual-studio':
         return <VisualStudio />;
       case 'raft-builder':
         return <RaftPanel 
-          onGenerate={(data) => setAssistantPrompt(data)} 
+          onGenerate={(data) => handleExternalPrompt(data)} 
         />;
       case '4mat-plan':
         return <StepperPanel 
-          onStepClick={(data) => setAssistantPrompt(data)} 
+          onStepClick={(data) => handleExternalPrompt(data)} 
         />;
       case 'kwhlaq-board':
         return <KWHLAQPanel />;
