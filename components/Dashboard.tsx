@@ -24,7 +24,7 @@ const MeerkatIcon = ({ className }: { className?: string }) => (
 );
 
 const Logo = ({ onHome }: { onHome: () => void }) => (
-  <div onClick={onHome} className="flex items-center gap-2 group cursor-pointer select-none">
+  <div onClick={onHome} className="flex items-center gap-2 group cursor-pointer select-none shrink-0">
     <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
       <MeerkatIcon className="h-6 w-6" />
     </div>
@@ -115,8 +115,8 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
         </div>
       </nav>
 
-      {/* AKIŞKAN İÇERİK ALANI */}
-      <main className="flex-1 pt-24 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10 overflow-visible">
+      {/* AKIŞKAN İÇERİK ALANI - pt-32 header boşluğu için */}
+      <main className="flex-1 pt-32 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10 overflow-visible">
         
         {/* ÖĞRENCİ KİMLİK KARTI */}
         {studentProfile && (
@@ -191,8 +191,8 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
         </div>
       </main>
 
-      {/* EN ARKA KATMAN KAMPÜS SİLÜETİ */}
-      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-10 dark:opacity-20 transition-all duration-1000">
+      {/* EN ARKA KATMAN KAMPÜS SİLÜETİ - Opaklık %40 ve sabitlendi */}
+      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-40 transition-all duration-1000">
          <div className="absolute bottom-0 w-full h-full bg-slate-400 dark:bg-slate-800" 
               style={{ clipPath: 'polygon(0% 100%, 0% 70%, 8% 70%, 8% 40%, 15% 40%, 15% 70%, 30% 70%, 30% 20%, 45% 20%, 45% 85%, 60% 85%, 60% 40%, 75% 40%, 75% 90%, 85% 90%, 85% 30%, 95% 30%, 95% 100%, 100% 100%)' }} />
       </div>

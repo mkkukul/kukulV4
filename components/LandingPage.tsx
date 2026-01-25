@@ -31,8 +31,8 @@ const Logo = () => (
 );
 
 const AcademicSkyline = () => (
-  <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 overflow-hidden transition-opacity duration-1000">
-    <div className="absolute bottom-0 w-full h-full bg-slate-400 dark:bg-slate-800 opacity-20 dark:opacity-30" 
+  <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 overflow-hidden transition-opacity duration-1000 opacity-40">
+    <div className="absolute bottom-0 w-full h-full bg-slate-400 dark:bg-slate-800" 
          style={{ clipPath: 'polygon(0% 100%, 0% 75%, 5% 75%, 5% 40%, 12% 40%, 12% 75%, 25% 75%, 25% 25%, 40% 25%, 40% 85%, 55% 85%, 55% 35%, 65% 35%, 65% 90%, 80% 90%, 80% 50%, 90% 50%, 90% 100%, 100% 100%)' }} />
   </div>
 );
@@ -72,41 +72,41 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full max-w-6xl animate-in fade-in zoom-in duration-700 delay-300">
           
-          {/* LGS KARTI (Bordo Zemin + Mavi Buton) */}
-          <div className="group p-8 md:p-14 rounded-[4rem] bg-[#e11d48] text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
+          {/* LGS KARTI (Rose Zemin + Blue Buton) */}
+          <div className="group p-8 md:p-14 rounded-[4rem] bg-rose-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">LGS</div>
             <div>
               <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-10 text-3xl">📈</div>
               <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none">
-                LGS ANALİZ STUDİO
+                LGS BAŞARI ANALİZİ
               </h2>
-              <p className="text-base md:text-xl text-rose-100 font-medium leading-relaxed mb-12">
+              <p className="text-base md:text-xl text-white opacity-90 font-medium leading-relaxed mb-12">
                 Netlerini hedeflerine dönüştür. Sınav karneni yükle, eksiklerini Kukul AI Koç saniyeler içinde belirlesin.
               </p>
             </div>
             <button 
               onClick={() => onStart('deneme-analizi')}
-              className="w-full py-6 bg-[#2563eb] text-white rounded-[1.5rem] font-black text-lg md:text-2xl shadow-xl hover:bg-white hover:text-[#2563eb] transition-all active:scale-95"
+              className="w-full py-6 bg-blue-600 text-white rounded-[1.5rem] font-black text-lg md:text-2xl shadow-xl hover:bg-white hover:text-blue-600 transition-all active:scale-95"
             >
               HEMEN BAŞLA →
             </button>
           </div>
 
-          {/* YKS KARTI (Mavi Zemin + Bordo Buton) */}
-          <div className="group p-8 md:p-14 rounded-[4rem] bg-[#2563eb] text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
+          {/* YKS KARTI (Blue Zemin + Rose Buton) */}
+          <div className="group p-8 md:p-14 rounded-[4rem] bg-blue-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">YKS</div>
             <div>
               <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-10 text-3xl">🎓</div>
               <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none">
-                YKS STRATEJİ MASASI
+                YKS BAŞARI ANALİZİ
               </h2>
-              <p className="text-base md:text-xl text-blue-100 font-medium leading-relaxed mb-12">
+              <p className="text-base md:text-xl text-white opacity-90 font-medium leading-relaxed mb-12">
                 Zirveye giden yol haritanı çiz. TYT/AYT performansını Kukul AI Koç ile profesyonelce analiz et.
               </p>
             </div>
             <button 
               onClick={() => onStart('yks-koc')}
-              className="w-full py-6 bg-[#e11d48] text-white rounded-[1.5rem] font-black text-lg md:text-2xl shadow-xl hover:bg-white hover:text-[#e11d48] transition-all active:scale-95"
+              className="w-full py-6 bg-rose-600 text-white rounded-[1.5rem] font-black text-lg md:text-2xl shadow-xl hover:bg-white hover:text-rose-600 transition-all active:scale-95"
             >
               HEMEN BAŞLA →
             </button>

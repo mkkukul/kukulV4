@@ -21,7 +21,7 @@ export class AIService {
       profileContext = `Öğrenci Bilgileri: İsim: ${profile.name}, Seviye: ${profile.grade}, Hedef: ${profile.target}, Notlar: ${profile.notes}. Bu öğrenciye özel rehberlik sun.`;
     }
 
-    const systemInstruction = (task?.systemPrompt || "Sen profesyonel bir KuKul Hoca öğretmen asistanısın. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.") + "\n\n" + profileContext;
+    const systemInstruction = (task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç öğretmen asistanısın. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.") + "\n\n" + profileContext;
 
     const contents = history.map(msg => ({
       role: msg.role === 'model' ? 'model' : 'user',
@@ -46,7 +46,7 @@ export class AIService {
       }
       return fullText;
     } catch (error) {
-      console.error("KuKul Hoca AI Service Error:", error);
+      console.error("Kukul AI Koç Service Error:", error);
       throw error;
     }
   }
