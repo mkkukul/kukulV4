@@ -40,26 +40,27 @@
       }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; overflow: hidden; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.5s ease; 
+            overflow-x: hidden; 
+            overflow-y: auto !important; /* Global scroll fixed */
+            background-color: #f1f5f9;
+            min-height: 100vh;
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .edu-bg {
-          background-color: transparent;
-          background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         
         .dark .edu-bg {
           background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23818cf8' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        .dark .prose h1, .dark .prose h2, .dark .prose h3 { color: #f1f5f9; }
-        .dark .prose p, .dark .prose li { color: #cbd5e1; }
-        .dark .prose strong { color: #818cf8; }
-        .dark .prose blockquote { background: #1e1b4b; color: #94a3b8; }
-        .dark .prose table th { background-color: #0f172a; border-color: #1e293b; color: #cbd5e1; }
-        .dark .prose table td { border-color: #1e293b; color: #94a3b8; }
-
+        .prose h1, .prose h2, .prose h3 { font-weight: 900; letter-spacing: -0.05em; text-transform: uppercase; }
+        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
@@ -68,17 +69,17 @@
 <script type="importmap">
 {
   "imports": {
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.1",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react-markdown": "https://esm.sh/react-markdown@^9.0.1",
-    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0"
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0"
   }
 }
 </script>
 </head>
-<body class="bg-[#f1f5f9] dark:bg-[#020617] text-slate-900 dark:text-slate-100 antialiased overflow-hidden edu-bg transition-colors duration-500">
+<body class="bg-[#f1f5f9] dark:bg-[#020617] text-slate-900 dark:text-slate-100 antialiased edu-bg transition-colors duration-500">
     <div id="root"></div>
 </body>
 </html>

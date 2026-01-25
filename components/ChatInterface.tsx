@@ -10,9 +10,16 @@ interface ChatInterfaceProps {
   theme: 'light' | 'dark';
   externalPrompt?: ChatMessage | null;
   onPromptProcessed?: () => void;
+  isFullPage?: boolean;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalPrompt, onPromptProcessed }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  tool, 
+  theme, 
+  externalPrompt, 
+  onPromptProcessed,
+  isFullPage = false
+}) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +40,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
     setStreamingText('');
   }, [tool]);
 
-  // Handle prompts coming from specialized panels (now supporting complex ChatMessage objects)
   useEffect(() => {
     if (externalPrompt) {
       handleAISend(externalPrompt);
@@ -77,7 +83,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
     } catch (err) {
        setMessages(prev => [...prev, {
         role: 'model',
-        parts: [{ text: "Bir hata oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin." }],
+        parts: [{ text: "Kukul AI Koç şu an biraz meşgul. Lütfen tekrar dene." }],
         timestamp: Date.now(),
       }]);
     } finally {
@@ -87,34 +93,46 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
   };
 
   return (
-    <div className="flex flex-col h-[500px] lg:h-[600px] relative overflow-hidden bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl">
-      <header className="px-8 py-4 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center gap-3 shrink-0">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <h4 className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-[0.2em]">Akıllı Danışman</h4>
+    <div className={`flex flex-col relative overflow-hidden bg-[#f1f5f9]/40 dark:bg-slate-900/40 backdrop-blur-xl ${isFullPage ? 'h-[750px]' : 'h-[500px] lg:h-[600px]'}`}>
+      <header className="px-10 py-5 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between shrink-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md">
+        <div className="flex items-center gap-4">
+           <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-lg shadow-blue-500/20">🦉</div>
+           <div>
+              <h4 className="text-[11px] font-black uppercase text-slate-800 dark:text-white tracking-[0.2em] leading-none">Kukul AI Koç</h4>
+              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Sana Özel Akademik Analiz Aktif</p>
+           </div>
+        </div>
+        <div className="flex items-center gap-2">
+           <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+           <span className="text-[8px] font-black uppercase text-slate-400 tracking-widest">Çevrimiçi</span>
+        </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 hide-scrollbar scroll-smooth">
+      <div className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-8 hide-scrollbar scroll-smooth">
         {messages.length === 0 && !streamingText && (
-          <div className="h-full flex flex-col items-center justify-center opacity-40 space-y-4">
-            <span className="text-4xl">🧠</span>
-            <p className="text-[10px] font-black uppercase tracking-widest text-center">Bu modül hakkında her şeyi sorabilirsin.</p>
+          <div className="h-full flex flex-col items-center justify-center opacity-40 space-y-6">
+            <span className="text-6xl grayscale">🦉</span>
+            <div className="space-y-2 text-center">
+               <p className="text-sm font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">Henüz bir analiz başlatmadın.</p>
+               <p className="text-[10px] font-bold text-slate-400">Veri Girişi sekmesinden verilerini girerek Kukul AI Koç ile tanışabilirsin.</p>
+            </div>
           </div>
         )}
 
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-3xl px-6 py-4 shadow-sm ${
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
+            <div className={`max-w-[85%] rounded-[2.5rem] px-8 py-5 shadow-sm ${
               msg.role === 'user' 
               ? 'bg-slate-900 text-white rounded-tr-none' 
               : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-800/50 rounded-tl-none'
             }`}>
-              <div className={`prose prose-xs max-w-none ${msg.role === 'user' ? 'prose-invert' : 'dark:prose-invert'}`}>
+              <div className={`prose prose-sm max-w-none ${msg.role === 'user' ? 'prose-invert' : 'dark:prose-invert'} prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter`}>
                 {msg.parts.map((part, pi) => (
                   <div key={pi}>
                     {part.text && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part.text}</ReactMarkdown>}
                     {part.inlineData && (
-                      <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-[10px] font-black uppercase">
-                        📎 Ek Dosya Eklendi
+                      <div className="mt-4 p-4 bg-blue-500/10 dark:bg-blue-500/20 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border border-blue-500/20">
+                        <span className="text-lg">📎</span> KARNE ANALİZ VERİSİ BAŞARIYLA ENTEGRE EDİLDİ
                       </div>
                     )}
                   </div>
@@ -126,8 +144,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
 
         {streamingText && (
           <div className="flex justify-start">
-            <div className="max-w-[85%] rounded-3xl px-6 py-4 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-800/50 rounded-tl-none shadow-sm">
-              <div className="prose prose-xs max-w-none dark:prose-invert">
+            <div className="max-w-[85%] rounded-[2.5rem] px-8 py-5 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-800/50 rounded-tl-none shadow-xl backdrop-blur-md">
+              <div className="prose prose-sm max-w-none dark:prose-invert">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{streamingText}</ReactMarkdown>
               </div>
             </div>
@@ -136,15 +154,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
         <div ref={messagesEndRef} className="h-4" />
       </div>
 
-      <div className="p-6 shrink-0 border-t border-slate-200/50 dark:border-slate-800/50">
+      <div className="p-8 shrink-0 border-t border-slate-200/50 dark:border-slate-800/50 bg-white/20 dark:bg-slate-900/20">
         <form 
           onSubmit={(e) => { e.preventDefault(); handleAISend(input); }} 
-          className="relative group"
+          className="relative group max-w-4xl mx-auto"
         >
           <input
             type="text"
-            placeholder="Analiz hakkında detay sor..."
-            className="w-full pl-6 pr-14 py-4 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-500 outline-none rounded-2xl transition-all font-semibold text-sm"
+            placeholder="Kukul AI Koç'a bir şey sor..."
+            className="w-full pl-8 pr-16 py-5 bg-white/80 dark:bg-slate-800/80 border-2 border-slate-100 dark:border-slate-700 focus:border-blue-500 outline-none rounded-3xl transition-all font-semibold text-sm shadow-inner backdrop-blur-sm"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isLoading}
@@ -152,11 +170,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ tool, theme, externalProm
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="absolute right-2 top-2 w-10 h-10 rounded-xl bg-slate-900 dark:bg-slate-700 text-white flex items-center justify-center hover:scale-105 transition-transform"
+            className="absolute right-3 top-2.5 w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/30"
           >
-            {isLoading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : "↵"}
+            {isLoading ? <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div> : 
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14M12 5l7 7-7 7" /></svg>
+            }
           </button>
         </form>
+        <p className="text-[8px] font-black uppercase tracking-[0.4em] text-center text-slate-400 mt-4 opacity-50">OWL CORE ENGINE v4.1 - AI TUTORING SYSTEM</p>
       </div>
     </div>
   );
