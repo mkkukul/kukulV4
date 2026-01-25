@@ -271,11 +271,14 @@ export const AnalysisStudio: React.FC<{
               </div>
               <div>
                 <h4 className="text-3xl font-black text-rose-600 uppercase tracking-tighter leading-none">Acil Müdahale Listesi</h4>
-                <p className="text-xs font-bold text-rose-400 uppercase tracking-widest mt-2">Kritik Kayıplar ve Odaklanılması Gereken Konular</p>
+                <p className="text-xs font-bold text-rose-400 uppercase tracking-widest mt-2">Kazanım Bazlı Kritik Konular</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-6">
-              {['Üslü İfadeler', 'EBOB-EKOK', 'Sıvı Basıncı', 'Cümle Türleri', 'Hız-Zaman', 'Hücre Bölünmesi', 'Modern Fizik'].map((item, idx) => (
+              {(examType === 'LGS' 
+                ? ['DNA ve Genetik Kod', 'Üslü Sayılar', 'Cümlenin Ögeleri', 'Basınç', 'EBOB-EKOK', 'Kader İnancı'] 
+                : ['Türev-İntegral', 'Modern Fizik', 'Organik Kimya', 'Paragraf Analizi', 'Trigonometri', 'Ecosystems']
+              ).map((item, idx) => (
                 <div key={idx} className="px-8 py-4 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-rose-100 dark:border-rose-900/30 flex items-center gap-4 transition-all hover:scale-110 hover:-rotate-1 group cursor-default">
                   <div className="w-3 h-3 bg-rose-500 rounded-full animate-pulse group-hover:scale-150 transition-transform"></div>
                   <p className="font-black text-sm text-rose-700 dark:text-rose-400 uppercase tracking-widest">{item}</p>
@@ -300,11 +303,11 @@ export const AnalysisStudio: React.FC<{
                 </div>
                 <div className="space-y-8">
                   <p className="text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic border-l-8 border-blue-500/20 pl-6 py-2">
-                    "Verilere göre bu derste görsel yorumlama becerin yüksek ancak teorik analiz sorularında hata payın artıyor. Kukul AI Koç diyor ki: Mantık kurgusuna odaklan!"
+                    "Verilere göre bu derste kazanım odaklı ilerlemen gerekiyor. Kukul AI Koç diyor ki: {examType} müfredatındaki en kritik kurgulara odaklan!"
                   </p>
                   <div className="pt-10 border-t border-slate-100 dark:border-slate-800 relative">
                     <div className="absolute -top-4 left-0 px-4 py-1 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest">HEDEF STRATEJİ</div>
-                    <p className="text-lg font-black leading-tight dark:text-slate-200 tracking-tight">Günde 20 adet yeni nesil kurgulu soru analizi yap ve çözüm videolarını izle.</p>
+                    <p className="text-lg font-black leading-tight dark:text-slate-200 tracking-tight">PDF raporundaki soru dağılımına göre en yoğun konudan 2 test çözmelisin.</p>
                   </div>
                 </div>
               </div>
