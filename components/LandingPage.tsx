@@ -13,8 +13,6 @@ const MeerkatIcon = ({ className }: { className?: string }) => (
     <path d="M9 11v6a3 3 0 0 0 6 0v-6" />
     <path d="M12 21v-4" />
     <path d="M8 21h8" />
-    <circle cx="10.5" cy="5.5" r="0.5" fill="currentColor" />
-    <circle cx="13.5" cy="5.5" r="0.5" fill="currentColor" />
   </svg>
 );
 
@@ -39,7 +37,7 @@ const AcademicSkyline = () => (
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }) => {
   return (
-    <div className="min-h-screen w-full flex flex-col bg-[#f1f5f9] dark:bg-[#020617] transition-all duration-700 overflow-y-auto hide-scrollbar relative">
+    <div className="min-h-screen w-full flex flex-col bg-[#f1f5f9] dark:bg-[#020617] transition-all duration-700 overflow-y-auto relative">
       <AcademicSkyline />
 
       <header className="fixed top-0 left-0 w-full z-[100] p-6 flex justify-between items-center backdrop-blur-xl bg-white/40 dark:bg-[#020617]/40 border-b border-slate-200/50 dark:border-slate-800/30">
@@ -72,12 +70,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full max-w-6xl animate-in fade-in zoom-in duration-700 delay-300">
           
-          {/* LGS KARTI (Rose Zemin + Blue Buton) */}
+          {/* LGS KARTI (Bordo Zemin + Mavi Buton) */}
           <div className="group p-8 md:p-14 rounded-[4rem] bg-rose-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">LGS</div>
             <div>
               <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-10 text-3xl">📈</div>
-              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none">
+              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none text-white">
                 LGS BAŞARI ANALİZİ
               </h2>
               <p className="text-base md:text-xl text-white opacity-90 font-medium leading-relaxed mb-12">
@@ -92,12 +90,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
             </button>
           </div>
 
-          {/* YKS KARTI (Blue Zemin + Rose Buton) */}
+          {/* YKS KARTI (Mavi Zemin + Bordo Buton) */}
           <div className="group p-8 md:p-14 rounded-[4rem] bg-blue-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">YKS</div>
             <div>
               <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-10 text-3xl">🎓</div>
-              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none">
+              <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter uppercase leading-none text-white">
                 YKS BAŞARI ANALİZİ
               </h2>
               <p className="text-base md:text-xl text-white opacity-90 font-medium leading-relaxed mb-12">

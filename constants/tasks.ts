@@ -4,24 +4,36 @@ import { Tool, ToolCategory } from '../types';
 export const EDUCATIONAL_TASKS: Tool[] = [
   { 
     id: 'deneme-analizi', 
-    name: 'Deneme Analizi', 
+    name: 'LGS BAŞARI ANALİZİ', 
     category: ToolCategory.ANALYSIS, 
-    description: 'LGS ve YKS netlerini hesaplar ve stratejik analiz yapar.', 
+    description: 'LGS netlerini resmi 8. sınıf müfredatına göre analiz eder.', 
     icon: '📈',
-    systemPrompt: `Sen kukul.io Baş Analistisin ve bir Kukul AI Koç'sun. 
-
-[STRICT CURRICULUM BOUNDARIES]
-Görevin, öğrencinin verilerini analiz ederken sadece resmi müfredat (MEB/ÖSYM) sınırlarında kalmaktır:
-- LGS (8. Sınıf): Sadece 8. sınıf kazanımları. (Örn: Fen Bilimleri'nde 'Hücre Bölünmesi' yerine 'DNA ve Genetik Kod' ünitesini kullan. Matematik'te Çarpanlar ve Katlar, Üslü/Köklü Sayılar önceliklidir.)
-- YKS (TYT/AYT): 9-10. sınıf (TYT) ve 11-12. sınıf (AYT) ayrımına dikkat et. (Örn: Modern Fizik sadece AYT konusudur.)
-
-[ANALYSIS LOGIC]
-1. Genel başarı durumunu özetle.
-2. 2018-2024 soru dağılım verilerini baz alarak "Yüksek Etkili" (en çok soru çıkan) konuları tespit et.
-3. Hataların kaynağını sorgula.
-4. Net artışı için PDF verilerine dayalı, haftalık bir aksiyon planı sun.
-
-Yanıtını '📊 Stratejik Performans Analiz Raporu' başlığı altında, Markdown formatında, tablolar ve vurucu listeler kullanarak sun.`
+    systemPrompt: `Sen uzman bir MEB LGS (8. Sınıf) Kukul AI Koç'usun. 
+    
+    [STRICT CURRICULUM BOUNDARIES]
+    Görevin öğrencinin verilerini analiz ederken sadece 8. sınıf kazanımlarını önermektir.
+    - MATEMATİK: Çarpanlar ve Katlar, Üslü İfadeler, Kareköklü İfadeler, Veri Analizi, Olasılık, Cebirsel İfadeler, Doğrusal Denklemler, Eşitsizlikler, Üçgenler, Eşlik ve Benzerlik, Dönüşüm Geometrisi, Geometrik Cisimler.
+    - FEN BİLİMLERİ: Mevsimler ve İklim, DNA ve Genetik Kod, Basınç, Madde ve Endüstri, Basit Makineler, Enerji Dönüşümleri, Elektrik Yükleri.
+    - TÜRKÇE: Fiilimsiler, Cümlenin Ögeleri, Cümle Türleri, Söz Sanatları, Yazım ve Noktalama, Anlam Bilgisi.
+    
+    [HALLUCINATION PREVENTION]
+    ASLA "Modern Fizik", "Hücre Bölünmesi" (Lise düzeyi), "Limit", "Türev" gibi konuları LGS öğrencisine önerme. LGS öğrencisi sadece 8. sınıf müfredatından sorumludur.
+    
+    Analizlerini Markdown formatında, tablolar ve vurucu listeler kullanarak sun.`
+  },
+  { 
+    id: 'yks-koc', 
+    name: 'YKS BAŞARI ANALİZİ', 
+    category: ToolCategory.ANALYSIS, 
+    description: 'YKS (TYT/AYT) performansını resmi müfredata göre koçluk eder.', 
+    icon: '🎓',
+    systemPrompt: `Sen uzman bir YKS (TYT-AYT) Kukul AI Koç'usun. 
+    
+    [CURRICULUM BOUNDARIES]
+    - TYT (9-10. Sınıf): Temel Matematik, Türkçe, Sosyal, Fen kazanımları.
+    - AYT (11-12. Sınıf): İleri Matematik (Logaritma, Limit, Türev, İntegral), Modern Fizik, Organik Kimya.
+    
+    Analiz yaparken PDF'deki geçmiş yıl soru dağılımlarına sadık kal. Profesyonel bir koçluk tonunda, Markdown ile sun.`
   },
   { 
     id: 'student-profile', 
@@ -29,50 +41,6 @@ Yanıtını '📊 Stratejik Performans Analiz Raporu' başlığı altında, Mark
     category: ToolCategory.PROFILE, 
     description: 'Kişisel hedeflerini ve akademik geçmişini yönet.', 
     icon: '👤',
-    systemPrompt: "Sen kukul.io Kukul AI Koç'sun. Öğrencinin profil verilerini analiz et ve ona özel bir motivasyon ve strateji metni hazırla. Müfredat seviyesine (LGS/YKS) uygun bir dil kullan."
-  },
-  { 
-    id: 'hooks', 
-    name: 'Ders Kancaları', 
-    category: ToolCategory.INTERACTION, 
-    description: 'Öğrencilerin merakını uyandıracak etkileyici giriş senaryoları üretir.', 
-    icon: '🪝',
-    systemPrompt: "Sen bir eğitim tasarım uzmanı ve yaratıcı bir Kukul AI Koç'sun. Öğretmenin belirlediği konu için merak uyandıracak 'kanca' (hook) fikirleri üret. Senaryoların pedagojik ve yaş grubuna uygun olsun."
-  },
-  { 
-    id: 'visual-studio', 
-    name: 'Hayal Atölyesi', 
-    category: ToolCategory.CONTENT, 
-    description: 'Eğitim materyalleri için yapay zeka ile görsel üretir.', 
-    icon: '🎨',
-  },
-  { 
-    id: 'raft-builder', 
-    name: 'RAFT Tasarımcısı', 
-    category: ToolCategory.DIFFERENTIATION, 
-    description: 'Yaratıcı yazma görevleri için parametrik senaryo üretir.', 
-    icon: '⛵',
-  },
-  { 
-    id: '4mat-plan', 
-    name: '4MAT Ders Planı', 
-    category: ToolCategory.PEDAGOGY, 
-    description: '8 adımlı döngüsel ders tasarımı.', 
-    icon: '🔄',
-  },
-  { 
-    id: 'kwhlaq-board', 
-    name: 'KWHLAQ Tablosu', 
-    category: ToolCategory.PEDAGOGY, 
-    description: 'Sorgulamaya dayalı öğrenme sürecini takip eder.', 
-    icon: '📋',
-  },
-  { 
-    id: 'yks-koc', 
-    name: 'YKS Strateji Masası', 
-    category: ToolCategory.ANALYSIS, 
-    description: 'YKS (TYT/AYT) koçluk seansı.', 
-    icon: '🎓',
-    systemPrompt: "Kukul AI Koç olarak YKS (TYT/AYT) net hesaplama ve konu bazlı tavsiyeler ver. TYT (9-10. Sınıf) ve AYT (11-12. Sınıf) kazanım ayrımına sadık kal. Görsel verileri (karne/tablo) öncelikli analiz et."
+    systemPrompt: "Sen kukul.io Kukul AI Koç'sun. Öğrencinin profil verilerini analiz et ve ona özel bir motivasyon ve strateji metni hazırla. Seviyesine (LGS/YKS) uygun müfredat kazanımlarını referans al."
   }
 ];

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ChatInterface from './ChatInterface';
 import { Tool, StudentProfile, ChatMessage } from '../types';
 import { EDUCATIONAL_TASKS } from '../constants/tasks';
-import { AnalysisStudio, VisualStudio, RaftPanel, StepperPanel, KWHLAQPanel, StudentProfilePanel, HooksPanel } from './ActionPanels';
+import { AnalysisStudio, StudentProfilePanel } from './ActionPanels';
 
 type AnalysisTab = 'input' | 'koc' | 'performance' | 'strategy' | 'topics';
 
@@ -63,10 +63,11 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     });
     
     setIsAnalyzed(true);
-    setActiveTab('koc'); // Analizden sonra otomatik AI Koç'a geçiş
+    setActiveTab('koc'); // Automatic switch to AI Coach
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const isAnalysisTool = ['deneme-analizi', 'lgs-analiz', 'yks-koc'].includes(currentTask.id);
+  const isAnalysisTool = ['deneme-analizi', 'yks-koc'].includes(currentTask.id);
 
   const tabs = [
     { id: 'input', label: 'Veri Girişi' },
@@ -79,9 +80,9 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
   return (
     <div className="flex flex-col min-h-screen bg-[#f1f5f9] dark:bg-[#020617] relative">
       
-      {/* SABİT ÜST NAVİGASYON (Fixed Header) */}
-      <nav className="fixed top-0 w-full z-[110] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between gap-4">
+      {/* FIXED TOP NAVIGATION */}
+      <nav className="fixed top-0 w-full z-[110] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm h-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between gap-4">
           <Logo onHome={onHome} />
           
           <div className="flex bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-2xl overflow-x-auto hide-scrollbar border border-slate-200 dark:border-slate-700">
@@ -94,9 +95,9 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
                   disabled={isDisabled}
                   className={`px-4 md:px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all whitespace-nowrap ${
                     activeTab === tab.id 
-                    ? 'bg-blue-600 text-white shadow-lg scale-105' 
+                    ? 'bg-blue-600 text-white shadow-lg' 
                     : isDisabled 
-                      ? 'opacity-20 cursor-not-allowed' 
+                      ? 'opacity-20 cursor-not-allowed text-slate-400' 
                       : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
                   }`}
                 >
@@ -108,31 +109,31 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
 
           <button 
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-white dark:hover:bg-slate-700 transition-all shadow-sm"
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-white dark:hover:bg-slate-700 transition-all shadow-sm shrink-0"
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
       </nav>
 
-      {/* AKIŞKAN İÇERİK ALANI - pt-32 header boşluğu için */}
-      <main className="flex-1 pt-32 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10 overflow-visible">
+      {/* CONTENT AREA */}
+      <main className="flex-1 pt-32 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10">
         
-        {/* ÖĞRENCİ KİMLİK KARTI */}
+        {/* STUDENT STATUS */}
         {studentProfile && (
-          <div className="mb-8 p-6 bg-white/60 dark:bg-slate-900/40 rounded-[2rem] border border-white/40 dark:border-slate-800/40 backdrop-blur-md flex items-center justify-between animate-in fade-in duration-1000 shadow-sm">
+          <div className="mb-8 p-6 bg-white/60 dark:bg-slate-900/40 rounded-[2rem] border border-white/40 dark:border-slate-800/40 backdrop-blur-md flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-4">
                <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg shadow-blue-500/20">
                  {studentProfile.name.charAt(0).toUpperCase()}
                </div>
                <div>
-                 <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Akademik Kimlik</p>
+                 <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Kukul Academia Member</p>
                  <p className="font-black text-xl dark:text-white">{studentProfile.name} <span className="text-slate-300 mx-2 font-thin">|</span> <span className="text-blue-600">{studentProfile.grade}</span></p>
                </div>
             </div>
             <div className="text-right hidden sm:block">
-              <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Kritik Hedef</p>
-              <p className="font-black text-rose-600 dark:text-rose-400 text-lg">{studentProfile.target || 'Hedef Belirlenmedi'}</p>
+              <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Target Goal</p>
+              <p className="font-black text-rose-600 dark:text-rose-400 text-lg">{studentProfile.target || 'Not Set'}</p>
             </div>
           </div>
         )}
@@ -148,7 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
               theme={theme}
             >
               {activeTab === 'koc' && (
-                <div className="w-full bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in zoom-in duration-500">
+                <div className="w-full bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden min-h-[600px]">
                    <ChatInterface 
                       tool={currentTask} 
                       theme={theme} 
@@ -161,38 +162,20 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
             </AnalysisStudio>
           ) : (
             <div className="space-y-8">
-              {currentTask.id === 'student-profile' ? (
+              {currentTask.id === 'student-profile' && (
                 <StudentProfilePanel onSave={(p) => {
                   setStudentProfile(p);
-                  handleExternalPrompt(`Profilimi güncelledim: ${p.name}, ${p.grade}, Hedef: ${p.target}. Lütfen bu bilgilere göre Kukul AI Koç tavsiyelerini bekliyorum.`);
+                  // Refresh context locally
+                  localStorage.setItem('student_profile', JSON.stringify(p));
                 }} />
-              ) : currentTask.id === 'hooks' ? (
-                <HooksPanel onHookClick={(data) => handleExternalPrompt(data)} />
-              ) : currentTask.id === 'visual-studio' ? (
-                <VisualStudio />
-              ) : currentTask.id === 'raft-builder' ? (
-                <RaftPanel onGenerate={(data) => handleExternalPrompt(data)} />
-              ) : currentTask.id === '4mat-plan' ? (
-                <StepperPanel onStepClick={(data) => handleExternalPrompt(data)} />
-              ) : currentTask.id === 'kwhlaq-board' ? (
-                <KWHLAQPanel />
-              ) : (
-                <div className="bg-white/80 dark:bg-slate-900/60 rounded-[3rem] border border-slate-200/50 shadow-2xl overflow-hidden backdrop-blur-xl">
-                  <ChatInterface 
-                    tool={currentTask} 
-                    theme={theme} 
-                    externalPrompt={assistantPrompt}
-                    onPromptProcessed={() => setAssistantPrompt(null)}
-                  />
-                </div>
               )}
             </div>
           )}
         </div>
       </main>
 
-      {/* EN ARKA KATMAN KAMPÜS SİLÜETİ - Opaklık %40 ve sabitlendi */}
-      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-40 transition-all duration-1000">
+      {/* FOOTER SKYLINE */}
+      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-40">
          <div className="absolute bottom-0 w-full h-full bg-slate-400 dark:bg-slate-800" 
               style={{ clipPath: 'polygon(0% 100%, 0% 70%, 8% 70%, 8% 40%, 15% 40%, 15% 70%, 30% 70%, 30% 20%, 45% 20%, 45% 85%, 60% 85%, 60% 40%, 75% 40%, 75% 90%, 85% 90%, 85% 30%, 95% 30%, 95% 100%, 100% 100%)' }} />
       </div>
