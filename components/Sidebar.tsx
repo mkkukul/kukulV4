@@ -16,17 +16,16 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'Tümü'>('Tümü');
   const [mediaActive, setMediaActive] = useState({ mic: false, cam: false });
 
-  // KRİTİK: Medya erişimi sadece kullanıcı tıkladığında tetiklenir.
   const handleMediaRequest = async (type: 'mic' | 'cam') => {
     try {
       const constraints = type === 'mic' ? { audio: true } : { video: true };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      await navigator.mediaDevices.getUserMedia(constraints);
       setMediaActive(prev => ({ ...prev, [type]: true }));
       console.log(`kukul.io: ${type} erişimi aktif edildi.`);
       alert(`${type === 'mic' ? 'Mikrofon' : 'Kamera'} erişimi başarıyla sağlandı.`);
     } catch (err) {
       console.error(`kukul.io: ${type} hatası:`, err);
-      alert(`${type === 'mic' ? 'Mikrofon' : 'Kamera'} izni reddedildi. Lütfen tarayıcı ayarlarını kontrol edin.`);
+      alert(`${type === 'mic' ? 'Mikrofon' : 'Kamera'} izni reddedildi.`);
     }
   };
 
@@ -41,12 +40,10 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
 
   return (
     <aside className={`${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 w-80 bg-white dark:bg-[#030712] border-r border-slate-200/50 dark:border-slate-800/50 z-40 transition-all duration-500 flex flex-col shadow-2xl lg:shadow-none pt-24 lg:pt-20 overflow-hidden`}>
-      {/* 1. Başlık: Sadece Asistan Paneli */}
       <div className="px-8 pb-4 shrink-0">
-        <h1 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">Asistan Paneli</h1>
+        <h1 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">Koçluk Paneli</h1>
       </div>
 
-      {/* 2. Medya Kontrolleri: Başlığın Hemen Altında */}
       <div className="px-8 pb-6 flex items-center gap-3 shrink-0">
         <button 
           onClick={() => handleMediaRequest('mic')}
@@ -64,12 +61,11 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
         </button>
       </div>
 
-      {/* Arama ve Filtreleme */}
       <div className="px-6 pb-4 border-b border-slate-100 dark:border-slate-900 shrink-0">
         <div className="relative group mb-4">
           <input
             type="text"
-            placeholder="Görev ara..."
+            placeholder="Kukul AI Koç Görevi Ara..."
             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-blue-500/50 rounded-xl text-xs outline-none transition-all dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -94,7 +90,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
         </div>
       </div>
 
-      {/* Görev Listesi */}
       <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1 custom-scrollbar">
         {filteredTasks.map((task) => (
           <button
@@ -115,7 +110,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, onSelectTool, isOpen, th
         ))}
       </nav>
       
-      {/* 3. Footer: Sade Tema Seçici */}
       <div className="p-6 border-t border-slate-100 dark:border-slate-900 shrink-0">
         <div className="flex justify-center items-center gap-6 py-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
           <button 

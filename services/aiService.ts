@@ -1,6 +1,6 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { ChatMessage, Tool, StudentProfile } from "../types";
+import { ChatMessage, StudentProfile } from "../types";
 import { EDUCATIONAL_TASKS } from "../constants/tasks";
 
 export class AIService {
@@ -12,16 +12,21 @@ export class AIService {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const task = EDUCATIONAL_TASKS.find(t => t.id === taskId);
     
-    // Get profile for context
     const savedProfile = localStorage.getItem('student_profile');
     const profile: StudentProfile | null = savedProfile ? JSON.parse(savedProfile) : null;
     
     let profileContext = "";
     if (profile) {
-      profileContext = `Öğrenci Bilgileri: İsim: ${profile.name}, Seviye: ${profile.grade}, Hedef: ${profile.target}, Notlar: ${profile.notes}. Bu öğrenciye özel rehberlik sun.`;
+      profileContext = `Öğrenci Profili:
+- İsim: ${profile.name}
+- Sınıf/Seviye: ${profile.grade}
+- Hedef: ${profile.target}
+- Mevcut Durum Notları: ${profile.notes}
+Lütfen analizlerini bu öğrencinin hedeflerine ve seviyesine özel olarak kişiselleştir.`;
     }
 
-    const systemInstruction = (task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç öğretmen asistanısın. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.") + "\n\n" + profileContext;
+    const baseInstruction = task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç'sun. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.";
+    const systemInstruction = `${baseInstruction}\n\n${profileContext}\n\nÖnemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal.`;
 
     const contents = history.map(msg => ({
       role: msg.role === 'model' ? 'model' : 'user',
