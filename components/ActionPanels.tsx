@@ -5,9 +5,10 @@ import { ExamSubject, StudentProfile } from '../types';
 import { aiService } from '../services/aiService';
 
 // --- ICONS ---
-const FileUpIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>;
+const FileUpIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>;
 const AlertTriangleIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
 const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>;
 
 // --- PANELS ---
 
@@ -34,7 +35,6 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
   return (
     <div className="bg-white/80 dark:bg-slate-900/50 p-8 lg:p-12 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative overflow-hidden animate-in zoom-in duration-500">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-      
       <div className="flex items-center gap-6 relative z-10">
         <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
           <UserCircleIcon />
@@ -48,22 +48,11 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
       <div className="grid md:grid-cols-2 gap-10 relative z-10">
         <div className="space-y-4">
           <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ad Soyad</label>
-          <input 
-            type="text" 
-            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
-            placeholder="Örn: Ahmet Yılmaz" 
-            value={profile.name} 
-            onChange={(e) => setProfile({ ...profile, name: e.target.value })} 
-          />
+          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="Örn: Ahmet Yılmaz" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
         </div>
-
         <div className="space-y-4">
           <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Sınıf / Seviye</label>
-          <select 
-            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
-            value={profile.grade} 
-            onChange={(e) => setProfile({ ...profile, grade: e.target.value })} 
-          >
+          <select className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" value={profile.grade} onChange={(e) => setProfile({ ...profile, grade: e.target.value })} >
             <option>8. Sınıf (LGS)</option>
             <option>12. Sınıf (YKS - Sayısal)</option>
             <option>12. Sınıf (YKS - Eşit Ağırlık)</option>
@@ -71,59 +60,23 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
             <option>Mezun (YKS)</option>
           </select>
         </div>
-
         <div className="space-y-4">
           <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Hedef Okul / Üniversite</label>
-          <input 
-            type="text" 
-            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
-            placeholder="Örn: Galatasaray Lisesi / ODTÜ Bilgisayar" 
-            value={profile.target} 
-            onChange={(e) => setProfile({ ...profile, target: e.target.value })} 
-          />
+          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="Örn: Galatasaray Lisesi / ODTÜ Bilgisayar" value={profile.target} onChange={(e) => setProfile({ ...profile, target: e.target.value })} />
         </div>
-
         <div className="space-y-4">
           <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Mevcut Net Ortalaması</label>
-          <input 
-            type="number" 
-            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
-            placeholder="0" 
-            value={profile.averageNet || ''} 
-            onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} 
-          />
+          <input type="number" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="0" value={profile.averageNet || ''} onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} />
         </div>
-
         <div className="md:col-span-2 space-y-4">
           <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ek Notlar / Zorlandığın Alanlar</label>
-          <textarea 
-            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all min-h-[120px]" 
-            placeholder="Örn: Matematikte yeni nesil sorularda süre yetiştiremiyorum." 
-            value={profile.notes} 
-            onChange={(e) => setProfile({ ...profile, notes: e.target.value })} 
-          />
+          <textarea className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all min-h-[120px]" placeholder="Örn: Matematikte yeni nesil sorularda süre yetiştiremiyorum." value={profile.notes} onChange={(e) => setProfile({ ...profile, notes: e.target.value })} />
         </div>
       </div>
 
-      <button 
-        onClick={handleSave} 
-        className={`w-full py-8 rounded-[2.5rem] font-black text-xl shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-4 ${
-          isSaved ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-blue-600 text-white hover:bg-indigo-700 shadow-blue-500/20'
-        }`}
-      >
-        {isSaved ? (
-          <>✅ Profil Verileri Güncellendi</>
-        ) : (
-          <>🚀 Akademik Profilimi Kaydet</>
-        )}
+      <button onClick={handleSave} className={`w-full py-8 rounded-[2.5rem] font-black text-xl shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-4 ${isSaved ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-blue-600 text-white hover:bg-indigo-700 shadow-blue-500/20'}`} >
+        {isSaved ? <>✅ Profil Verileri Güncellendi</> : <>🚀 Akademik Profilimi Kaydet</>}
       </button>
-
-      <div className="p-8 bg-blue-50 dark:bg-blue-900/10 rounded-3xl border border-blue-100 dark:border-blue-800/30">
-        <p className="text-xs text-blue-800 dark:text-blue-300 font-bold leading-relaxed">
-          <span className="text-blue-600 dark:text-blue-400 font-black uppercase mr-2 tracking-widest">Koçluk Notu:</span>
-          Bu bilgiler Kukul AI Koç tarafından analizlerine entegre edilecek. Profilin ne kadar detaylı olursa, sana özel üretilen stratejiler o kadar isabetli olur.
-        </p>
-      </div>
     </div>
   );
 };
@@ -151,13 +104,21 @@ export const AnalysisStudio: React.FC<{
 
   const [subjects, setSubjects] = useState<ExamSubject[]>(initialSubjects('LGS'));
 
-  const handleUpdate = (index: number, field: 'correct' | 'incorrect', value: number) => {
+  // Sınav türü değiştiğinde dersleri sıfırla
+  useEffect(() => {
+    setSubjects(initialSubjects(examType));
+  }, [examType]);
+
+  const handleUpdate = (index: number, field: 'correct' | 'incorrect', value: string) => {
     const newSubjects = [...subjects];
-    const val = isNaN(value) ? 0 : value;
-    newSubjects[index][field] = val;
+    const val = parseInt(value) || 0;
+    newSubjects[index][field] = Math.max(0, val);
+    
+    // Net Hesaplama: LGS'de 3 yanlış, YKS/TYT'de 4 yanlış 1 doğruyu götürür
     const divider = examType === 'LGS' ? 3 : 4;
     const net = newSubjects[index].correct - (newSubjects[index].incorrect / divider);
     newSubjects[index].net = Math.max(0, parseFloat(net.toFixed(2)));
+    
     setSubjects(newSubjects);
   };
 
@@ -174,82 +135,131 @@ export const AnalysisStudio: React.FC<{
   const totalNet = subjects.reduce((acc, curr) => acc + curr.net, 0);
 
   const triggerAnalysis = () => {
-    let prompt = `Aşağıdaki ${examType} deneme verilerimi analiz et:\n\nMANUEL VERİLER:\n`;
-    prompt += subjects.map(s => `- ${s.name}: ${s.correct}D ${s.incorrect}Y, Net: ${s.net}`).join('\n');
+    let prompt = `Aşağıdaki ${examType} deneme verilerimi analiz et:\n\n[MANUEL VERİ GİRİŞİ]\n`;
+    prompt += subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
     prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
-    if (fileData) prompt += `EK KARNE ANALİZİ: Yüklenen resmi karne belgesindeki konu bazlı başarı oranlarını 2018-2024 soru dağılımlarına göre analiz et. Sadece müfredat sınırlarında kal.`;
+    if (fileData) prompt += `\n[PDF/RESİM ANALİZİ]: Yüklenen belgedeki verileri de bu analizle birleştir.`;
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
 
   return (
-    <div className="min-h-[600px] animate-in fade-in duration-500 overflow-y-auto">
+    <div className="min-h-[600px] animate-in fade-in duration-500 overflow-y-auto pb-20">
       {activeTab === 'input' && (
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white/80 dark:bg-slate-900/60 rounded-[3.5rem] p-10 border border-slate-200/50 shadow-2xl backdrop-blur-xl">
-              <div className="flex justify-between items-center mb-10 px-4">
-                <h4 className="text-3xl font-black uppercase tracking-tighter">Net Giriş Tablosu</h4>
-                <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
-                  {['LGS', 'TYT'].map(t => (
-                    <button key={t} onClick={() => { setExamType(t as any); setSubjects(initialSubjects(t as any)); }}
-                      className={`px-8 py-2.5 rounded-xl text-[10px] font-black transition-all ${examType === t ? 'bg-blue-600 shadow-lg text-white' : 'text-slate-400 hover:text-slate-600'}`}
-                    >{t}</button>
-                  ))}
+          {/* Manuel Veri Girişi Alanı */}
+          <div className="lg:col-span-2 space-y-8">
+            <div className="bg-white/90 dark:bg-slate-900/80 rounded-[3.5rem] p-10 border border-slate-200/50 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
+                
+                <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <CalculatorIcon />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Manuel Net Girişi</h4>
+                      <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Sınav Türünü Seç ve Netlerini Hesapla</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+                    <button 
+                      onClick={() => setExamType('LGS')}
+                      className={`px-8 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${examType === 'LGS' ? 'bg-blue-600 shadow-lg text-white' : 'text-slate-400 hover:text-slate-600'}`}
+                    >LGS</button>
+                    <button 
+                      onClick={() => setExamType('TYT')}
+                      className={`px-8 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${examType === 'TYT' ? 'bg-rose-600 shadow-lg text-white' : 'text-slate-400 hover:text-slate-600'}`}
+                    >YKS / TYT</button>
+                  </div>
                 </div>
-              </div>
-              <table className="w-full text-left">
-                <thead className="bg-slate-50 dark:bg-slate-800/80">
-                  <tr>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Ders</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Doğru / Yanlış</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Net</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {subjects.map((s, i) => (
-                    <tr key={s.name} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="px-8 py-5 font-black text-slate-700 dark:text-slate-300 text-lg">{s.name}</td>
-                      <td className="px-8 py-5 text-center flex items-center justify-center gap-4">
-                        <input type="number" className="w-14 bg-white/50 dark:bg-slate-800 p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-center font-black outline-none focus:ring-2 ring-blue-500" value={s.correct || ''} onChange={(e) => handleUpdate(i, 'correct', parseInt(e.target.value))} />
-                        <span className="text-slate-300 font-thin text-2xl">/</span>
-                        <input type="number" className="w-14 bg-white/50 dark:bg-slate-800 p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-center font-black outline-none focus:ring-2 ring-rose-500" value={s.incorrect || ''} onChange={(e) => handleUpdate(i, 'incorrect', parseInt(e.target.value))} />
-                      </td>
-                      <td className={`px-8 py-5 font-black text-center text-2xl text-blue-600`}>{s.net}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-slate-50 dark:bg-slate-800/80">
+                      <tr>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Ders</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Doğru</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Yanlış</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-right">Dönem Sonu Net</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {subjects.map((s, i) => (
+                        <tr key={s.name} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                          <td className="px-6 py-6 font-black text-slate-700 dark:text-slate-300 text-lg">{s.name}</td>
+                          <td className="px-6 py-6 text-center">
+                            <input 
+                              type="number" 
+                              className="w-20 bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-center font-black outline-none focus:ring-4 ring-blue-500/10 transition-all text-blue-600" 
+                              value={s.correct || ''} 
+                              onChange={(e) => handleUpdate(i, 'correct', e.target.value)}
+                              placeholder="0"
+                            />
+                          </td>
+                          <td className="px-6 py-6 text-center">
+                            <input 
+                              type="number" 
+                              className="w-20 bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-center font-black outline-none focus:ring-4 ring-rose-500/10 transition-all text-rose-500" 
+                              value={s.incorrect || ''} 
+                              onChange={(e) => handleUpdate(i, 'incorrect', e.target.value)}
+                              placeholder="0"
+                            />
+                          </td>
+                          <td className="px-6 py-6 font-black text-right text-2xl text-slate-900 dark:text-white tabular-nums">
+                            {s.net.toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-10 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Net Hesaplama Formülü</p>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-blue-600">
+                     {examType === 'LGS' ? 'Doğru - (Yanlış / 3)' : 'Doğru - (Yanlış / 4)'}
+                   </p>
+                </div>
+            </div>
           </div>
 
+          {/* Aksiyon Paneli (Dosya ve Gönder) */}
           <div className="space-y-8">
             <div 
               onClick={() => fileInputRef.current?.click()} 
-              className="bg-blue-600 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center text-center space-y-8 shadow-2xl relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02]"
+              className="bg-slate-900 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center text-center space-y-8 shadow-2xl relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02] border border-slate-800"
             >
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24 group-hover:scale-150 transition-transform"></div>
-              <div className="w-24 h-24 bg-white/20 rounded-[2rem] flex items-center justify-center text-5xl shadow-inner group-hover:rotate-6 transition-transform">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl -mr-24 -mt-24 group-hover:scale-150 transition-transform"></div>
+              <div className="w-24 h-24 bg-white/5 rounded-[2.5rem] flex items-center justify-center text-4xl shadow-inner group-hover:rotate-6 transition-transform border border-white/10">
                 {fileData ? '📄' : <FileUpIcon />}
               </div>
               <div className="space-y-3">
-                <h4 className="text-3xl font-black uppercase tracking-tighter leading-tight">Karne Yükle</h4>
-                <p className="text-blue-100 text-sm font-medium">PDF veya Resim yükle, Kukul AI Koç saniyeler içinde analiz etsin.</p>
+                <h4 className="text-3xl font-black uppercase tracking-tighter leading-tight">Görsel / PDF Analizi</h4>
+                <p className="text-slate-400 text-sm font-medium">Karmaşık karneleri yükle, Kukul AI otomatik tarasın.</p>
               </div>
               <input type="file" ref={fileInputRef} className="hidden" accept="image/*,application/pdf" onChange={handleFileChange} />
-              <button className="w-full py-5 bg-white text-blue-600 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl hover:scale-105 transition-all">
-                {fileData ? fileData.name : 'Dosya Seç'}
+              <button className="w-full py-5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl transition-all">
+                {fileData ? fileData.name : 'OPSİYONEL DOSYA EKLE'}
               </button>
             </div>
 
-            <div className="p-10 bg-white/80 dark:bg-slate-900/60 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md">
-               <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Toplam Net Hesabı</p>
-               <p className="text-7xl font-black text-blue-600 tracking-tighter">{totalNet.toFixed(2)}</p>
+            <div className="p-10 bg-white/90 dark:bg-slate-900/80 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md">
+               <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Genel Başarı Ortalaması</p>
+               <p className="text-7xl font-black text-blue-600 tracking-tighter tabular-nums">{totalNet.toFixed(2)}</p>
+               <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest mt-4 italic">TOPLAM NET</p>
             </div>
 
             <button 
               onClick={triggerAnalysis} 
               disabled={isLoading || (totalNet === 0 && !fileData)} 
-              className="w-full py-8 bg-rose-600 text-white rounded-[2.5rem] font-black text-2xl uppercase tracking-widest shadow-2xl shadow-rose-900/20 hover:scale-[1.03] transition-all active:scale-95 disabled:opacity-50"
+              className="w-full py-8 bg-blue-600 text-white rounded-[2.5rem] font-black text-2xl uppercase tracking-widest shadow-2xl shadow-blue-500/20 hover:scale-[1.03] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-4"
             >
-              {isLoading ? 'ANALİZ EDİLİYOR...' : '🦉 RAPOR ÜRET'}
+              {isLoading ? (
+                <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <>🦉 ANALİZİ BAŞLAT</>
+              )}
             </button>
           </div>
         </div>
@@ -314,7 +324,6 @@ export const AnalysisStudio: React.FC<{
              <h3 className="text-6xl font-black uppercase tracking-tighter dark:text-white leading-none">Akıllı Gelişim Stratejisi</h3>
              <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Müfredat Kazanım Odaklı İlerleme Takibi</p>
           </div>
-          
           <div className="grid md:grid-cols-2 gap-8 mb-20">
             {[
               { topic: 'Paragraf ve Anlam Bilgisi', impact: 10, reason: 'LGS Türkçe testinin %70’ini oluşturmaktadır.' },
@@ -331,7 +340,6 @@ export const AnalysisStudio: React.FC<{
               </div>
             ))}
           </div>
-
           <div className="space-y-16">
             {subjectsConfig[examType].map((ders, i) => (
               <div key={ders} className="space-y-6">
