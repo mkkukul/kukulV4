@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import { ExamSubject, StudentProfile } from '../types';
@@ -6,6 +7,7 @@ import { aiService } from '../services/aiService';
 // --- ICONS ---
 const FileUpIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>;
 const AlertTriangleIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
+const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 
 // --- PANELS ---
 
@@ -32,38 +34,96 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
   return (
     <div className="bg-white/80 dark:bg-slate-900/50 p-8 lg:p-12 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative overflow-hidden animate-in zoom-in duration-500">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+      
       <div className="flex items-center gap-6 relative z-10">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white text-4xl shadow-2xl">👤</div>
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
+          <UserCircleIcon />
+        </div>
         <div>
           <h3 className="text-4xl font-black dark:text-white uppercase tracking-tighter leading-none">Öğrenci Profilim</h3>
           <p className="text-xs text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">Akademik Kimliğini ve Hedeflerini Belirle</p>
         </div>
       </div>
-      <div className="grid md:grid-cols-2 gap-8 relative z-10">
+
+      <div className="grid md:grid-cols-2 gap-10 relative z-10">
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Ad Soyad</label>
-          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner" placeholder="Örn: Ahmet Yılmaz" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ad Soyad</label>
+          <input 
+            type="text" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
+            placeholder="Örn: Ahmet Yılmaz" 
+            value={profile.name} 
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })} 
+          />
         </div>
+
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Sınıf / Seviye</label>
-          <select className="w-full p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner" value={profile.grade} onChange={(e) => setProfile({ ...profile, grade: e.target.value })} >
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Sınıf / Seviye</label>
+          <select 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
+            value={profile.grade} 
+            onChange={(e) => setProfile({ ...profile, grade: e.target.value })} 
+          >
             <option>8. Sınıf (LGS)</option>
-            <option>12. Sınıf (YKS)</option>
+            <option>12. Sınıf (YKS - Sayısal)</option>
+            <option>12. Sınıf (YKS - Eşit Ağırlık)</option>
+            <option>12. Sınıf (YKS - Sözel)</option>
             <option>Mezun (YKS)</option>
           </select>
         </div>
+
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Hedef Okul / Üniversite</label>
-          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner" placeholder="Örn: Galatasaray Lisesi / ODTÜ" value={profile.target} onChange={(e) => setProfile({ ...profile, target: e.target.value })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Hedef Okul / Üniversite</label>
+          <input 
+            type="text" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
+            placeholder="Örn: Galatasaray Lisesi / ODTÜ Bilgisayar" 
+            value={profile.target} 
+            onChange={(e) => setProfile({ ...profile, target: e.target.value })} 
+          />
         </div>
+
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Mevcut Net Ortalaması</label>
-          <input type="number" className="w-full p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner" placeholder="0" value={profile.averageNet || ''} onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Mevcut Net Ortalaması</label>
+          <input 
+            type="number" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" 
+            placeholder="0" 
+            value={profile.averageNet || ''} 
+            onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} 
+          />
+        </div>
+
+        <div className="md:col-span-2 space-y-4">
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ek Notlar / Zorlandığın Alanlar</label>
+          <textarea 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all min-h-[120px]" 
+            placeholder="Örn: Matematikte yeni nesil sorularda süre yetiştiremiyorum." 
+            value={profile.notes} 
+            onChange={(e) => setProfile({ ...profile, notes: e.target.value })} 
+          />
         </div>
       </div>
-      <button onClick={handleSave} className={`w-full py-7 rounded-[2.5rem] font-black text-xl shadow-2xl transition-all active:scale-95 ${isSaved ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-blue-600 text-white hover:bg-indigo-700 shadow-blue-500/20'}`} >
-        {isSaved ? '✅ Veriler Güvende' : '🚀 Profilimi Kaydet ve Analize Hazırlan'}
+
+      <button 
+        onClick={handleSave} 
+        className={`w-full py-8 rounded-[2.5rem] font-black text-xl shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-4 ${
+          isSaved ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-blue-600 text-white hover:bg-indigo-700 shadow-blue-500/20'
+        }`}
+      >
+        {isSaved ? (
+          <>✅ Profil Verileri Güncellendi</>
+        ) : (
+          <>🚀 Akademik Profilimi Kaydet</>
+        )}
       </button>
+
+      <div className="p-8 bg-blue-50 dark:bg-blue-900/10 rounded-3xl border border-blue-100 dark:border-blue-800/30">
+        <p className="text-xs text-blue-800 dark:text-blue-300 font-bold leading-relaxed">
+          <span className="text-blue-600 dark:text-blue-400 font-black uppercase mr-2 tracking-widest">Koçluk Notu:</span>
+          Bu bilgiler Kukul AI Koç tarafından analizlerine entegre edilecek. Profilin ne kadar detaylı olursa, sana özel üretilen stratejiler o kadar isabetli olur.
+        </p>
+      </div>
     </div>
   );
 };
@@ -199,7 +259,6 @@ export const AnalysisStudio: React.FC<{
 
       {activeTab === 'performance' && (
         <div className="space-y-12 animate-in slide-in-from-bottom-5 duration-700 pb-20">
-          {/* Acil Müdahale Listesi */}
           <div className="p-12 bg-rose-500/10 border-2 border-dashed border-rose-500/30 rounded-[4rem] backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-5 mb-10">
               <div className="w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-900/20">
@@ -212,7 +271,7 @@ export const AnalysisStudio: React.FC<{
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {(examType === 'LGS' 
-                ? ['Üslü İfadeler', 'DNA ve Genetik Kod', 'Mevsimler', 'Sıvı Basıncı', 'Fiilimsiler'] 
+                ? ['Üslü İfadeler', 'DNA ve Genetik Kod', 'Mevsimler ve İklim', 'Basınç', 'Fiilimsiler'] 
                 : ['Türev ve İntegral', 'Modern Fizik', 'Organik Kimya', 'Paragraf Analizi', 'Trigonometri']
               ).map((item, idx) => (
                 <div key={idx} className="p-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col gap-2 transition-all hover:scale-105">
@@ -253,7 +312,7 @@ export const AnalysisStudio: React.FC<{
         <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200/50 shadow-2xl backdrop-blur-xl max-w-5xl mx-auto animate-in fade-in duration-700 mb-20">
           <div className="text-center space-y-6 mb-16">
              <h3 className="text-6xl font-black uppercase tracking-tighter dark:text-white leading-none">Akıllı Gelişim Stratejisi</h3>
-             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Soru Dağılım Ağırlığına Göre Önceliklendirme</p>
+             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Müfredat Kazanım Odaklı İlerleme Takibi</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-20">
