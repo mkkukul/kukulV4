@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface LandingPageProps {
@@ -70,7 +69,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full max-w-6xl animate-in fade-in zoom-in duration-700 delay-300">
           
-          {/* LGS KARTI (Bordo Zemin + Mavi Buton) */}
+          {/* LGS KARTI (Bordo/Rose Zemin + Mavi Buton) */}
           <div className="group p-8 md:p-14 rounded-[4rem] bg-rose-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">LGS</div>
             <div>
@@ -90,7 +89,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, theme, toggleTheme }
             </button>
           </div>
 
-          {/* YKS KARTI (Mavi Zemin + Bordo Buton) */}
+          {/* YKS KARTI (Mavi Zemin + Bordo/Rose Buton) */}
           <div className="group p-8 md:p-14 rounded-[4rem] bg-blue-600 text-white shadow-2xl flex flex-col justify-between h-[500px] transition-all hover:scale-[1.02] relative overflow-hidden">
             <div className="absolute top-10 right-10 opacity-20 text-6xl font-black">YKS</div>
             <div>

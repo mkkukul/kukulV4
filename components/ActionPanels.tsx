@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import { ExamSubject, StudentProfile } from '../types';
@@ -118,12 +117,12 @@ export const AnalysisStudio: React.FC<{
     let prompt = `Aşağıdaki ${examType} deneme verilerimi analiz et:\n\nMANUEL VERİLER:\n`;
     prompt += subjects.map(s => `- ${s.name}: ${s.correct}D ${s.incorrect}Y, Net: ${s.net}`).join('\n');
     prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
-    if (fileData) prompt += `EK KARNE ANALİZİ: Yüklenen resmi karne belgesindeki/PDFindeki konu bazlı başarı oranlarını 2018-2024 soru dağılımlarına göre analiz et.`;
+    if (fileData) prompt += `EK KARNE ANALİZİ: Yüklenen resmi karne belgesindeki konu bazlı başarı oranlarını 2018-2024 soru dağılımlarına göre analiz et. Sadece müfredat sınırlarında kal.`;
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
 
   return (
-    <div className="min-h-[600px] animate-in fade-in duration-500">
+    <div className="min-h-[600px] animate-in fade-in duration-500 overflow-y-auto">
       {activeTab === 'input' && (
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 bg-white/80 dark:bg-slate-900/60 rounded-[3.5rem] p-10 border border-slate-200/50 shadow-2xl backdrop-blur-xl">
@@ -199,7 +198,8 @@ export const AnalysisStudio: React.FC<{
       {activeTab === 'koc' && children}
 
       {activeTab === 'performance' && (
-        <div className="space-y-12 animate-in slide-in-from-bottom-5 duration-700">
+        <div className="space-y-12 animate-in slide-in-from-bottom-5 duration-700 pb-20">
+          {/* Acil Müdahale Listesi */}
           <div className="p-12 bg-rose-500/10 border-2 border-dashed border-rose-500/30 rounded-[4rem] backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-5 mb-10">
               <div className="w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-900/20">
@@ -210,10 +210,10 @@ export const AnalysisStudio: React.FC<{
                 <p className="text-xs font-bold text-rose-400 uppercase tracking-widest mt-2">Müfredat Bazlı En Kritik Kazanımlar</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {(examType === 'LGS' 
-                ? ['Üslü İfadeler', 'DNA ve Genetik Kod', 'Mevsimler ve İklim', 'Sıvı Basıncı', 'Fiilimsiler', 'Cebirsel İfadeler'] 
-                : ['Türev ve İntegral', 'Modern Fizik', 'Organik Kimya', 'Paragraf Analizi', 'Trigonometri', 'Logaritma']
+                ? ['Üslü İfadeler', 'DNA ve Genetik Kod', 'Mevsimler', 'Sıvı Basıncı', 'Fiilimsiler'] 
+                : ['Türev ve İntegral', 'Modern Fizik', 'Organik Kimya', 'Paragraf Analizi', 'Trigonometri']
               ).map((item, idx) => (
                 <div key={idx} className="p-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col gap-2 transition-all hover:scale-105">
                   <div className="w-2 h-2 bg-rose-500 rounded-full"></div>
@@ -236,11 +236,11 @@ export const AnalysisStudio: React.FC<{
                 </div>
                 <div className="space-y-8">
                   <p className="text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic border-l-8 border-blue-500/20 pl-6 py-2">
-                    "Verilere göre bu derste müfredat kazanımlarına odaklanman gerekiyor. Kukul AI Koç diyor ki: {examType} PDF'indeki soru yoğunluğu en yüksek kurgulara odaklan!"
+                    "Verilere göre bu derste müfredat kazanımlarına odaklanman gerekiyor. Kukul AI Koç diyor ki: {examType} sınavının en belirleyici kısımlarına odaklan!"
                   </p>
                   <div className="pt-10 border-t border-slate-100 dark:border-slate-800 relative">
                     <div className="absolute -top-4 left-0 px-4 py-1 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest">KOÇLUK TAVSİYESİ</div>
-                    <p className="text-lg font-black leading-tight dark:text-slate-200 tracking-tight">Geçmiş yıllarda çıkan kazanımları listeleyerek 2026 sınavına hazırlan.</p>
+                    <p className="text-lg font-black leading-tight dark:text-slate-200 tracking-tight">Geçmiş yılların (2018-2024) soru dağılım sıklığına göre çalışma planını güncelle.</p>
                   </div>
                 </div>
               </div>
@@ -250,23 +250,41 @@ export const AnalysisStudio: React.FC<{
       )}
 
       {activeTab === 'strategy' && (
-        <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200/50 shadow-2xl backdrop-blur-xl max-w-5xl mx-auto animate-in fade-in duration-700">
+        <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200/50 shadow-2xl backdrop-blur-xl max-w-5xl mx-auto animate-in fade-in duration-700 mb-20">
           <div className="text-center space-y-6 mb-16">
-             <h3 className="text-6xl font-black uppercase tracking-tighter dark:text-white leading-none">Akıllı Strateji</h3>
-             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Müfredat Kazanım Odaklı İlerleme Takibi</p>
+             <h3 className="text-6xl font-black uppercase tracking-tighter dark:text-white leading-none">Akıllı Gelişim Stratejisi</h3>
+             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Soru Dağılım Ağırlığına Göre Önceliklendirme</p>
           </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-20">
+            {[
+              { topic: 'Paragraf ve Anlam Bilgisi', impact: 10, reason: 'LGS Türkçe testinin %70’ini oluşturmaktadır.' },
+              { topic: 'Üslü ve Köklü İfadeler', impact: 9, reason: 'Matematik temelini oluşturan en yüksek soru ağırlıklı ünitedir.' },
+              { topic: 'DNA ve Genetik Kod', impact: 9, reason: 'Fen Bilimleri sınavının en belirleyici ve kapsamlı bölümüdür.' },
+              { topic: 'Cebirsel İfadeler', impact: 8, reason: 'Yeni nesil soruların kurgulandığı kritik bir matematik alanıdır.' }
+            ].map((item, i) => (
+              <div key={i} className="p-10 bg-slate-50 dark:bg-slate-800 rounded-[3rem] border border-slate-100 dark:border-slate-700 shadow-sm">
+                <div className="flex justify-between mb-4">
+                  <span className="text-[10px] font-black bg-blue-600 text-white px-4 py-1.5 rounded-full italic uppercase tracking-widest shadow-lg shadow-blue-500/20">ETKİ: {item.impact}/10</span>
+                </div>
+                <h4 className="font-black text-2xl mb-4 uppercase tracking-tighter dark:text-white">{item.topic}</h4>
+                <p className="text-sm text-slate-500 dark:text-slate-400 italic font-medium leading-relaxed">"{item.reason}"</p>
+              </div>
+            ))}
+          </div>
+
           <div className="space-y-16">
             {subjectsConfig[examType].map((ders, i) => (
               <div key={ders} className="space-y-6">
                 <div className="flex justify-between items-end text-[12px] font-black uppercase tracking-[0.2em] text-slate-400">
                   <span className="flex items-center gap-4">
-                    <div className={`w-4 h-4 rounded-full shadow-lg ${i % 2 === 0 ? 'bg-blue-600' : 'bg-rose-600'}`}></div> 
+                    <div className={`w-4 h-4 rounded-full shadow-lg ${i % 2 === 0 ? 'bg-blue-600 shadow-blue-500/30' : 'bg-rose-600 shadow-rose-500/30'}`}></div> 
                     {ders} Müfredat Hakimiyeti
                   </span>
                   <span className="text-blue-600 font-black text-xl">{95 - (i * 12)}%</span>
                 </div>
                 <div className="h-6 w-full bg-slate-100 dark:bg-slate-800/80 rounded-full overflow-hidden p-1 shadow-inner border border-slate-200/50 dark:border-slate-700">
-                  <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-1000" style={{ width: `${95 - (i * 12)}%` }} />
+                  <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(37,99,235,0.3)]" style={{ width: `${95 - (i * 12)}%` }} />
                 </div>
               </div>
             ))}
@@ -275,18 +293,18 @@ export const AnalysisStudio: React.FC<{
       )}
 
       {activeTab === 'topics' && (
-         <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-16 backdrop-blur-xl animate-in fade-in duration-700">
+         <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-16 backdrop-blur-xl animate-in fade-in duration-700 mb-20">
            <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
              <div className="space-y-2 text-center md:text-left">
                <h3 className="text-5xl font-black uppercase tracking-tighter dark:text-white leading-none">Konu Analizi</h3>
-               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Resmi Kazanım Dağılım Grafiği</p>
+               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Resmi Kazanım Dağılım Grafiği (LGS 2026 Projeksiyonu)</p>
              </div>
            </div>
            
            <div className="flex items-end justify-between h-[400px] gap-6 px-4 md:px-8 border-b-2 border-slate-100 dark:border-slate-800 pb-12 overflow-x-auto hide-scrollbar">
               {[45, 75, 25, 95, 60, 85, 30, 90].map((val, idx) => (
                 <div key={idx} className="flex-1 min-w-[40px] flex flex-col items-center gap-6 h-full justify-end group cursor-help relative">
-                  <div className={`w-full rounded-t-2xl transition-all duration-700 group-hover:scale-x-110 shadow-lg ${val < 40 ? 'bg-rose-500' : (val > 70 ? 'bg-blue-600' : 'bg-slate-400')}`} style={{ height: `${val}%` }}>
+                  <div className={`w-full rounded-t-2xl transition-all duration-700 group-hover:scale-x-110 shadow-lg ${val < 40 ? 'bg-rose-500 shadow-rose-500/40' : (val > 70 ? 'bg-blue-600 shadow-blue-500/40' : 'bg-slate-400 shadow-slate-400/20')}`} style={{ height: `${val}%` }}>
                      <div className="opacity-0 group-hover:opacity-100 transition-all absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black px-4 py-2 rounded-xl z-20 whitespace-nowrap">
                        BAŞARI: %{val}
                      </div>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import ChatInterface from './ChatInterface';
 import { Tool, StudentProfile, ChatMessage } from '../types';
@@ -63,7 +62,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     });
     
     setIsAnalyzed(true);
-    setActiveTab('koc'); // Automatic switch to AI Coach
+    setActiveTab('koc'); // Focus on Kukul AI Coach after analysis
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -117,11 +116,11 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
       </nav>
 
       {/* CONTENT AREA */}
-      <main className="flex-1 pt-32 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10">
+      <main className="flex-1 pt-32 pb-32 px-4 md:px-10 max-w-7xl mx-auto w-full relative z-10 overflow-y-auto">
         
         {/* STUDENT STATUS */}
         {studentProfile && (
-          <div className="mb-8 p-6 bg-white/60 dark:bg-slate-900/40 rounded-[2rem] border border-white/40 dark:border-slate-800/40 backdrop-blur-md flex items-center justify-between shadow-sm">
+          <div className="mb-8 p-6 bg-white/60 dark:bg-slate-900/40 rounded-[2rem] border border-white/40 dark:border-slate-800/40 backdrop-blur-md flex items-center justify-between shadow-sm animate-in fade-in duration-1000">
             <div className="flex items-center gap-4">
                <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg shadow-blue-500/20">
                  {studentProfile.name.charAt(0).toUpperCase()}
@@ -132,8 +131,8 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
                </div>
             </div>
             <div className="text-right hidden sm:block">
-              <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Target Goal</p>
-              <p className="font-black text-rose-600 dark:text-rose-400 text-lg">{studentProfile.target || 'Not Set'}</p>
+              <p className="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Kritik Hedef</p>
+              <p className="font-black text-rose-600 dark:text-rose-400 text-lg">{studentProfile.target || 'Hedef Belirlenmedi'}</p>
             </div>
           </div>
         )}
@@ -165,7 +164,6 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
               {currentTask.id === 'student-profile' && (
                 <StudentProfilePanel onSave={(p) => {
                   setStudentProfile(p);
-                  // Refresh context locally
                   localStorage.setItem('student_profile', JSON.stringify(p));
                 }} />
               )}
@@ -175,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
       </main>
 
       {/* FOOTER SKYLINE */}
-      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-40">
+      <div className="fixed bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0 opacity-40 transition-opacity duration-1000">
          <div className="absolute bottom-0 w-full h-full bg-slate-400 dark:bg-slate-800" 
               style={{ clipPath: 'polygon(0% 100%, 0% 70%, 8% 70%, 8% 40%, 15% 40%, 15% 70%, 30% 70%, 30% 20%, 45% 20%, 45% 85%, 60% 85%, 60% 40%, 75% 40%, 75% 90%, 85% 90%, 85% 30%, 95% 30%, 95% 100%, 100% 100%)' }} />
       </div>
