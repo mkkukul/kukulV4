@@ -41,6 +41,14 @@ export interface StudentProfile {
   notes: string;
 }
 
+export interface ExamHistoryEntry {
+  id: string;
+  date: number;
+  examType: 'LGS' | 'TYT';
+  totalNet: number;
+  subjects: ExamSubject[];
+}
+
 export interface AnalysisResult {
   emergencyList: string[];
   lessonStats: {

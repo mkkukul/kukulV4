@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { ExamSubject, StudentProfile } from '../types';
+import { ExamSubject, StudentProfile, ExamHistoryEntry } from '../types';
 import { aiService } from '../services/aiService';
 
 // --- ICONS ---
 const FileUpIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>;
 const AlertTriangleIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
 const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>;
+const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2-2v14a2 2 0 002 2z" /></svg>;
+const TargetIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+const HistoryIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 
 // --- PANELS ---
 
@@ -33,26 +35,44 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
   };
 
   return (
-    <div className="bg-white/80 dark:bg-slate-900/50 p-8 lg:p-12 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative overflow-hidden animate-in zoom-in duration-500">
+    <div className="bg-white/80 dark:bg-slate-900/50 p-8 lg:p-12 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative overflow-hidden animate-in zoom-in duration-500 max-w-5xl mx-auto">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-      <div className="flex items-center gap-6 relative z-10">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
-          <UserCircleIcon />
-        </div>
-        <div>
-          <h3 className="text-4xl font-black dark:text-white uppercase tracking-tighter leading-none">Öğrenci Profilim</h3>
-          <p className="text-xs text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">Akademik Kimliğini ve Hedeflerini Belirle</p>
+      
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+        <div className="flex items-center gap-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
+            <UserCircleIcon />
+          </div>
+          <div>
+            <h3 className="text-4xl font-black dark:text-white uppercase tracking-tighter leading-none">Öğrenci Profilim</h3>
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">Akademik Kimliğini ve Hedeflerini Belirle</p>
+          </div>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-10 relative z-10">
         <div className="space-y-4">
-          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ad Soyad</label>
-          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="Örn: Ahmet Yılmaz" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Ad Soyad
+          </label>
+          <input 
+            type="text" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-4 ring-blue-500/10 transition-all text-lg" 
+            placeholder="Örn: Ahmet Yılmaz" 
+            value={profile.name} 
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })} 
+          />
         </div>
+
         <div className="space-y-4">
-          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Sınıf / Seviye</label>
-          <select className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" value={profile.grade} onChange={(e) => setProfile({ ...profile, grade: e.target.value })} >
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Sınıf Seviyesi
+          </label>
+          <select 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-4 ring-blue-500/10 transition-all text-lg appearance-none cursor-pointer" 
+            value={profile.grade} 
+            onChange={(e) => setProfile({ ...profile, grade: e.target.value })} 
+          >
             <option>8. Sınıf (LGS)</option>
             <option>12. Sınıf (YKS - Sayısal)</option>
             <option>12. Sınıf (YKS - Eşit Ağırlık)</option>
@@ -60,23 +80,134 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
             <option>Mezun (YKS)</option>
           </select>
         </div>
+
         <div className="space-y-4">
-          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Hedef Okul / Üniversite</label>
-          <input type="text" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="Örn: Galatasaray Lisesi / ODTÜ Bilgisayar" value={profile.target} onChange={(e) => setProfile({ ...profile, target: e.target.value })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Hedef Okul / Puan
+          </label>
+          <input 
+            type="text" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-4 ring-blue-500/10 transition-all text-lg pl-14" 
+            placeholder="Örn: Galatasaray Lisesi" 
+            value={profile.target} 
+            onChange={(e) => setProfile({ ...profile, target: e.target.value })} 
+          />
         </div>
+
         <div className="space-y-4">
-          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Mevcut Net Ortalaması</label>
-          <input type="number" className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all" placeholder="0" value={profile.averageNet || ''} onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} />
-        </div>
-        <div className="md:col-span-2 space-y-4">
-          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2">Ek Notlar / Zorlandığın Alanlar</label>
-          <textarea className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-2 ring-blue-500/20 transition-all min-h-[120px]" placeholder="Örn: Matematikte yeni nesil sorularda süre yetiştiremiyorum." value={profile.notes} onChange={(e) => setProfile({ ...profile, notes: e.target.value })} />
+          <label className="text-[11px] font-black uppercase text-slate-400 tracking-widest ml-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Mevcut Net Ortalaması
+          </label>
+          <input 
+            type="number" 
+            className="w-full p-6 bg-slate-50 dark:bg-slate-800/80 rounded-3xl outline-none border border-slate-100 dark:border-slate-700 font-bold dark:text-white shadow-inner focus:ring-4 ring-blue-500/10 transition-all text-lg" 
+            value={profile.averageNet || ''} 
+            onChange={(e) => setProfile({ ...profile, averageNet: parseFloat(e.target.value) })} 
+          />
         </div>
       </div>
 
-      <button onClick={handleSave} className={`w-full py-8 rounded-[2.5rem] font-black text-xl shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-4 ${isSaved ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-blue-600 text-white hover:bg-indigo-700 shadow-blue-500/20'}`} >
-        {isSaved ? <>✅ Profil Verileri Güncellendi</> : <>🚀 Akademik Profilimi Kaydet</>}
+      <button onClick={handleSave} className={`w-full py-8 rounded-[2.5rem] font-black text-2xl shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-4 ${isSaved ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white hover:bg-indigo-700'}`}>
+        {isSaved ? <>✅ Kaydedildi</> : <>🚀 Profili Kaydet</>}
       </button>
+    </div>
+  );
+};
+
+export const ProgressTracker: React.FC = () => {
+  const [history, setHistory] = useState<ExamHistoryEntry[]>([]);
+  
+  useEffect(() => {
+    const saved = localStorage.getItem('exam_history');
+    if (saved) {
+      setHistory(JSON.parse(saved).sort((a: any, b: any) => b.date - a.date));
+    }
+  }, []);
+
+  if (history.length === 0) {
+    return (
+      <div className="p-20 text-center space-y-6 bg-white/50 dark:bg-slate-900/50 rounded-[4rem] border border-dashed border-slate-300 dark:border-slate-700">
+        <div className="text-6xl grayscale">📉</div>
+        <h3 className="text-3xl font-black uppercase dark:text-white">Henüz Bir Veri Yok</h3>
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Deneme verilerini girdikçe gelişimini burada göreceksin.</p>
+      </div>
+    );
+  }
+
+  const latest = history[0];
+  const previous = history.length > 1 ? history[1] : null;
+  const improvement = previous ? latest.totalNet - previous.totalNet : 0;
+
+  return (
+    <div className="space-y-10 animate-in fade-in duration-700">
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Son Deneme Neti</p>
+          <div className="flex items-end gap-3">
+             <span className="text-5xl font-black text-blue-600 tabular-nums">{latest.totalNet.toFixed(2)}</span>
+             {improvement !== 0 && (
+               <span className={`text-sm font-black mb-1 ${improvement > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                 {improvement > 0 ? '↑' : '↓'} {Math.abs(improvement).toFixed(2)}
+               </span>
+             )}
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Çözülen Deneme Sayısı</p>
+          <span className="text-5xl font-black dark:text-white tabular-nums">{history.length}</span>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Hedefe Kalan</p>
+          <span className="text-5xl font-black text-rose-600 tabular-nums">?</span>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-slate-900 p-12 rounded-[4rem] shadow-2xl border border-slate-100 dark:border-slate-800 space-y-12">
+        <div className="flex justify-between items-center">
+          <h3 className="text-3xl font-black uppercase tracking-tighter dark:text-white">Gelişim Geçmişi</h3>
+          <button 
+            onClick={() => { if(confirm('Tüm geçmişi silmek istediğine emin misin?')) { localStorage.removeItem('exam_history'); setHistory([]); } }}
+            className="text-[10px] font-black text-rose-500 uppercase tracking-widest hover:underline"
+          >
+            Geçmişi Temizle
+          </button>
+        </div>
+        
+        <div className="space-y-6">
+          {history.map((entry) => (
+            <div key={entry.id} className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6 group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex flex-col items-center justify-center">
+                  <span className="text-[10px] font-black text-blue-600 uppercase leading-none">{new Date(entry.date).toLocaleString('tr-TR', { month: 'short' })}</span>
+                  <span className="text-xl font-black dark:text-white leading-none mt-1">{new Date(entry.date).getDate()}</span>
+                </div>
+                <div>
+                  <h4 className="font-black text-xl dark:text-white uppercase tracking-tighter">{entry.examType} Denemesi</h4>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    {new Date(entry.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-12">
+                <div className="text-center">
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Toplam Net</p>
+                  <p className="text-3xl font-black text-blue-600 tabular-nums">{entry.totalNet.toFixed(2)}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 max-w-[200px] justify-end">
+                   {entry.subjects.slice(0, 3).map(s => (
+                     <div key={s.name} className="px-3 py-1 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 text-[9px] font-black uppercase">
+                       {s.name.substring(0,3)}: {s.net}
+                     </div>
+                   ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -104,7 +235,6 @@ export const AnalysisStudio: React.FC<{
 
   const [subjects, setSubjects] = useState<ExamSubject[]>(initialSubjects('LGS'));
 
-  // Sınav türü değiştiğinde dersleri sıfırla
   useEffect(() => {
     setSubjects(initialSubjects(examType));
   }, [examType]);
@@ -114,7 +244,6 @@ export const AnalysisStudio: React.FC<{
     const val = parseInt(value) || 0;
     newSubjects[index][field] = Math.max(0, val);
     
-    // Net Hesaplama: LGS'de 3 yanlış, YKS/TYT'de 4 yanlış 1 doğruyu götürür
     const divider = examType === 'LGS' ? 3 : 4;
     const net = newSubjects[index].correct - (newSubjects[index].incorrect / divider);
     newSubjects[index].net = Math.max(0, parseFloat(net.toFixed(2)));
@@ -135,6 +264,19 @@ export const AnalysisStudio: React.FC<{
   const totalNet = subjects.reduce((acc, curr) => acc + curr.net, 0);
 
   const triggerAnalysis = () => {
+    // Save to History before analysis
+    const historyEntry: ExamHistoryEntry = {
+      id: crypto.randomUUID(),
+      date: Date.now(),
+      examType: examType,
+      totalNet: totalNet,
+      subjects: [...subjects]
+    };
+    const saved = localStorage.getItem('exam_history');
+    const history = saved ? JSON.parse(saved) : [];
+    history.push(historyEntry);
+    localStorage.setItem('exam_history', JSON.stringify(history));
+
     let prompt = `Aşağıdaki ${examType} deneme verilerimi analiz et:\n\n[MANUEL VERİ GİRİŞİ]\n`;
     prompt += subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
     prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
@@ -146,7 +288,6 @@ export const AnalysisStudio: React.FC<{
     <div className="min-h-[600px] animate-in fade-in duration-500 overflow-y-auto pb-20">
       {activeTab === 'input' && (
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Manuel Veri Girişi Alanı */}
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white/90 dark:bg-slate-900/80 rounded-[3.5rem] p-10 border border-slate-200/50 shadow-2xl backdrop-blur-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
@@ -224,7 +365,6 @@ export const AnalysisStudio: React.FC<{
             </div>
           </div>
 
-          {/* Aksiyon Paneli (Dosya ve Gönder) */}
           <div className="space-y-8">
             <div 
               onClick={() => fileInputRef.current?.click()} 
@@ -291,30 +431,6 @@ export const AnalysisStudio: React.FC<{
               ))}
             </div>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {subjectsConfig[examType].slice(0, 3).map((ders, i) => (
-              <div key={ders} className="p-12 bg-white/80 dark:bg-slate-900/80 rounded-[4.5rem] shadow-2xl border border-slate-100 dark:border-slate-800 space-y-10 backdrop-blur-xl group transition-all">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <h5 className="text-3xl font-black uppercase tracking-tighter flex items-center gap-4 dark:text-white">
-                      {ders}
-                    </h5>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Resmi Müfredat Analizi</p>
-                  </div>
-                </div>
-                <div className="space-y-8">
-                  <p className="text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic border-l-8 border-blue-500/20 pl-6 py-2">
-                    "Verilere göre bu derste müfredat kazanımlarına odaklanman gerekiyor. Kukul AI Koç diyor ki: {examType} sınavının en belirleyici kısımlarına odaklan!"
-                  </p>
-                  <div className="pt-10 border-t border-slate-100 dark:border-slate-800 relative">
-                    <div className="absolute -top-4 left-0 px-4 py-1 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest">KOÇLUK TAVSİYESİ</div>
-                    <p className="text-lg font-black leading-tight dark:text-slate-200 tracking-tight">Geçmiş yılların (2018-2024) soru dağılım sıklığına göre çalışma planını güncelle.</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       )}
 
@@ -326,7 +442,7 @@ export const AnalysisStudio: React.FC<{
           </div>
           <div className="grid md:grid-cols-2 gap-8 mb-20">
             {[
-              { topic: 'Paragraf ve Anlam Bilgisi', impact: 10, reason: 'LGS Türkçe testinin %70’ini oluşturmaktadır.' },
+              { topic: 'Paragraf ve Anlam Bilgisi', impact: 10, reason: 'Sınav başarısının %70’ini oluşturmaktadır.' },
               { topic: 'Üslü ve Köklü İfadeler', impact: 9, reason: 'Matematik temelini oluşturan en yüksek soru ağırlıklı ünitedir.' },
               { topic: 'DNA ve Genetik Kod', impact: 9, reason: 'Fen Bilimleri sınavının en belirleyici ve kapsamlı bölümüdür.' },
               { topic: 'Cebirsel İfadeler', impact: 8, reason: 'Yeni nesil soruların kurgulandığı kritik bir matematik alanıdır.' }
@@ -340,22 +456,6 @@ export const AnalysisStudio: React.FC<{
               </div>
             ))}
           </div>
-          <div className="space-y-16">
-            {subjectsConfig[examType].map((ders, i) => (
-              <div key={ders} className="space-y-6">
-                <div className="flex justify-between items-end text-[12px] font-black uppercase tracking-[0.2em] text-slate-400">
-                  <span className="flex items-center gap-4">
-                    <div className={`w-4 h-4 rounded-full shadow-lg ${i % 2 === 0 ? 'bg-blue-600 shadow-blue-500/30' : 'bg-rose-600 shadow-rose-500/30'}`}></div> 
-                    {ders} Müfredat Hakimiyeti
-                  </span>
-                  <span className="text-blue-600 font-black text-xl">{95 - (i * 12)}%</span>
-                </div>
-                <div className="h-6 w-full bg-slate-100 dark:bg-slate-800/80 rounded-full overflow-hidden p-1 shadow-inner border border-slate-200/50 dark:border-slate-700">
-                  <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(37,99,235,0.3)]" style={{ width: `${95 - (i * 12)}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       )}
 
@@ -364,7 +464,7 @@ export const AnalysisStudio: React.FC<{
            <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
              <div className="space-y-2 text-center md:text-left">
                <h3 className="text-5xl font-black uppercase tracking-tighter dark:text-white leading-none">Konu Analizi</h3>
-               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Resmi Kazanım Dağılım Grafiği (LGS 2026 Projeksiyonu)</p>
+               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Resmi Kazanım Dağılım Grafiği Projeksiyonu</p>
              </div>
            </div>
            

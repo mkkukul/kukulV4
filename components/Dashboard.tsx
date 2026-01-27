@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import ChatInterface from './ChatInterface';
 import { Tool, StudentProfile, ChatMessage } from '../types';
 import { EDUCATIONAL_TASKS } from '../constants/tasks';
-import { AnalysisStudio, StudentProfilePanel } from './ActionPanels';
+import { AnalysisStudio, StudentProfilePanel, ProgressTracker } from './ActionPanels';
 
-type AnalysisTab = 'input' | 'koc' | 'performance' | 'strategy' | 'topics' | 'profile';
+type AnalysisTab = 'input' | 'koc' | 'performance' | 'strategy' | 'topics' | 'profile' | 'progress';
 
 interface DashboardProps {
   theme: 'light' | 'dark';
@@ -42,14 +42,20 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
     : EDUCATIONAL_TASKS[0]
   );
   
-  const [activeTab, setActiveTab] = useState<AnalysisTab>('input');
-  const [isAnalyzed, setIsAnalyzed] = useState(false);
-  const [assistantPrompt, setAssistantPrompt] = useState<ChatMessage | null>(null);
-  
   const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(() => {
     const saved = localStorage.getItem('student_profile');
     return saved ? JSON.parse(saved) : null;
   });
+
+  const [activeTab, setActiveTab] = useState<AnalysisTab>(studentProfile ? 'input' : 'profile');
+  const [isAnalyzed, setIsAnalyzed] = useState(false);
+  const [assistantPrompt, setAssistantPrompt] = useState<ChatMessage | null>(null);
+
+  useEffect(() => {
+    if (!studentProfile && activeTab !== 'profile') {
+      setActiveTab('profile');
+    }
+  }, [studentProfile]);
 
   const handleExternalPrompt = (text: string, fileData?: { mimeType: string, data: string }) => {
     const parts: any[] = [{ text }];
@@ -72,6 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
   const tabs = [
     { id: 'profile', label: '👤 Profilim' },
     { id: 'input', label: 'Veri Girişi' },
+    { id: 'progress', label: '📈 Gelişim Takibi' },
     { id: 'koc', label: '🦉 Kukul AI Koç' },
     { id: 'performance', label: 'Stratejik Performans' },
     { id: 'strategy', label: 'Akıllı Strateji' },
@@ -87,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
           
           <div className="flex bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-2xl overflow-x-auto hide-scrollbar border border-slate-200 dark:border-slate-700">
             {tabs.map(tab => {
-              const isDisabled = !isAnalyzed && !['input', 'profile'].includes(tab.id);
+              const isDisabled = !isAnalyzed && !['input', 'profile', 'progress'].includes(tab.id);
               return (
                 <button 
                   key={tab.id}
@@ -142,6 +149,8 @@ const Dashboard: React.FC<DashboardProps> = ({ theme, toggleTheme, initialToolId
               setStudentProfile(p);
               localStorage.setItem('student_profile', JSON.stringify(p));
             }} />
+          ) : activeTab === 'progress' ? (
+            <ProgressTracker />
           ) : isAnalysisTool ? (
             <AnalysisStudio 
               activeTab={activeTab}

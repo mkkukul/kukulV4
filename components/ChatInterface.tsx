@@ -24,8 +24,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [streamingText, setStreamingText] = useState('');
+  const [attachedFile, setAttachedFile] = useState<{ mimeType: string; data: string; name: string } | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -47,22 +49,52 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   }, [externalPrompt]);
 
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const processed = await aiService.processFile(file);
+        setAttachedFile({ ...processed, name: file.name });
+      } catch (err) {
+        alert("Dosya işlenirken bir hata oluştu.");
+      }
+    }
+    // Reset input to allow selecting same file again
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const handleAISend = async (prompt: string | ChatMessage) => {
     const isObject = typeof prompt !== 'string';
     const promptText = isObject ? prompt.parts.find(p => p.text)?.text || '' : prompt;
     
-    if (!promptText.trim() && !isObject) return;
+    if (!promptText.trim() && !isObject && !attachedFile) return;
     if (isLoading) return;
 
-    const userMsg: ChatMessage = isObject ? prompt : {
-      role: 'user',
-      parts: [{ text: promptText }],
-      timestamp: Date.now(),
-    };
+    let userMsg: ChatMessage;
+
+    if (isObject) {
+      userMsg = prompt;
+    } else {
+      const parts: any[] = [{ text: promptText }];
+      if (attachedFile) {
+        parts.push({ 
+          inlineData: { 
+            mimeType: attachedFile.mimeType, 
+            data: attachedFile.data 
+          } 
+        });
+      }
+      userMsg = {
+        role: 'user',
+        parts,
+        timestamp: Date.now(),
+      };
+    }
 
     const updatedHistory = [...messages, userMsg];
     setMessages(updatedHistory);
     setInput('');
+    setAttachedFile(null);
     setIsLoading(true);
 
     let fullResponse = '';
@@ -132,7 +164,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     {part.text && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part.text}</ReactMarkdown>}
                     {part.inlineData && (
                       <div className="mt-4 p-4 bg-blue-500/10 dark:bg-blue-500/20 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border border-blue-500/20">
-                        <span className="text-lg">📎</span> KARNE ANALİZ VERİSİ BAŞARIYLA ENTEGRE EDİLDİ
+                        <span className="text-lg">📎</span> {part.inlineData.mimeType.includes('image') ? 'GÖRSEL' : 'BELGE'} ANALİZ VERİSİ ENTEGRE EDİLDİ
                       </div>
                     )}
                   </div>
@@ -159,25 +191,59 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           onSubmit={(e) => { e.preventDefault(); handleAISend(input); }} 
           className="relative group max-w-4xl mx-auto"
         >
-          <input
-            type="text"
-            placeholder="Kukul AI Koç'a bir şey sor..."
-            className="w-full pl-8 pr-16 py-5 bg-white/80 dark:bg-slate-800/80 border-2 border-slate-100 dark:border-slate-700 focus:border-blue-500 outline-none rounded-3xl transition-all font-semibold text-sm shadow-inner backdrop-blur-sm"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim()}
-            className="absolute right-3 top-2.5 w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/30"
-          >
-            {isLoading ? <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div> : 
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14M12 5l7 7-7 7" /></svg>
-            }
-          </button>
+          {attachedFile && (
+            <div className="absolute -top-14 left-0 flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-2xl shadow-xl animate-in slide-in-from-bottom-2">
+              <span className="text-xs font-black uppercase tracking-widest truncate max-w-[150px]">{attachedFile.name}</span>
+              <button 
+                type="button"
+                onClick={() => setAttachedFile(null)}
+                className="w-5 h-5 flex items-center justify-center bg-white/20 rounded-full hover:bg-white/40 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute left-3 top-2.5 w-11 h-11 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+              </svg>
+            </button>
+            
+            <input
+              type="text"
+              placeholder="Kukul AI Koç'a bir şey sor..."
+              className="w-full pl-16 pr-16 py-5 bg-white/80 dark:bg-slate-800/80 border-2 border-slate-100 dark:border-slate-700 focus:border-blue-500 outline-none rounded-3xl transition-all font-semibold text-sm shadow-inner backdrop-blur-sm"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading}
+            />
+
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*,application/pdf" 
+              onChange={handleFileSelect} 
+            />
+
+            <button
+              type="submit"
+              disabled={isLoading || (!input.trim() && !attachedFile)}
+              className="absolute right-3 top-2.5 w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/30"
+            >
+              {isLoading ? <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div> : 
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14M12 5l7 7-7 7" /></svg>
+              }
+            </button>
+          </div>
         </form>
-        <p className="text-[8px] font-black uppercase tracking-[0.4em] text-center text-slate-400 mt-4 opacity-50">OWL CORE ENGINE v4.1 - AI TUTORING SYSTEM</p>
+        <p className="text-[8px] font-black uppercase tracking-[0.4em] text-center text-slate-400 mt-4 opacity-50">OWL CORE ENGINE v4.2 - AI TUTORING SYSTEM</p>
       </div>
     </div>
   );
