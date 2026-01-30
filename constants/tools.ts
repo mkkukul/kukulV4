@@ -8,7 +8,7 @@ export const EDUCATIONAL_TOOLS: Tool[] = [
     category: ToolCategory.ANALYSIS, 
     description: 'LGS ve YKS netlerini hesaplar ve stratejik analiz yapar.', 
     icon: '📈',
-    systemPrompt: "Sen kukul.io Baş Analistisin. Kullanıcının girdiği net verilerini analiz et, zayıf noktaları belirle ve ders çalışma stratejisi oluştur."
+    systemPrompt: "Sen Kukul AI Koç Baş Analistisin. Kullanıcının girdiği net verilerini analiz et, zayıf noktaları belirle ve ders çalışma stratejisi oluştur."
   },
   { 
     id: 'visual-studio', 
@@ -16,7 +16,7 @@ export const EDUCATIONAL_TOOLS: Tool[] = [
     category: ToolCategory.CONTENT, 
     description: 'Eğitim görselleri ve materyalleri tasarlar.', 
     icon: '🎨',
-    systemPrompt: "Sen kukul.io Görsel Tasarım Direktörüsün. Eğitici görseller üretmek için promptlar oluştur ve sonuçları yorumla."
+    systemPrompt: "Sen Kukul AI Koç Görsel Tasarım Direktörüsün. Eğitici görseller üretmek için promptlar oluştur ve sonuçları yorumla."
   },
   { 
     id: 'raft', 
@@ -24,7 +24,7 @@ export const EDUCATIONAL_TOOLS: Tool[] = [
     category: ToolCategory.DIFFERENTIATION, 
     description: 'Rol-Kitle-Format-Konu odaklı görevler.', 
     icon: '⛵',
-    systemPrompt: "RAFT (Rol, Kitle, Format, Konu) stratejisiyle yaratıcı yazma görevleri tasarla."
+    systemPrompt: "Sen Kukul AI Koç Yaratıcı Yazarlık Uzmanısın. RAFT (Rol, Kitle, Format, Konu) stratejisiyle görevler tasarla."
   },
   { 
     id: 'kwhlaq', 
@@ -32,7 +32,7 @@ export const EDUCATIONAL_TOOLS: Tool[] = [
     category: ToolCategory.PEDAGOGY, 
     description: 'Sorgulamaya dayalı öğrenme planı.', 
     icon: '📋',
-    systemPrompt: "KWHLAQ tablosu için öğrenci girdilerini analiz et ve derinleşme soruları öner."
+    systemPrompt: "Sen Kukul AI Koç Pedagoji Uzmanısın. KWHLAQ tablosu için öğrenci girdilerini analiz et ve derinleşme soruları öner."
   },
   { 
     id: 'text-leveler', 
@@ -40,7 +40,7 @@ export const EDUCATIONAL_TOOLS: Tool[] = [
     category: ToolCategory.LANGUAGE, 
     description: 'Metinleri sınıf seviyesine göre ayarlar.', 
     icon: '📶',
-    systemPrompt: "Metinleri farklı sınıf seviyelerine (ilkokul, lise, akademik) uygun hale getir."
+    systemPrompt: "Sen Kukul AI Koç Dil Uzmanısın. Metinleri farklı sınıf seviyelerine (ilkokul, lise, akademik) uygun hale getir."
   },
   { id: 'podcast', name: 'Podcast Oluşturucu', category: ToolCategory.CONTENT, description: 'Ders içeriklerini podcast senaryosuna dönüştürür.', icon: '🎙️' },
   { id: '4mat', name: '4MAT Öğretim Modeli', category: ToolCategory.PEDAGOGY, description: '8 adımlı döngüsel ders tasarımı.', icon: '🔄' },

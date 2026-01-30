@@ -20,7 +20,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onPromptProcessed,
   isFullPage = false
 }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // Yerel depolamadan geçmişi yükle
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    const saved = localStorage.getItem(`chat_history_${tool.id}`);
+    return saved ? JSON.parse(saved) : [];
+  });
+  
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [streamingText, setStreamingText] = useState('');
@@ -33,14 +38,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Mesajlar her değiştiğinde en alta kaydır ve yerel depolamaya kaydet
   useEffect(() => {
     scrollToBottom();
-  }, [messages, streamingText]);
+    localStorage.setItem(`chat_history_${tool.id}`, JSON.stringify(messages));
+  }, [messages, streamingText, tool.id]);
 
+  // Araç değiştiğinde geçmişi o araca özel yükle
   useEffect(() => {
-    setMessages([]);
+    const saved = localStorage.getItem(`chat_history_${tool.id}`);
+    setMessages(saved ? JSON.parse(saved) : []);
     setStreamingText('');
-  }, [tool]);
+  }, [tool.id]);
 
   useEffect(() => {
     if (externalPrompt) {
@@ -48,6 +57,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       if (onPromptProcessed) onPromptProcessed();
     }
   }, [externalPrompt]);
+
+  const clearHistory = () => {
+    if (confirm('Bu sohbet geçmişini temizlemek istediğine emin misin?')) {
+      setMessages([]);
+      localStorage.removeItem(`chat_history_${tool.id}`);
+    }
+  };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,7 +75,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         alert("Dosya işlenirken bir hata oluştu.");
       }
     }
-    // Reset input to allow selecting same file again
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -134,9 +149,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Sana Özel Akademik Analiz Aktif</p>
            </div>
         </div>
-        <div className="flex items-center gap-2">
-           <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-           <span className="text-[8px] font-black uppercase text-slate-400 tracking-widest">Çevrimiçi</span>
+        <div className="flex items-center gap-4">
+           {messages.length > 0 && (
+             <button 
+               onClick={clearHistory}
+               className="text-[9px] font-black uppercase text-rose-500 hover:text-rose-600 tracking-widest transition-colors"
+               title="Geçmişi Temizle"
+             >
+               🧹 Temizle
+             </button>
+           )}
+           <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span className="text-[8px] font-black uppercase text-slate-400 tracking-widest">Çevrimiçi</span>
+           </div>
         </div>
       </header>
 
