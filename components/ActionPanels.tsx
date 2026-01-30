@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenAI } from "@google/genai";
 import { ExamSubject, StudentProfile, ExamHistoryEntry } from '../types';
 import { aiService } from '../services/aiService';
 
@@ -9,7 +8,7 @@ const FileUpIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentCol
 const AlertTriangleIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
 const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2-2v14a2 2 0 002 2z" /></svg>;
-const ScanIcon = () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>;
+const ScanIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-8V4M8 12H4m4 4v4m4-12H8m12 0h-4M4 8h4m12 4h-4" /></svg>;
 
 // --- LGS KONU VERİSİ ---
 const LGS_TOPICS_DETAIL = {
@@ -172,7 +171,7 @@ export const ProgressTracker: React.FC = () => {
 
   if (history.length === 0) {
     return (
-      <div className="p-20 text-center space-y-6 bg-white/50 dark:bg-slate-900/50 rounded-[4rem] border border-dashed border-slate-300 dark:border-slate-700">
+      <div className="p-20 text-center space-y-6 bg-white/50 dark:bg-slate-900/50 rounded-[4rem] border border-dashed border-slate-300 dark:border-slate-700 max-w-5xl mx-auto">
         <div className="text-6xl grayscale">📉</div>
         <h3 className="text-3xl font-black uppercase dark:text-white">Henüz Bir Veri Yok</h3>
         <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Deneme verilerini girdikçe gelişimini burada göreceksin.</p>
@@ -185,7 +184,7 @@ export const ProgressTracker: React.FC = () => {
   const improvement = previous ? latest.totalNet - previous.totalNet : 0;
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700">
+    <div className="space-y-10 animate-in fade-in duration-700 max-w-5xl mx-auto">
       <div className="grid md:grid-cols-3 gap-8">
         <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
           <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Son Deneme Neti</p>
@@ -200,13 +199,13 @@ export const ProgressTracker: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
-          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Çözülen Deneme Sayısı</p>
-          <span className="text-5xl font-black dark:text-white tabular-nums">{history.length}</span>
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Başarı Oranı</p>
+          <span className="text-5xl font-black text-emerald-600 tabular-nums">%{((latest.totalNet / 90) * 100).toFixed(1)}</span>
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
-          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Hedefe Kalan</p>
-          <span className="text-5xl font-black text-rose-600 tabular-nums">?</span>
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Deneme Sayısı</p>
+          <span className="text-5xl font-black dark:text-white tabular-nums">{history.length}</span>
         </div>
       </div>
 
@@ -289,11 +288,9 @@ export const AnalysisStudio: React.FC<{
     const newSubjects = [...subjects];
     const val = parseInt(value) || 0;
     newSubjects[index][field] = Math.max(0, val);
-    
     const divider = examType === 'LGS' ? 3 : 4;
     const net = newSubjects[index].correct - (newSubjects[index].incorrect / divider);
     newSubjects[index].net = Math.max(0, parseFloat(net.toFixed(2)));
-    
     setSubjects(newSubjects);
   };
 
@@ -322,10 +319,10 @@ export const AnalysisStudio: React.FC<{
     history.push(historyEntry);
     localStorage.setItem('exam_history', JSON.stringify(history));
 
-    let prompt = `Aşağıdaki ${examType} deneme verilerimi ve/veya yüklediğim belgeyi analiz et:\n\n[MANUEL VERİ]:\n`;
+    let prompt = `Aşağıdaki ${examType} deneme verilerimi ve/veya yüklediğim karne belgesini derinlemesine analiz et:\n\n[MANUEL VERİ GİRİŞİ]:\n`;
     prompt += subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
     prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
-    prompt += `Lütfen hem genel net başarımı hem de belge içindeki konu bazlı (kazanım bazlı) eksiklerimi/başarılarımı detaylıca analiz et.`;
+    prompt += `Lütfen yüklenen belgedeki konu bazlı kazanım listesini de analiz ederek hem genel net başarımı hem de mikro seviyedeki konu eksiklerimi detaylıca raporla.`;
     
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
@@ -334,19 +331,19 @@ export const AnalysisStudio: React.FC<{
   const emergencyData = {
     'Türkçe': { 
       topics: ['Paragrafta Anlam', 'Fiilimsiler', 'Cümlenin Ögeleri', 'Sözcükte Anlam', 'Yazım Kuralları'], 
-      advice: 'LGS Türkçenin omurgası paragraftır. Her gün düzenli 30 soru çözerek okuma kondisyonunu korumalısın.' 
+      advice: 'LGS Türkçenin %70\'i anlam bilgisidir. Her gün en az 30 yeni nesil paragraf sorusu çözerek okuma hızını artırmalısın.' 
     },
     'Matematik': { 
       topics: ['Üslü İfadeler', 'Kareköklü İfadeler', 'Çarpanlar ve Katlar', 'Veri Analizi', 'Cebirsel İfadeler'], 
-      advice: 'Yeni nesil soruların kurgusu Üslü ve Kareköklü sayılar üzerine kuruludur. Mantık yürütme becerini geliştirmelisin.' 
+      advice: 'Kareköklü ve Üslü ifadeler sınavın temelidir. Formülleri ezberlemek yerine sayıların mantığını kavramaya odaklan.' 
     },
     'Fen Bilimleri': { 
       topics: ['Mevsimler ve İklim', 'DNA ve Genetik Kod', 'Basınç', 'Madde ve Endüstri', 'Basit Makineler'], 
-      advice: 'DNA ve Basınç üniteleri sınavın en ayırt edici kısımlarıdır. Görsel deney sorularına odaklan.' 
+      advice: 'DNA ve Basınç üniteleri sınavın en ayırt edici kısımlarıdır. Görsel okuma ve deney düzenekli sorulara odaklan.' 
     },
     'İnkılap Tarihi': { 
       topics: ['Bir Kahraman Doğuyor', 'Milli Uyanış', 'Ya İstiklal Ya Ölüm'], 
-      advice: 'Kavram bilgisi (milli egemenlik vb.) soruların kilit noktasıdır.' 
+      advice: 'Kavram bilgisi (milli egemenlik vb.) soruların kilit noktasıdır. Olayların neden-sonuç ilişkisini kavra.' 
     },
     'Din Kültürü': { 
       topics: ['Kader İnancı', 'Zekat ve Sadaka', 'Din ve Hayat'], 
@@ -354,7 +351,7 @@ export const AnalysisStudio: React.FC<{
     },
     'İngilizce': { 
       topics: ['Friendship', 'Teen Life', 'In The Kitchen'], 
-      advice: 'Ünite diyaloglarındaki kalıpları ezberlemeli ve kelime kartlarıyla çalışmalısın.' 
+      advice: 'Ünite diyaloglarındaki kalıpları ezberlemeli ve her gün 20 yeni kelime kartı yapmalısın.' 
     }
   };
 
@@ -363,7 +360,7 @@ export const AnalysisStudio: React.FC<{
   return (
     <div className="min-h-[600px] animate-in fade-in duration-500 overflow-y-auto pb-20">
       {activeTab === 'input' && (
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white/90 dark:bg-slate-900/80 rounded-[3.5rem] p-10 border border-slate-200/50 shadow-2xl backdrop-blur-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
@@ -371,8 +368,8 @@ export const AnalysisStudio: React.FC<{
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg"><CalculatorIcon /></div>
                     <div>
-                      <h4 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Veri Giriş Paneli</h4>
-                      <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Manuel Netler veya Akıllı Tarama</p>
+                      <h4 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Performans Kaydı</h4>
+                      <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Karne Tara veya Manuel Veri Gir</p>
                     </div>
                   </div>
                   <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
@@ -409,21 +406,26 @@ export const AnalysisStudio: React.FC<{
             </div>
           </div>
           <div className="space-y-8">
-            <div onClick={() => fileInputRef.current?.click()} className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-[4rem] p-10 flex flex-col items-center justify-center text-center space-y-6 shadow-2xl relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02] border border-white/10">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl -mr-24 -mt-24 group-hover:scale-150 transition-transform"></div>
-              <div className="w-20 h-20 bg-white/5 rounded-[2.5rem] flex items-center justify-center text-4xl shadow-inner group-hover:rotate-6 transition-transform border border-white/10">
+            <div 
+              onClick={() => fileInputRef.current?.click()} 
+              className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center text-center space-y-6 shadow-2xl relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.02] border border-white/10 active:scale-[0.98]"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl -mr-32 -mt-32 group-hover:scale-150 transition-transform"></div>
+              <div className="w-24 h-24 bg-white/5 rounded-[2.5rem] flex items-center justify-center text-5xl shadow-inner group-hover:rotate-6 transition-transform border border-white/10 group-hover:bg-blue-600 transition-colors duration-500">
                 {fileData ? <ScanIcon /> : <FileUpIcon />}
               </div>
-              <div className="space-y-2">
-                <h4 className="text-2xl font-black uppercase tracking-tighter leading-tight">Karne / Belge Tara</h4>
-                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest px-4 leading-relaxed">PDF veya Görsel Yükle, Kukul AI Konu Bazlı Analiz Yapsın.</p>
+              <div className="space-y-2 relative z-10">
+                <h4 className="text-3xl font-black uppercase tracking-tighter leading-tight">Karne Analizi</h4>
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest px-8 leading-relaxed">PDF veya Görsel Yükle, Konu Bazlı Eksiklerini Keşfet.</p>
               </div>
               <input type="file" ref={fileInputRef} className="hidden" accept="image/*,application/pdf" onChange={handleFileChange} />
-              <button className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl transition-all">{fileData ? fileData.name : 'BELGE SEÇİN'}</button>
+              <div className={`px-10 py-5 ${fileData ? 'bg-emerald-500 shadow-emerald-500/30' : 'bg-white/10 hover:bg-white/20'} text-white border border-white/20 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl transition-all`}>
+                {fileData ? fileData.name : 'BELGE YÜKLE'}
+              </div>
             </div>
             
             <div className="p-10 bg-white/90 dark:bg-slate-900/80 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md">
-               <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Başarı Puanı (Net)</p>
+               <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Güncel Net Ortalaması</p>
                <p className="text-7xl font-black text-blue-600 tracking-tighter tabular-nums">{totalNet.toFixed(2)}</p>
                <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest mt-4 italic">HESAPLANAN TOPLAM</p>
             </div>
@@ -442,34 +444,34 @@ export const AnalysisStudio: React.FC<{
       {activeTab === 'koc' && children}
 
       {activeTab === 'performance' && (
-        <div className="space-y-8 animate-in slide-in-from-bottom-5 duration-700 pb-20">
+        <div className="space-y-8 animate-in slide-in-from-bottom-5 duration-700 pb-20 max-w-7xl mx-auto">
           <div className="p-8 lg:p-12 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-[4rem] backdrop-blur-xl shadow-2xl">
-            <div className="flex items-center gap-5 mb-10">
-              <div className="w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-900/20"><AlertTriangleIcon /></div>
+            <div className="flex items-center gap-5 mb-12">
+              <div className="w-16 h-16 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-900/20"><AlertTriangleIcon /></div>
               <div>
-                <h4 className="text-3xl font-black text-rose-600 dark:text-rose-500 uppercase tracking-tighter leading-none">⚠️ Acil Müdahale Listesi</h4>
+                <h4 className="text-4xl font-black text-rose-600 dark:text-rose-500 uppercase tracking-tighter leading-none">Acil Müdahale Listesi</h4>
                 <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2">Müfredat Bazlı En Kritik Kazanımlar</p>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {Object.entries(emergencyData).map(([subject, data]) => (
-                <div key={subject} className="p-8 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col gap-4 group hover:scale-[1.02] transition-all">
-                  <div className="flex items-center justify-between">
-                    <h5 className="font-black text-lg text-blue-600 uppercase tracking-tighter">{subject}</h5>
-                    <div className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-[9px] font-black uppercase text-slate-500">{data.topics.length} KONU</div>
+                <div key={subject} className="p-10 bg-white dark:bg-slate-800 rounded-[3rem] shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col gap-6 group hover:scale-[1.03] transition-all hover:shadow-2xl">
+                  <div className="flex items-center justify-between border-b border-slate-50 dark:border-slate-700 pb-4">
+                    <h5 className="font-black text-2xl text-blue-600 uppercase tracking-tighter">{subject}</h5>
+                    <div className="px-4 py-1.5 bg-slate-100 dark:bg-slate-700 rounded-full text-[10px] font-black uppercase text-slate-500">{data.topics.length} KONU</div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {data.topics.map((topic, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-rose-500 rounded-full"></div>
-                        <p className="font-bold text-xs text-slate-700 dark:text-slate-300 uppercase tracking-tight">{topic}</p>
+                      <div key={idx} className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-rose-500 rounded-full animate-pulse shadow-lg shadow-rose-500/50"></div>
+                        <p className="font-black text-xs text-slate-700 dark:text-slate-200 uppercase tracking-tight">{topic}</p>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 italic">Kukul AI Koç Önerisi:</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">"{data.advice}"</p>
+                  <div className="mt-2 pt-6 border-t border-slate-50 dark:border-slate-700">
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 italic">Kukul AI Koç Önerisi:</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-semibold italic">"{data.advice}"</p>
                   </div>
                 </div>
               ))}
@@ -479,18 +481,18 @@ export const AnalysisStudio: React.FC<{
       )}
 
       {activeTab === 'topics' && (
-         <div className="bg-white/80 dark:bg-slate-900/80 p-8 md:p-16 rounded-[5rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-12 backdrop-blur-xl animate-in fade-in duration-700 mb-20 max-w-6xl mx-auto">
-           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-4">
+         <div className="bg-white/80 dark:bg-slate-900/80 p-8 md:p-20 rounded-[5rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-12 backdrop-blur-xl animate-in fade-in duration-700 mb-20 max-w-6xl mx-auto">
+           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-6">
              <div className="space-y-2 text-center md:text-left">
-               <h3 className="text-4xl font-black uppercase tracking-tighter dark:text-white leading-none">Konu Analizi</h3>
-               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Gerçek Müfredat Ustalık Seviyeleri</p>
+               <h3 className="text-5xl font-black uppercase tracking-tighter dark:text-white leading-none">Konu Analizi</h3>
+               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Müfredat Ustalık Seviyeleri ve Kazanım Takibi</p>
              </div>
-             <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto hide-scrollbar max-w-full">
+             <div className="flex bg-slate-100 dark:bg-slate-800 p-2 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto hide-scrollbar max-w-full shadow-inner">
                 {Object.keys(LGS_TOPICS_DETAIL).map(subj => (
                   <button 
                     key={subj} 
                     onClick={() => setSelectedTopicSubject(subj)} 
-                    className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all whitespace-nowrap ${selectedTopicSubject === subj ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all whitespace-nowrap ${selectedTopicSubject === subj ? 'bg-blue-600 text-white shadow-xl' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     {subj}
                   </button>
@@ -498,7 +500,7 @@ export const AnalysisStudio: React.FC<{
              </div>
            </div>
            
-           <div className="space-y-6">
+           <div className="space-y-8">
               {(LGS_TOPICS_DETAIL as any)[selectedTopicSubject].map((topic: any, idx: number) => {
                 const subjectNet = subjects.find(s => s.name === selectedTopicSubject)?.net || 0;
                 const maxNet = selectedTopicSubject === 'Türkçe' || selectedTopicSubject === 'Matematik' || selectedTopicSubject === 'Fen Bilimleri' ? 20 : 10;
@@ -506,24 +508,26 @@ export const AnalysisStudio: React.FC<{
                 const mastery = Math.max(0, Math.min(100, baseMastery + (Math.random() * 20 - 10)));
                 
                 return (
-                  <div key={idx} className="p-6 bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row items-center gap-6 group hover:shadow-lg transition-all">
+                  <div key={idx} className="p-8 bg-white dark:bg-slate-800/40 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row items-center gap-8 group hover:shadow-2xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-300">
                     <div className="flex-1 min-w-0 w-full">
-                      <div className="flex justify-between items-end mb-3">
-                        <h5 className="font-black text-lg dark:text-white uppercase tracking-tight">{topic.name}</h5>
-                        <span className={`text-[10px] font-black px-3 py-1 rounded-full ${mastery < 40 ? 'bg-rose-500/10 text-rose-500' : (mastery > 75 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500')}`}>
-                          %{mastery.toFixed(0)} USTALIK
-                        </span>
+                      <div className="flex justify-between items-end mb-4">
+                        <h5 className="font-black text-2xl dark:text-white uppercase tracking-tight">{topic.name}</h5>
+                        <div className="flex flex-col items-end">
+                          <span className={`text-[11px] font-black px-4 py-1.5 rounded-full ${mastery < 40 ? 'bg-rose-500 text-white' : (mastery > 75 ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white')} shadow-lg`}>
+                            %{mastery.toFixed(0)} USTALIK
+                          </span>
+                        </div>
                       </div>
-                      <div className="w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                      <div className="w-full h-4 bg-slate-100 dark:bg-slate-700/50 rounded-full overflow-hidden shadow-inner">
                         <div 
-                          className={`h-full transition-all duration-1000 ease-out ${mastery < 40 ? 'bg-rose-500' : (mastery > 75 ? 'bg-emerald-500' : 'bg-blue-600')}`} 
+                          className={`h-full transition-all duration-1000 ease-out shadow-lg ${mastery < 40 ? 'bg-rose-500' : (mastery > 75 ? 'bg-emerald-500' : 'bg-blue-600')}`} 
                           style={{ width: `${mastery}%` }} 
                         />
                       </div>
                     </div>
-                    <div className="shrink-0 text-center w-24">
-                       <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Önem</p>
-                       <p className="text-xl font-black text-slate-800 dark:text-white">%{topic.weight}</p>
+                    <div className="shrink-0 text-center w-28 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800">
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Sınav Ağırlığı</p>
+                       <p className="text-3xl font-black text-slate-800 dark:text-white">%{topic.weight}</p>
                     </div>
                   </div>
                 );
@@ -534,23 +538,23 @@ export const AnalysisStudio: React.FC<{
       
       {(activeTab === 'strategy') && (
         <div className="bg-white/80 dark:bg-slate-900/80 p-16 md:p-24 rounded-[5rem] border border-slate-200/50 shadow-2xl backdrop-blur-xl max-w-5xl mx-auto animate-in fade-in duration-700 mb-20">
-          <div className="text-center space-y-6 mb-16">
-             <h3 className="text-6xl font-black uppercase tracking-tighter dark:text-white leading-none">Stratejik Plan</h3>
-             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] max-w-xl mx-auto">Hedef Okul Yolunda 4 Kritik Adım</p>
+          <div className="text-center space-y-6 mb-20">
+             <h3 className="text-7xl font-black uppercase tracking-tighter dark:text-white leading-none">Stratejik Plan</h3>
+             <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[12px] max-w-xl mx-auto">Zirveye Giden Yolda 4 Temel Kazanım</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 mb-20">
+          <div className="grid md:grid-cols-2 gap-10 mb-20">
             {[
-              { topic: 'Paragraf ve Anlam Bilgisi', impact: 10, reason: 'Sınavın omurgasıdır. Okuduğunu hızlı anlayan her dersi çözer.' },
-              { topic: 'Matematiksel Akıl Yürütme', impact: 9, reason: 'Sadece işlem değil, kurguyu anlama becerisi LGS farkını yaratır.' },
-              { topic: 'Fen Bilimsel Okuryazarlık', impact: 9, reason: 'Deneyleri analiz eden, DNA ve Basıncı çözen öğrenci zirvededir.' },
-              { topic: 'Deneme Analizi Disiplini', impact: 8, reason: 'Hataları tespit edip üzerine gitmek, net artışının tek yoludur.' }
+              { topic: 'Bütüncül Okuma Disiplini', impact: 10, reason: 'Okuduğunu saniyeler içinde anlayan öğrenci, Fen ve Matematik kurgularında asla hata yapmaz.' },
+              { topic: 'Sayısal Modelleme Yetisi', impact: 9, reason: 'Formül ezberlemek yerine sayıların mantığını kavramak, yeni nesil soruların tek anahtarıdır.' },
+              { topic: 'Bilimsel Gözlem ve Analiz', impact: 9, reason: 'Laboratuvar düzeneklerini zihninde kurabilen öğrenci, Fen testinde %100 başarıya ulaşır.' },
+              { topic: 'Hata Defteri Kültürü', impact: 8, reason: 'En büyük öğretmen yaptığın yanlışlardır. Her hatayı bir kazanıma dönüştür ve eksikleri kapat.' }
             ].map((item, i) => (
-              <div key={i} className="p-10 bg-slate-50 dark:bg-slate-800 rounded-[3rem] border border-slate-100 dark:border-slate-700 shadow-sm">
-                <div className="flex justify-between mb-4">
-                  <span className="text-[10px] font-black bg-blue-600 text-white px-4 py-1.5 rounded-full italic uppercase tracking-widest shadow-lg shadow-blue-500/20">ETKİ: {item.impact}/10</span>
+              <div key={i} className="p-12 bg-slate-50 dark:bg-slate-800 rounded-[3.5rem] border border-slate-100 dark:border-slate-700 shadow-sm transition-all hover:shadow-xl group">
+                <div className="flex justify-between mb-6">
+                  <span className="text-[10px] font-black bg-blue-600 text-white px-5 py-2 rounded-full italic uppercase tracking-widest shadow-xl shadow-blue-500/20 group-hover:scale-110 transition-transform">ETKİ: {item.impact}/10</span>
                 </div>
-                <h4 className="font-black text-2xl mb-4 uppercase tracking-tighter dark:text-white">{item.topic}</h4>
-                <p className="text-sm text-slate-500 dark:text-slate-400 italic font-medium leading-relaxed">"{item.reason}"</p>
+                <h4 className="font-black text-3xl mb-6 uppercase tracking-tighter dark:text-white leading-tight">{item.topic}</h4>
+                <p className="text-base text-slate-500 dark:text-slate-400 italic font-medium leading-relaxed">"{item.reason}"</p>
               </div>
             ))}
           </div>

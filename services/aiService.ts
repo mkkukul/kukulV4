@@ -9,6 +9,7 @@ export class AIService {
     history: ChatMessage[],
     onChunk: (text: string) => void
   ) {
+    // Guidelines: Always initialize GoogleGenAI with named apiKey parameter
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const task = EDUCATIONAL_TASKS.find(t => t.id === taskId);
     
@@ -26,7 +27,7 @@ Lütfen analizlerini bu öğrencinin hedeflerine ve seviyesine özel olarak kiş
     }
 
     const baseInstruction = task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç'sun. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.";
-    const systemInstruction = `${baseInstruction}\n\n${profileContext}\n\nÖnemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal.`;
+    const systemInstruction = `${baseInstruction}\n\n${profileContext}\n\nÖnemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal. Gönderilen PDF veya görsellerdeki tablo verilerini titizlikle oku ve hem genel netleri hem de konu bazlı (kazanım odaklı) başarı/başarısızlıkları detaylıca raporla.`;
 
     const contents = history.map(msg => ({
       role: msg.role === 'model' ? 'model' : 'user',
@@ -35,11 +36,11 @@ Lütfen analizlerini bu öğrencinin hedeflerine ve seviyesine özel olarak kiş
 
     try {
       const responseStream = await ai.models.generateContentStream({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3-pro-preview', // Requested modern Pro tier
         contents,
         config: {
           systemInstruction,
-          temperature: 0.75,
+          temperature: 0.7,
         }
       });
 

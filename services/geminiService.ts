@@ -9,7 +9,6 @@ export class GeminiService {
     history: ChatMessage[],
     onChunk?: (text: string) => void
   ) {
-    // Guidelines: Always initialize GoogleGenAI with named apiKey parameter
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     try {
       const systemInstruction = SYSTEM_INSTRUCTIONS[toolId] || SYSTEM_INSTRUCTIONS['default'];
@@ -20,7 +19,7 @@ export class GeminiService {
       }));
 
       const responseStream = await ai.models.generateContentStream({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3-pro-preview',
         contents,
         config: {
           systemInstruction,
