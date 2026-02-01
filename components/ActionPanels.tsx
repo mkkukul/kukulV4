@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ExamSubject, StudentProfile, ExamHistoryEntry } from '../types';
 import { aiService } from '../services/aiService';
@@ -387,12 +388,19 @@ export const AnalysisStudio: React.FC<{
     history.push(historyEntry);
     localStorage.setItem('exam_history', JSON.stringify(history));
 
-    // OWL CORE v5 STRATEJIK ANALIZ TALEBI
-    let prompt = `Kukul AI Koç, lütfen aşağıdaki ${examType} deneme verilerimi ve (varsa) ekteki dosyayı kullanarak detaylı bir STRATEJİK ANALİZ RAPORU oluştur.\n\n`;
-    prompt += `NET VERİLERİ:\n` + subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
-    prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
-    prompt += `TALİMAT: Sadece ${examType} müfredatındaki konuları ele al ve sınav ağırlığına göre aksiyon planı sun. "📊 Performans Özeti", "📉 Kritik Konu Eksikleri" ve "🚀 Haftalık Aksiyon Planı" başlıklarını kullan.`;
+    // OWL CORE v5 DERİN ANALİZ FORMATI
+    let prompt = `Kukul AI Koç, lütfen aşağıdaki ${examType} deneme verilerimi ve (varsa) ekteki dosyayı kullanarak OWL CORE v5 derin analiz raporunu oluştur.\n\n`;
     
+    // Veri Setini AI'ya Aktarma
+    prompt += `[NET VERİLERİ]:\n` + subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
+    prompt += `\n[TOPLAM NET]: ${totalNet.toFixed(2)}\n\n`;
+    
+    // Derin Analiz Tetikleyicisi
+    prompt += `[ANALİZ TALEBİ]:\n`;
+    prompt += `1. Raporu profesyonel bir koç diliyle, öğrenciyi sorgulayarak oluştur.\n`;
+    prompt += `2. PDF müfredatındaki eksiksiz konu isimlerini kullan.\n`;
+    prompt += `3. En kritik 2 konu için öğrenciye 3'er adet yeni nesil antrenman sorusu üret.`;
+
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
 
