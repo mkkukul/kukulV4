@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { ExamSubject, StudentProfile, ExamHistoryEntry } from '../types';
 import { aiService } from '../services/aiService';
@@ -188,7 +187,6 @@ export const ProgressTracker: React.FC = () => {
   const improvement = previous ? latest.totalNet - previous.totalNet : 0;
   const totalGrowth = latest.totalNet - earliest.totalNet;
 
-  // Ders bazlı trend verisi
   const subjectTrendData = history.slice().reverse().map(entry => {
     const subj = entry.subjects.find(s => s.name === selectedTrendSubject);
     return {
@@ -201,8 +199,6 @@ export const ProgressTracker: React.FC = () => {
 
   return (
     <div className="space-y-12 animate-in fade-in duration-700 max-w-6xl mx-auto pb-32">
-      
-      {/* ÜST ÖZET KARTLARI */}
       <div className="grid md:grid-cols-4 gap-6">
         <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
@@ -239,7 +235,6 @@ export const ProgressTracker: React.FC = () => {
         </div>
       </div>
 
-      {/* DERS TREND ANALİZİ GÖRSELLEŞTİRME */}
       <div className="bg-white/80 dark:bg-slate-900/80 p-10 md:p-14 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-4">
@@ -262,7 +257,6 @@ export const ProgressTracker: React.FC = () => {
           </div>
         </div>
 
-        {/* BASİT ÇUBUK GRAFİK */}
         <div className="h-[300px] flex items-end justify-between gap-4 px-4 border-b border-slate-100 dark:border-slate-800 pb-10">
           {subjectTrendData.map((data, idx) => {
             const maxVal = selectedTrendSubject === 'Türkçe' || selectedTrendSubject === 'Matematik' || selectedTrendSubject === 'Fen Bilimleri' ? 20 : 10;
@@ -283,7 +277,6 @@ export const ProgressTracker: React.FC = () => {
         </div>
       </div>
 
-      {/* DETAYLI DENEME GEÇMİŞİ LİSTESİ */}
       <div className="bg-white dark:bg-slate-900 p-12 rounded-[4rem] shadow-2xl border border-slate-100 dark:border-slate-800 space-y-12">
         <div className="flex justify-between items-center">
           <h3 className="text-3xl font-black uppercase tracking-tighter dark:text-white">Deneme Arşivi</h3>
@@ -394,15 +387,15 @@ export const AnalysisStudio: React.FC<{
     history.push(historyEntry);
     localStorage.setItem('exam_history', JSON.stringify(history));
 
-    let prompt = `Aşağıdaki ${examType} deneme verilerimi ve/veya yüklediğim karne belgesini derinlemesine analiz et:\n\n[MANUEL VERİ GİRİŞİ]:\n`;
-    prompt += subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
+    // OWL CORE v5 STRATEJIK ANALIZ TALEBI
+    let prompt = `Kukul AI Koç, lütfen aşağıdaki ${examType} deneme verilerimi ve (varsa) ekteki dosyayı kullanarak detaylı bir STRATEJİK ANALİZ RAPORU oluştur.\n\n`;
+    prompt += `NET VERİLERİ:\n` + subjects.map(s => `- ${s.name}: ${s.correct} Doğru, ${s.incorrect} Yanlış, Net: ${s.net}`).join('\n');
     prompt += `\nTOPLAM NET: ${totalNet.toFixed(2)}\n\n`;
-    prompt += `Lütfen yüklenen belgedeki konu bazlı kazanım listesini de analiz ederek hem genel net başarımı hem de mikro seviyedeki konu eksiklerimi detaylıca raporla.`;
+    prompt += `TALİMAT: Sadece ${examType} müfredatındaki konuları ele al ve sınav ağırlığına göre aksiyon planı sun. "📊 Performans Özeti", "📉 Kritik Konu Eksikleri" ve "🚀 Haftalık Aksiyon Planı" başlıklarını kullan.`;
     
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
 
-  // Somut Verilerle Detaylı Analiz Metinleri ve Stratejiler
   const getDetailedAnalysis = (subjectName: string, net: number) => {
     const maxQuestions = (subjectName === 'Türkçe' || subjectName === 'Matematik' || subjectName === 'Fen Bilimleri') ? 20 : 10;
     const ratio = (net / maxQuestions) * 100;
@@ -544,7 +537,6 @@ export const AnalysisStudio: React.FC<{
 
       {activeTab === 'performance' && (
         <div className="space-y-12 animate-in slide-in-from-bottom-5 duration-700 pb-20 max-w-7xl mx-auto">
-          {/* AI KOÇ ÖZET PANELİ */}
           <div className="p-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[4rem] text-white shadow-2xl relative overflow-hidden group">
              <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
              <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
@@ -556,7 +548,6 @@ export const AnalysisStudio: React.FC<{
              </div>
           </div>
 
-          {/* DERS BAZLI DETAYLI ANALİZ KARTLARI */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {subjects.map((s) => {
               const analysis = getDetailedAnalysis(s.name, s.net);
@@ -566,7 +557,6 @@ export const AnalysisStudio: React.FC<{
               return (
                 <div key={s.name} className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 border-t-8 border-t-blue-600" style={{ borderTopColor: isLow ? '#f43f5e' : (isHigh ? '#10b981' : '#2563eb') }}>
                    <div className="p-10 space-y-8">
-                      {/* Üst Bilgi: Başlık ve Statü */}
                       <div className="flex justify-between items-start">
                          <div>
                             <h4 className="text-3xl font-black uppercase tracking-tighter dark:text-white">{s.name}</h4>
@@ -577,7 +567,6 @@ export const AnalysisStudio: React.FC<{
                          </div>
                       </div>
 
-                      {/* AI Koç Mesajı Box */}
                       <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800 italic relative">
                          <div className="absolute -top-3 left-6 px-3 bg-blue-600 text-white rounded-lg text-[8px] font-black uppercase tracking-widest py-1 flex items-center gap-2">
                             <SparklesIcon /> AI Koç Notu
@@ -585,7 +574,6 @@ export const AnalysisStudio: React.FC<{
                          <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">"{analysis.coachMsg}"</p>
                       </div>
 
-                      {/* Analiz Detayları Grid */}
                       <div className="grid grid-cols-1 gap-6">
                          <div className="space-y-2">
                             <p className="text-[9px] font-black uppercase text-blue-600 tracking-[0.2em]">🎯 Çalışma Stratejisi</p>
@@ -597,7 +585,6 @@ export const AnalysisStudio: React.FC<{
                          </div>
                       </div>
 
-                      {/* Alt Bilgi: Net Göstergesi */}
                       <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
                          <div className="flex gap-1">
                             {[1, 2, 3, 4, 5].map(step => (

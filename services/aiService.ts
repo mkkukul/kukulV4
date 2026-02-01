@@ -1,4 +1,3 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage, StudentProfile } from "../types";
 import { EDUCATIONAL_TASKS } from "../constants/tasks";
@@ -9,7 +8,6 @@ export class AIService {
     history: ChatMessage[],
     onChunk: (text: string) => void
   ) {
-    // Guidelines: Always initialize GoogleGenAI with named apiKey parameter
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const task = EDUCATIONAL_TASKS.find(t => t.id === taskId);
     
@@ -26,20 +24,28 @@ export class AIService {
 Lütfen analizlerini bu öğrencinin hedeflerine ve seviyesine özel olarak kişiselleştir.`;
     }
 
-    const baseInstruction = task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç'sun. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.";
-    const systemInstruction = `${baseInstruction}
+    const baseInstruction = task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç'sun.";
+    
+    const systemInstruction = `
+${baseInstruction}
 
-[STRATEJİK BELGE ANALİZİ]
-Eğer kullanıcı bir karne, deneme sonuç belgesi veya sınav tablosu yüklerse:
-1. Görüntüdeki veya PDF'deki TÜM tablo verilerini (Doğru, Yanlış, Boş, Net) milimetrik hassasiyetle oku.
-2. Ders bazlı kazanım listelerini (Konu analizi) çıkar.
-3. MEB resmi müfredat listesine göre hangi konularda eksik olduğunu belirle.
-4. Analiz sonucunu; "Genel Durum", "Ders Bazlı Detaylar" ve "Kritik Eylem Planı" başlıkları altında tablo ve listelerle sun.
-5. Pedagojik, motive edici ama gerçekçi bir ton kullan.
+[STRATEJİK ANALİZ MOTORU - OWL CORE v5]
+Sen Türkiye'deki LGS ve YKS sistemlerinde uzmanlaşmış bir Stratejik Performans Koçusun. Görevin, kullanıcının girdiği netleri ve yüklediği belgeleri sadece resmi müfredat listelerine ve soru dağılım verilerine göre analiz ederek profesyonel bir rapor sunmaktır.
+
+LGS (8. Sınıf) KESİN KONU LİSTESİ:
+- Türkçe: Fiilimsiler, Cümlenin Ögeleri, Cümle Türleri, Sözcükte Anlam, Cümlede Anlam, Metin Türleri, Söz Sanatları, Yazım/Noktalama, Parçada Anlam, Görsel Yorumlama, Sözel Mantık.
+- Matematik: Çarpanlar/Katlar, Üslü/Köklü İfadeler, Veri Analizi, Olasılık, Cebirsel İfadeler, Doğrusal Denklemler, Eşitsizlikler, Üçgenler, Geometrik Cisimler.
+- Fen Bilimleri: Mevsimler, DNA ve Genetik Kod, Basınç, Madde ve Endüstri, Basit Makineler, Enerji Dönüşümleri, Elektrik Yükleri.
+
+RAPORLAMA KURALLARI:
+1. Müfredat Kilidi: LGS öğrencisine asla lise (Modern Fizik, Limit, Türev) konusu önerme.
+2. Sayısal Analiz: Raporunda "Bu konu sınavda ortalama X soru ile %Y ağırlığa sahip" şeklinde istatistikleri kullan.
+3. Tablo Okuma: PDF veya görsellerdeki TÜM tablo verilerini (Doğru, Yanlış, Boş, Net) milimetrik hassasiyetle oku.
+4. Format: Yanıtını mutlaka "📊 Performans Özeti", "📉 Kritik Konu Eksikleri" ve "🚀 Haftalık Aksiyon Planı" başlıklarıyla sun. Asla "vb." ifadesini kullanma.
 
 ${profileContext}
 
-Önemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal. Gönderilen belgelerdeki verileri titizlikle oku.`;
+Önemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal. Yanıtlarını her zaman Türkçe, yapılandırılmış Markdown formatında ver.`;
 
     const contents = history.map(msg => ({
       role: msg.role === 'model' ? 'model' : 'user',
@@ -48,7 +54,7 @@ ${profileContext}
 
     try {
       const responseStream = await ai.models.generateContentStream({
-        model: 'gemini-3-pro-preview', // Requested modern Pro tier
+        model: 'gemini-3-pro-preview',
         contents,
         config: {
           systemInstruction,
