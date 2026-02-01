@@ -9,6 +9,7 @@ const AlertTriangleIcon = () => <svg className="w-5 h-5" fill="none" stroke="cur
 const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2-2v14a2 2 0 002 2z" /></svg>;
 const ScanIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-8V4M8 12H4m4 4v4m4-12H8m12 0h-4M4 8h4m12 4h-4" /></svg>;
+const SparklesIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" /></svg>;
 
 // --- LGS KONU VERİSİ ---
 const LGS_TOPICS_DETAIL = {
@@ -327,32 +328,56 @@ export const AnalysisStudio: React.FC<{
     onAnalyze(prompt, fileData ? { mimeType: fileData.mimeType, data: fileData.data } : undefined);
   };
 
-  // Somut Verilerle Acil Müdahale Listesi (MAJOR: 5 konu, MINOR: 3 konu)
-  const emergencyData = {
-    'Türkçe': { 
-      topics: ['Paragrafta Anlam', 'Fiilimsiler', 'Cümlenin Ögeleri', 'Sözcükte Anlam', 'Yazım Kuralları'], 
-      advice: 'LGS Türkçenin %70\'i anlam bilgisidir. Her gün en az 30 yeni nesil paragraf sorusu çözerek okuma hızını artırmalısın.' 
-    },
-    'Matematik': { 
-      topics: ['Üslü İfadeler', 'Kareköklü İfadeler', 'Çarpanlar ve Katlar', 'Veri Analizi', 'Cebirsel İfadeler'], 
-      advice: 'Kareköklü ve Üslü ifadeler sınavın temelidir. Formülleri ezberlemek yerine sayıların mantığını kavramaya odaklan.' 
-    },
-    'Fen Bilimleri': { 
-      topics: ['Mevsimler ve İklim', 'DNA ve Genetik Kod', 'Basınç', 'Madde ve Endüstri', 'Basit Makineler'], 
-      advice: 'DNA ve Basınç üniteleri sınavın en ayırt edici kısımlarıdır. Görsel okuma ve deney düzenekli sorulara odaklan.' 
-    },
-    'İnkılap Tarihi': { 
-      topics: ['Bir Kahraman Doğuyor', 'Milli Uyanış', 'Ya İstiklal Ya Ölüm'], 
-      advice: 'Kavram bilgisi (milli egemenlik vb.) soruların kilit noktasıdır. Olayların neden-sonuç ilişkisini kavra.' 
-    },
-    'Din Kültürü': { 
-      topics: ['Kader İnancı', 'Zekat ve Sadaka', 'Din ve Hayat'], 
-      advice: 'Ayet yorumlama sorularında kader ve kaza farkına çok dikkat etmelisin.' 
-    },
-    'İngilizce': { 
-      topics: ['Friendship', 'Teen Life', 'In The Kitchen'], 
-      advice: 'Ünite diyaloglarındaki kalıpları ezberlemeli ve her gün 20 yeni kelime kartı yapmalısın.' 
-    }
+  // Somut Verilerle Detaylı Analiz Metinleri ve Stratejiler
+  const getDetailedAnalysis = (subjectName: string, net: number) => {
+    const maxQuestions = (subjectName === 'Türkçe' || subjectName === 'Matematik' || subjectName === 'Fen Bilimleri') ? 20 : 10;
+    const ratio = (net / maxQuestions) * 100;
+
+    const data: any = {
+      'Türkçe': {
+        status: ratio > 75 ? 'Mükemmel' : ratio > 40 ? 'Geliştirilmeli' : 'Kritik Seviye',
+        strategy: 'Her gün 20 paragraf sorusuyla odaklanma süreni artır. Fiilimsiler ve cümlenin ögeleri konularını tekrar et.',
+        growth: 'Anlam bilgisi sorularındaki hızını %15 artırabilirsen, sayısal bölüme daha taze bir zihinle geçebilirsin.',
+        coachMsg: 'Harikasın! Türkçede kurduğun hakimiyet, diğer tüm derslerin anahtarıdır. Okuma hızın senin süper gücün olacak.'
+      },
+      'Matematik': {
+        status: ratio > 70 ? 'Üst Düzey' : ratio > 35 ? 'Dikkat Gerektiriyor' : 'Yoğun Çalışma Şart',
+        strategy: 'Yeni nesil soruların kurgusunu anlamak için önce modelleme yap. Kareköklü sayılarda pratikliğini artır.',
+        growth: 'İşlem hatalarını minimize ederek netlerini 4-5 puan yukarı çekebilirsin. Geometrik cisimlerde görselleştirmeye odaklan.',
+        coachMsg: 'Matematik bir maratondur, her yanlış bir adımdır. Mantığını kavradığın her soru seni zirveye bir adım daha yaklaştırır.'
+      },
+      'Fen Bilimleri': {
+        status: ratio > 75 ? 'Bilim İnsanı Adayı' : ratio > 45 ? 'İyi Yolda' : 'Konu Eksiği Mevcut',
+        strategy: 'Basınç ve DNA ünitelerindeki deney düzeneklerini kendin çizerek çalış. Madde ve endüstride periyodik tabloyu adın gibi bil.',
+        growth: 'Analitik düşünme becerin Fen testinde sana fark yaratacak. Basit makinelerde kuvvet kazancı mantığını oturt.',
+        coachMsg: 'Merakın senin en büyük rehberin. Bilimin ışığında attığın her adım, deneme sonuçlarında parlamaya devam edecek!'
+      },
+      'İnkılap Tarihi': {
+        status: ratio > 80 ? 'Stratejist' : ratio > 50 ? 'Ortalama' : 'Okuma Eksikliği',
+        strategy: 'Olaylar arasındaki neden-sonuç ilişkisini kronolojik tablo üzerinden takip et. Kavramlara hakim ol.',
+        growth: 'Atatürkçülük ve Çağdaşlaşan Türkiye ünitesinde yorum gücünü kullanarak full çekebilirsin.',
+        coachMsg: 'Tarih, geleceği yazanların dersidir. Geçmişin derslerini bugünün başarısına dönüştürmek senin elinde.'
+      },
+      'Din Kültürü': {
+        status: ratio > 85 ? 'Huzurlu Başarı' : ratio > 60 ? 'Yeterli' : 'Kavram Karmaşası',
+        strategy: 'Ayet ve hadis yorumlama sorularında anahtar kelimelere odaklan. Zekat ve sadaka oranlarını tekrar et.',
+        growth: 'Kader ve kaza ünitesindeki ince farkları öğrenerek bu dersten tam puan alabilirsin.',
+        coachMsg: 'Değerlerine verdiğin önem, karakterinle beraber netlerine de yansıyor. Samimiyetin başarıyı getirecektir.'
+      },
+      'İngilizce': {
+        status: ratio > 80 ? 'Global Öğrenci' : ratio > 40 ? 'Kelime Eksiği' : 'Başlangıç Seviyesi',
+        strategy: 'Her gün yeni öğrendiğin 10 kelimeyle cümle kur. Diyalog tamamlama sorularında soru köküne dikkat et.',
+        growth: 'Friendship ve Teen Life ünitelerindeki kalıpları ezberleyerek süreni kısaltabilirsin.',
+        coachMsg: 'Dünya senin dilinde konuşmaya başlayacak! Kelimelerin gücüyle sınırlarını her gün biraz daha genişletiyorsun.'
+      }
+    };
+
+    return data[subjectName] || { 
+      status: 'Analiz Ediliyor', 
+      strategy: 'Düzenli tekrar ve deneme çözümü.', 
+      growth: 'Genel gelişim potansiyeli yüksek.', 
+      coachMsg: 'Başarı yolunda emin adımlarla ilerliyorsun!' 
+    };
   };
 
   const [selectedTopicSubject, setSelectedTopicSubject] = useState<string>('Türkçe');
@@ -444,38 +469,76 @@ export const AnalysisStudio: React.FC<{
       {activeTab === 'koc' && children}
 
       {activeTab === 'performance' && (
-        <div className="space-y-8 animate-in slide-in-from-bottom-5 duration-700 pb-20 max-w-7xl mx-auto">
-          <div className="p-8 lg:p-12 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-[4rem] backdrop-blur-xl shadow-2xl">
-            <div className="flex items-center gap-5 mb-12">
-              <div className="w-16 h-16 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-900/20"><AlertTriangleIcon /></div>
-              <div>
-                <h4 className="text-4xl font-black text-rose-600 dark:text-rose-500 uppercase tracking-tighter leading-none">Acil Müdahale Listesi</h4>
-                <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2">Müfredat Bazlı En Kritik Kazanımlar</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {Object.entries(emergencyData).map(([subject, data]) => (
-                <div key={subject} className="p-10 bg-white dark:bg-slate-800 rounded-[3rem] shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col gap-6 group hover:scale-[1.03] transition-all hover:shadow-2xl">
-                  <div className="flex items-center justify-between border-b border-slate-50 dark:border-slate-700 pb-4">
-                    <h5 className="font-black text-2xl text-blue-600 uppercase tracking-tighter">{subject}</h5>
-                    <div className="px-4 py-1.5 bg-slate-100 dark:bg-slate-700 rounded-full text-[10px] font-black uppercase text-slate-500">{data.topics.length} KONU</div>
-                  </div>
-                  <div className="space-y-3">
-                    {data.topics.map((topic, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-rose-500 rounded-full animate-pulse shadow-lg shadow-rose-500/50"></div>
-                        <p className="font-black text-xs text-slate-700 dark:text-slate-200 uppercase tracking-tight">{topic}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-2 pt-6 border-t border-slate-50 dark:border-slate-700">
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 italic">Kukul AI Koç Önerisi:</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-semibold italic">"{data.advice}"</p>
-                  </div>
+        <div className="space-y-12 animate-in slide-in-from-bottom-5 duration-700 pb-20 max-w-7xl mx-auto">
+          {/* AI KOÇ ÖZET PANELİ */}
+          <div className="p-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[4rem] text-white shadow-2xl relative overflow-hidden group">
+             <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
+             <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+                <div className="w-32 h-32 bg-white/20 rounded-[2.5rem] flex items-center justify-center text-6xl shadow-inner border border-white/20">🦉</div>
+                <div className="flex-1 text-center md:text-left space-y-4">
+                   <h3 className="text-4xl font-black uppercase tracking-tighter">Derinlemesine Ders Analizi</h3>
+                   <p className="text-blue-100 text-lg font-medium max-w-2xl leading-relaxed italic">"Netlerin sadece bir sayı değil, gelişim yolculuğunun kilometre taşlarıdır. Senin için hazırladığım bu özel analizi dikkatle incele!"</p>
                 </div>
-              ))}
-            </div>
+             </div>
+          </div>
+
+          {/* DERS BAZLI DETAYLI ANALİZ KARTLARI */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {subjects.map((s) => {
+              const analysis = getDetailedAnalysis(s.name, s.net);
+              const isLow = s.net < (s.name === 'Türkçe' || s.name === 'Matematik' || s.name === 'Fen Bilimleri' ? 8 : 4);
+              const isHigh = s.net > (s.name === 'Türkçe' || s.name === 'Matematik' || s.name === 'Fen Bilimleri' ? 16 : 8);
+
+              return (
+                <div key={s.name} className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 border-t-8 border-t-blue-600" style={{ borderTopColor: isLow ? '#f43f5e' : (isHigh ? '#10b981' : '#2563eb') }}>
+                   <div className="p-10 space-y-8">
+                      {/* Üst Bilgi: Başlık ve Statü */}
+                      <div className="flex justify-between items-start">
+                         <div>
+                            <h4 className="text-3xl font-black uppercase tracking-tighter dark:text-white">{s.name}</h4>
+                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Ders Bazlı Check-up</p>
+                         </div>
+                         <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase shadow-lg ${isLow ? 'bg-rose-500 text-white' : (isHigh ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white')}`}>
+                            {analysis.status}
+                         </div>
+                      </div>
+
+                      {/* AI Koç Mesajı Box */}
+                      <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800 italic relative">
+                         <div className="absolute -top-3 left-6 px-3 bg-blue-600 text-white rounded-lg text-[8px] font-black uppercase tracking-widest py-1 flex items-center gap-2">
+                            <SparklesIcon /> AI Koç Notu
+                         </div>
+                         <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">"{analysis.coachMsg}"</p>
+                      </div>
+
+                      {/* Analiz Detayları Grid */}
+                      <div className="grid grid-cols-1 gap-6">
+                         <div className="space-y-2">
+                            <p className="text-[9px] font-black uppercase text-blue-600 tracking-[0.2em]">🎯 Çalışma Stratejisi</p>
+                            <p className="text-sm text-slate-700 dark:text-slate-200 font-bold leading-relaxed">{analysis.strategy}</p>
+                         </div>
+                         <div className="space-y-2">
+                            <p className="text-[9px] font-black uppercase text-emerald-600 tracking-[0.2em]">🚀 Gelişim Alanları</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic">{analysis.growth}</p>
+                         </div>
+                      </div>
+
+                      {/* Alt Bilgi: Net Göstergesi */}
+                      <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                         <div className="flex gap-1">
+                            {[1, 2, 3, 4, 5].map(step => (
+                               <div key={step} className={`w-8 h-2 rounded-full ${step <= (s.net / (s.name === 'Türkçe' || s.name === 'Matematik' || s.name === 'Fen Bilimleri' ? 20 : 10) * 5) ? 'bg-blue-600' : 'bg-slate-100 dark:bg-slate-800'}`}></div>
+                            ))}
+                         </div>
+                         <div className="text-right">
+                            <span className="text-3xl font-black text-blue-600 tabular-nums">{s.net.toFixed(2)}</span>
+                            <span className="text-[10px] font-black text-slate-400 ml-1 uppercase">NET</span>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
