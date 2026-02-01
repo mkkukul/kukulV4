@@ -10,6 +10,7 @@ const UserCircleIcon = () => <svg className="w-10 h-10" fill="none" stroke="curr
 const CalculatorIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2-2v14a2 2 0 002 2z" /></svg>;
 const ScanIcon = () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-8V4M8 12H4m4 4v4m4-12H8m12 0h-4M4 8h4m12 4h-4" /></svg>;
 const SparklesIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" /></svg>;
+const TrendingUpIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
 
 // --- LGS KONU VERİSİ ---
 const LGS_TOPICS_DETAIL = {
@@ -162,6 +163,7 @@ export const StudentProfilePanel: React.FC<{ onSave: (profile: StudentProfile) =
 
 export const ProgressTracker: React.FC = () => {
   const [history, setHistory] = useState<ExamHistoryEntry[]>([]);
+  const [selectedTrendSubject, setSelectedTrendSubject] = useState<string>('Türkçe');
   
   useEffect(() => {
     const saved = localStorage.getItem('exam_history');
@@ -181,38 +183,110 @@ export const ProgressTracker: React.FC = () => {
   }
 
   const latest = history[0];
+  const earliest = history[history.length - 1];
   const previous = history.length > 1 ? history[1] : null;
   const improvement = previous ? latest.totalNet - previous.totalNet : 0;
+  const totalGrowth = latest.totalNet - earliest.totalNet;
+
+  // Ders bazlı trend verisi
+  const subjectTrendData = history.slice().reverse().map(entry => {
+    const subj = entry.subjects.find(s => s.name === selectedTrendSubject);
+    return {
+      date: new Date(entry.date).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short' }),
+      net: subj ? subj.net : 0
+    };
+  });
+
+  const availableSubjects = Object.keys(LGS_TOPICS_DETAIL);
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700 max-w-5xl mx-auto">
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
-          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Son Deneme Neti</p>
+    <div className="space-y-12 animate-in fade-in duration-700 max-w-6xl mx-auto pb-32">
+      
+      {/* ÜST ÖZET KARTLARI */}
+      <div className="grid md:grid-cols-4 gap-6">
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Güncel Net</p>
           <div className="flex items-end gap-3">
-             <span className="text-5xl font-black text-blue-600 tabular-nums">{latest.totalNet.toFixed(2)}</span>
+             <span className="text-4xl font-black text-blue-600 tabular-nums">{latest.totalNet.toFixed(2)}</span>
              {improvement !== 0 && (
-               <span className={`text-sm font-black mb-1 ${improvement > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+               <span className={`text-xs font-black mb-1 ${improvement > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
                  {improvement > 0 ? '↑' : '↓'} {Math.abs(improvement).toFixed(2)}
                </span>
              )}
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
-          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Başarı Oranı</p>
-          <span className="text-5xl font-black text-emerald-600 tabular-nums">%{((latest.totalNet / 90) * 100).toFixed(1)}</span>
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Toplam Gelişim</p>
+          <div className="flex items-end gap-3">
+             <span className={`text-4xl font-black tabular-nums ${totalGrowth >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+               {totalGrowth > 0 ? '+' : ''}{totalGrowth.toFixed(2)}
+             </span>
+             <span className="text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-tighter">İLK GÜNDEN BERİ</span>
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
           <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Deneme Sayısı</p>
-          <span className="text-5xl font-black dark:text-white tabular-nums">{history.length}</span>
+          <span className="text-4xl font-black dark:text-white tabular-nums">{history.length}</span>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800">
+          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Süreç Verimliliği</p>
+          <span className="text-4xl font-black text-indigo-600 tabular-nums">%{Math.min(100, (history.length * 10)).toFixed(0)}</span>
         </div>
       </div>
 
+      {/* DERS TREND ANALİZİ GÖRSELLEŞTİRME */}
+      <div className="bg-white/80 dark:bg-slate-900/80 p-10 md:p-14 rounded-[4rem] border border-slate-200 dark:border-slate-800 shadow-2xl space-y-10 backdrop-blur-xl relative">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-4">
+             <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg"><TrendingUpIcon /></div>
+             <div>
+               <h3 className="text-3xl font-black uppercase tracking-tighter dark:text-white">Ders Gelişim Trendi</h3>
+               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Seçili Dersin Zaman İçindeki Net Grafiği</p>
+             </div>
+          </div>
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl overflow-x-auto hide-scrollbar border border-slate-200 dark:border-slate-700 shadow-inner max-w-full">
+            {availableSubjects.map(subj => (
+              <button 
+                key={subj} 
+                onClick={() => setSelectedTrendSubject(subj)}
+                className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all whitespace-nowrap ${selectedTrendSubject === subj ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                {subj}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* BASİT ÇUBUK GRAFİK */}
+        <div className="h-[300px] flex items-end justify-between gap-4 px-4 border-b border-slate-100 dark:border-slate-800 pb-10">
+          {subjectTrendData.map((data, idx) => {
+            const maxVal = selectedTrendSubject === 'Türkçe' || selectedTrendSubject === 'Matematik' || selectedTrendSubject === 'Fen Bilimleri' ? 20 : 10;
+            const heightPerc = (data.net / maxVal) * 100;
+            return (
+              <div key={idx} className="flex-1 flex flex-col items-center justify-end h-full gap-4 group relative">
+                <div className="absolute -top-12 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[10px] font-black px-3 py-1.5 rounded-lg whitespace-nowrap z-20">
+                  {data.net.toFixed(2)} NET
+                </div>
+                <div 
+                  className={`w-full rounded-t-2xl transition-all duration-700 shadow-lg ${heightPerc > 75 ? 'bg-emerald-500 shadow-emerald-500/20' : (heightPerc < 40 ? 'bg-rose-500 shadow-rose-500/20' : 'bg-blue-600 shadow-blue-500/20')}`}
+                  style={{ height: `${Math.max(5, heightPerc)}%` }}
+                ></div>
+                <span className="text-[9px] font-black uppercase text-slate-400 tracking-tighter text-center leading-none">{data.date}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* DETAYLI DENEME GEÇMİŞİ LİSTESİ */}
       <div className="bg-white dark:bg-slate-900 p-12 rounded-[4rem] shadow-2xl border border-slate-100 dark:border-slate-800 space-y-12">
         <div className="flex justify-between items-center">
-          <h3 className="text-3xl font-black uppercase tracking-tighter dark:text-white">Gelişim Geçmişi</h3>
+          <h3 className="text-3xl font-black uppercase tracking-tighter dark:text-white">Deneme Arşivi</h3>
           <button 
             onClick={() => { if(confirm('Tüm geçmişi silmek istediğine emin misin?')) { localStorage.removeItem('exam_history'); setHistory([]); } }}
             className="text-[10px] font-black text-rose-500 uppercase tracking-widest hover:underline"
@@ -223,14 +297,14 @@ export const ProgressTracker: React.FC = () => {
         
         <div className="space-y-6">
           {history.map((entry) => (
-            <div key={entry.id} className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6 group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">
+            <div key={entry.id} className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6 group hover:bg-white dark:hover:bg-slate-800 transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700 shadow-sm hover:shadow-xl">
               <div className="flex items-center gap-6">
-                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex flex-col items-center justify-center">
+                <div className="w-16 h-16 bg-blue-600/10 dark:bg-blue-600/20 rounded-2xl flex flex-col items-center justify-center border border-blue-600/20">
                   <span className="text-[10px] font-black text-blue-600 uppercase leading-none">{new Date(entry.date).toLocaleString('tr-TR', { month: 'short' })}</span>
-                  <span className="text-xl font-black dark:text-white leading-none mt-1">{new Date(entry.date).getDate()}</span>
+                  <span className="text-2xl font-black dark:text-white leading-none mt-1">{new Date(entry.date).getDate()}</span>
                 </div>
                 <div>
-                  <h4 className="font-black text-xl dark:text-white uppercase tracking-tighter">{entry.examType} Denemesi</h4>
+                  <h4 className="font-black text-xl dark:text-white uppercase tracking-tighter">{entry.examType} Akademik Değerlendirme</h4>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     {new Date(entry.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -238,13 +312,13 @@ export const ProgressTracker: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-12">
-                <div className="text-center">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Toplam Net</p>
+                <div className="text-center p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-inner">
+                  <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Toplam Net</p>
                   <p className="text-3xl font-black text-blue-600 tabular-nums">{entry.totalNet.toFixed(2)}</p>
                 </div>
-                <div className="flex flex-wrap gap-2 max-w-[200px] justify-end">
-                   {entry.subjects.slice(0, 3).map(s => (
-                     <div key={s.name} className="px-3 py-1 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 text-[9px] font-black uppercase">
+                <div className="hidden lg:flex flex-wrap gap-2 max-w-[250px] justify-end">
+                   {entry.subjects.map(s => (
+                     <div key={s.name} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase border ${s.net > (s.name === 'Matematik' ? 12 : 7) ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'}`}>
                        {s.name.substring(0,3)}: {s.net}
                      </div>
                    ))}
