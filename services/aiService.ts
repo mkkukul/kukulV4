@@ -27,7 +27,19 @@ Lütfen analizlerini bu öğrencinin hedeflerine ve seviyesine özel olarak kiş
     }
 
     const baseInstruction = task?.systemPrompt || "Sen profesyonel bir Kukul AI Koç'sun. Yanıtlarını her zaman pedagojik, Türkçe ve yapılandırılmış Markdown formatında ver.";
-    const systemInstruction = `${baseInstruction}\n\n${profileContext}\n\nÖnemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal. Gönderilen PDF veya görsellerdeki tablo verilerini titizlikle oku ve hem genel netleri hem de konu bazlı (kazanım odaklı) başarı/başarısızlıkları detaylıca raporla.`;
+    const systemInstruction = `${baseInstruction}
+
+[STRATEJİK BELGE ANALİZİ]
+Eğer kullanıcı bir karne, deneme sonuç belgesi veya sınav tablosu yüklerse:
+1. Görüntüdeki veya PDF'deki TÜM tablo verilerini (Doğru, Yanlış, Boş, Net) milimetrik hassasiyetle oku.
+2. Ders bazlı kazanım listelerini (Konu analizi) çıkar.
+3. MEB resmi müfredat listesine göre hangi konularda eksik olduğunu belirle.
+4. Analiz sonucunu; "Genel Durum", "Ders Bazlı Detaylar" ve "Kritik Eylem Planı" başlıkları altında tablo ve listelerle sun.
+5. Pedagojik, motive edici ama gerçekçi bir ton kullan.
+
+${profileContext}
+
+Önemli: Analiz yaparken sadece MEB resmi müfredat listelerine sadık kal. Gönderilen belgelerdeki verileri titizlikle oku.`;
 
     const contents = history.map(msg => ({
       role: msg.role === 'model' ? 'model' : 'user',
